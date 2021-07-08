@@ -8,7 +8,7 @@ export const registerUser = createAsyncThunk(
         return {
             user: res
         }
-    };
+    }
 );
 
 export const loginUser = createAsyncThunk(
@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
                 expiresIn: res.data.expiresIn
             }
         };
-    };
+    }
 );
 
 export const refreshUserToken = createAsyncThunk(
@@ -36,7 +36,7 @@ export const refreshUserToken = createAsyncThunk(
                 expiresIn: res.data.expiresIn
             }
         };
-    };
+    }
 );
 
 export const logoutUser = createAsyncThunk(

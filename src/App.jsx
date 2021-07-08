@@ -11,6 +11,7 @@ import './App.css';
 // TODO Routes
 
 // TODO Header & LoggedInRoute (For logged in only routes)
+// TODO AdminRoute (For admin specific routes)
 
 // TODO Store for checking logged in status
 
