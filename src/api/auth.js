@@ -1,6 +1,6 @@
 import API from "./";
 
-export const register = async data => {
+export const register = async (data) => {
     try {
         return (await API.post("auth/register", data)).data;
     } catch (err) {
@@ -8,7 +8,7 @@ export const register = async data => {
     }
 };
 
-export const login = async data => {
+export const login = async (data) => {
     try {
         return (await API.post("auth/login", data)).data;
     } catch (err) {

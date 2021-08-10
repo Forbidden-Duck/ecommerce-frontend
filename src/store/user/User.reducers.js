@@ -8,10 +8,10 @@ const userSlice = createSlice({
         isFetching: false,
         error: null,
         userid: null,
-        user: null
+        user: null,
     },
     reducers: {},
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder
             // Login success
             .addCase(loginUser.fulfilled, (state, action) => {
@@ -37,9 +37,9 @@ const userSlice = createSlice({
             })
             // Get user failure
             .addCase(userActions.getUser.rejected, (state, action) => {
-                const { error } = action.payload;
+                const { message } = action.error;
                 state.isFetching = false;
-                state.error = error;
+                state.error = message;
             })
 
             // Update user success
@@ -50,8 +50,8 @@ const userSlice = createSlice({
             })
             // Update user failure
             .addCase(userActions.updateUser.rejected, (state, action) => {
-                const { error } = action.payload;
-                state.error = error;
+                const { message } = action.error;
+                state.error = message;
             })
 
             // Delete user success
@@ -62,10 +62,10 @@ const userSlice = createSlice({
             })
             // Delete user failure
             .addCase(userActions.deleteUser.rejected, (state, action) => {
-                const { error } = action.payload;
-                state.error = error;
+                const { message } = action.error;
+                state.error = message;
             });
-    }
+    },
 });
 
 export default userSlice.reducer;

@@ -6,8 +6,8 @@ export const registerUser = createAsyncThunk(
     async (data, thunkAPI) => {
         const res = await authAPI.register(data);
         return {
-            user: res
-        }
+            user: res,
+        };
     }
 );
 
@@ -16,11 +16,11 @@ export const loginUser = createAsyncThunk(
     async (data, thunkAPI) => {
         const res = await authAPI.login(data);
         return {
-            userid: res.data.userid,
+            userid: res.userid,
             jwt: {
-                token: res.data.token,
-                expiresIn: res.data.expiresIn
-            }
+                token: res.token,
+                expiresIn: res.expiresIn,
+            },
         };
     }
 );
@@ -30,11 +30,11 @@ export const refreshUserToken = createAsyncThunk(
     async (data, thunkAPI) => {
         const res = await authAPI.refreshtoken();
         return {
-            userid: res.data.userid,
+            userid: res.userid,
             jwt: {
-                token: res.data.token,
-                expiresIn: res.data.expiresIn
-            }
+                token: res.token,
+                expiresIn: res.expiresIn,
+            },
         };
     }
 );

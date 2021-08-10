@@ -12,11 +12,26 @@ import "./Login.css";
 function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { error, isPending } = useSelector((state) => state.auth);
+    const { error, isPending, isAuthenticated } = useSelector(
+        (state) => state.auth
+    );
+
+    if (isAuthenticated) {
+        history.push("/");
+    }
 
     const handleLogin = async (credentials) => {
         await dispatch(loginUser(credentials));
-        history.push("/");
+    };
+    const formatError = (message) => {
+        switch (message) {
+            case "User not found":
+                return "Incorrect email or password";
+            case "Unauthorized":
+                return "Incorrect email or password";
+            default:
+                return message;
+        }
     };
 
     const credentialsSchema = Yup.object().shape({
@@ -35,7 +50,7 @@ function Login() {
                     validateOnBlur
                     onSubmit={async (values) => {
                         const { email, password } = values;
-                        await handleLogin({ username: email, password });
+                        await handleLogin({ email, password });
                     }}
                 >
                     <Form className="baseForm">
@@ -49,8 +64,10 @@ function Login() {
                             label="Password"
                             name="password"
                             id="password-input"
+                            type="password"
+                            autoComplete="on"
                         />
-                        {error && <div>{error}</div>}
+                        {error && <div>{formatError(error)}</div>}
                         <Button
                             variant="contained"
                             color="primary"

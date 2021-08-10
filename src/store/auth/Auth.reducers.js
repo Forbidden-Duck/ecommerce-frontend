@@ -8,10 +8,10 @@ const authSlice = createSlice({
         isPending: false,
         isAuthenticated: false,
         error: null,
-        jwt: null
+        jwt: null,
     },
     reducers: {},
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder
             // Delete user success
             .addCase(deleteUser.fulfilled, (state, action) => {
@@ -30,9 +30,9 @@ const authSlice = createSlice({
             })
             // Register failure
             .addCase(authActions.registerUser.rejected, (state, action) => {
-                const { error } = action.payload;
+                const { message } = action.error;
                 state.isPending = false;
-                state.error = error;
+                state.error = message;
             })
 
             // Login pending
@@ -48,23 +48,26 @@ const authSlice = createSlice({
             })
             // Login failure
             .addCase(authActions.loginUser.rejected, (state, action) => {
-                const { error } = action.payload;
+                const { message } = action.error;
                 state.isPending = false;
-                state.error = error;
+                state.error = message;
             })
 
             // Refresh token success
-            .addCase(authActions.refreshUserToken.fulfilled, (state, action) => {
-                const { jwt } = action.payload;
-                state.isAuthenticated = true;
-                state.jwt = jwt;
-            })
+            .addCase(
+                authActions.refreshUserToken.fulfilled,
+                (state, action) => {
+                    const { jwt } = action.payload;
+                    state.isAuthenticated = true;
+                    state.jwt = jwt;
+                }
+            )
             // Refresh token failed
             .addCase(authActions.refreshUserToken.rejected, (state, action) => {
-                const { error } = action.payload;
+                const { message } = action.error;
                 state.isAuthenticated = false;
                 state.jwt = null;
-                state.error = error;
+                state.error = message;
             })
 
             // Logout success
@@ -74,10 +77,10 @@ const authSlice = createSlice({
             })
             // Logout failure
             .addCase(authActions.logoutUser.rejected, (state, action) => {
-                const { error } = action.payload;
-                state.error = error;
+                const { message } = action.error;
+                state.error = message;
             });
-    }
+    },
 });
 
 export default authSlice.reducer;
