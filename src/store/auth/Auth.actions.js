@@ -17,6 +17,7 @@ export const loginUser = createAsyncThunk(
         const res = await authAPI.login(data);
         return {
             userid: res.userid,
+            admin: res.admin,
             jwt: {
                 token: res.token,
                 expiresIn: res.expiresIn,
@@ -31,6 +32,7 @@ export const refreshUserToken = createAsyncThunk(
         const res = await authAPI.refreshtoken();
         return {
             userid: res.userid,
+            admin: res.admin,
             jwt: {
                 token: res.token,
                 expiresIn: res.expiresIn,

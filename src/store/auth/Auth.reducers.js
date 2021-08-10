@@ -7,6 +7,7 @@ const authSlice = createSlice({
     initialState: {
         isPending: false,
         isAuthenticated: false,
+        isAdmin: false,
         error: null,
         jwt: null,
     },
@@ -41,15 +42,17 @@ const authSlice = createSlice({
             })
             // Login success
             .addCase(authActions.loginUser.fulfilled, (state, action) => {
-                const { jwt } = action.payload;
+                const { jwt, admin } = action.payload;
                 state.isPending = false;
                 state.isAuthenticated = true;
+                state.isAdmin = admin;
                 state.jwt = jwt;
             })
             // Login failure
             .addCase(authActions.loginUser.rejected, (state, action) => {
                 const { message } = action.error;
                 state.isPending = false;
+                state.isAdmin = false;
                 state.error = message;
             })
 
@@ -57,8 +60,9 @@ const authSlice = createSlice({
             .addCase(
                 authActions.refreshUserToken.fulfilled,
                 (state, action) => {
-                    const { jwt } = action.payload;
+                    const { jwt, admin } = action.payload;
                     state.isAuthenticated = true;
+                    state.isAdmin = admin;
                     state.jwt = jwt;
                 }
             )
@@ -67,12 +71,14 @@ const authSlice = createSlice({
                 const { message } = action.error;
                 state.isAuthenticated = false;
                 state.jwt = null;
+                state.isAdmin = false;
                 state.error = message;
             })
 
             // Logout success
             .addCase(authActions.logoutUser.fulfilled, (state, action) => {
                 state.isAuthenticated = false;
+                state.isAdmin = false;
                 state.jwt = null;
             })
             // Logout failure
