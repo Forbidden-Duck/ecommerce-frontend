@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import { loginUser } from "../../store/auth/Auth.actions";
 import TextField from "../../components/TextField/TextField";
@@ -19,6 +22,14 @@ function Login() {
     if (isAuthenticated) {
         history.push("/");
     }
+
+    const useStyles = makeStyles((theme) => ({
+        title: {
+            color: "#558db5",
+            textDecoration: "none",
+        },
+    }));
+    const classes = useStyles();
 
     const handleLogin = async (credentials) => {
         await dispatch(loginUser(credentials));
@@ -76,7 +87,14 @@ function Login() {
                         >
                             Submit
                         </Button>
-                        <p>Forgotten your password?</p>
+                        <Typography
+                            variant="p"
+                            className={classes.title}
+                            component={Link}
+                            to="/register"
+                        >
+                            Sign up instead?
+                        </Typography>
                         <Divider />
                         <div>
                             <div

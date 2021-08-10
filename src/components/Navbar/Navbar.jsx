@@ -64,14 +64,30 @@ function Navbar() {
                 >
                     Ecommerce Store
                 </Typography>
-                <div>
+                <div className={classes.menuButton}>
                     {!isAuthenticated && (
-                        <Button color="inherit" component={Link} to={"/login"}>
-                            Login
-                        </Button>
+                        <div>
+                            <Typography
+                                style={{ paddingRight: 20 }}
+                                variant="p"
+                                className={classes.title}
+                                component={Link}
+                                to="/login"
+                            >
+                                Login
+                            </Typography>
+                            <Typography
+                                variant="p"
+                                className={classes.title}
+                                component={Link}
+                                to="/register"
+                            >
+                                Register
+                            </Typography>
+                        </div>
                     )}
                     {isAuthenticated && (
-                        <div className={classes.menuButton}>
+                        <div>
                             <IconButton
                                 aria-label="Shopping Cart"
                                 color="inherit"
