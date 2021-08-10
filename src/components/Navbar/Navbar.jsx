@@ -43,6 +43,7 @@ function Navbar() {
         setProfileMenu(null);
     };
     const handleLogout = async () => {
+        handleProfileClose();
         await dispatch(logoutUser());
     };
 
@@ -95,7 +96,11 @@ function Navbar() {
                                     open={Boolean(profileMenu)}
                                     onClose={handleProfileClose}
                                 >
-                                    <MenuItem componenet={Link} to={"/profile"}>
+                                    <MenuItem
+                                        onClick={handleProfileClose}
+                                        componenet={Link}
+                                        to={"/profile"}
+                                    >
                                         Profile
                                     </MenuItem>
                                     <MenuItem onClick={handleLogout}>
