@@ -26,9 +26,7 @@ export const refreshtoken = async () => {
 
 export const logout = async () => {
     try {
-        return (
-            await API.post("auth/logout", undefined, { withCredentials: true })
-        ).data;
+        return (await API.post("auth/logout")).data;
     } catch (err) {
         throw err.response.data;
     }
