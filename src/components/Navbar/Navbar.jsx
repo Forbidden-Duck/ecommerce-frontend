@@ -11,7 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { makeStyles } from "@material-ui/core/styles";
 
-const Header = () => {
+function Navbar() {
     const useStyles = makeStyles((theme) => ({
         root: {
             flexGrow: 1,
@@ -65,6 +65,6 @@ const Header = () => {
             </Toolbar>
         </AppBar>
     );
-};
+}
 
-export default Header;
+export default Navbar;
