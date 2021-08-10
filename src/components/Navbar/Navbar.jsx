@@ -93,6 +93,16 @@ function Navbar() {
                                 <Menu
                                     id="profile-select"
                                     anchorEl={profileMenu}
+                                    /* Popup appears below the profile text*/
+                                    getContentAnchorEl={null}
+                                    anchorOrigin={{
+                                        vertical: "bottom",
+                                        horizontal: "center",
+                                    }}
+                                    transformOrigin={{
+                                        vertical: "top",
+                                        horizontal: "center",
+                                    }}
                                     keepMounted
                                     open={Boolean(profileMenu)}
                                     onClose={handleProfileClose}
