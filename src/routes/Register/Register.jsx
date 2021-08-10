@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Divider from "@material-ui/core/Divider";
+import { InputAdornment, IconButton } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import { registerUser } from "../../store/auth/Auth.actions";
@@ -21,6 +23,10 @@ function Login() {
     if (user) {
         history.push("/");
     }
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     const useStyles = makeStyles((theme) => ({
         title: {
@@ -89,8 +95,52 @@ function Login() {
                             label="Password"
                             name="password"
                             id="password-input"
-                            type="password"
+                            type={showPassword ? "password" : "text"}
                             autoComplete="on"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={
+                                                handleMouseDownPassword
+                                            }
+                                        >
+                                            {showPassword ? (
+                                                <Visibility />
+                                            ) : (
+                                                <VisibilityOff />
+                                            )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        <TextField
+                            label="Confirm Password"
+                            name="confirmPassword"
+                            id="confirmpassword-input"
+                            type={showPassword ? "password" : "text"}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={
+                                                handleMouseDownPassword
+                                            }
+                                        >
+                                            {showPassword ? (
+                                                <Visibility />
+                                            ) : (
+                                                <VisibilityOff />
+                                            )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                         {error && <div>{error}</div>}
                         <Button
