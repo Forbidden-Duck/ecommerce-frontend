@@ -24,6 +24,8 @@ function Navbar() {
         },
         header: {
             justifyContent: "space-between",
+            minHeight: 68,
+            background: "#228B22",
         },
     }));
     const classes = useStyles();
@@ -32,7 +34,7 @@ function Navbar() {
     // TODO Cart items
 
     return (
-        <AppBar position="static" style={{ background: "#228B22" }}>
+        <AppBar position="static">
             <Toolbar className={classes.header}>
                 <Typography variant="h6" className={classes.title}>
                     Ecommerce Store
