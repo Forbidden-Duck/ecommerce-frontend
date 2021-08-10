@@ -13,11 +13,20 @@ import './App.css';
 // TODO Header & LoggedInRoute (For logged in only routes)
 // TODO AdminRoute (For admin specific routes)
 
-// TODO Store for checking logged in status
-
 function App() {
   return (
+    <div style={{flex: 1}}>
+      <Router>
+        {/* NavBar */}
+        <Switch>
+          {/* Public Routes */}
 
+          {/* Logged-in Only Routes */}
+
+          <Redirect from="*" to="/"/>
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
