@@ -23,6 +23,7 @@ function Navbar() {
         },
         menuButton: {
             marginRight: theme.spacing(2),
+            display: "flex",
         },
         title: {
             flexGrow: 1,
@@ -63,7 +64,7 @@ function Navbar() {
                         </Button>
                     )}
                     {isAuthenticated && (
-                        <div>
+                        <div className={classes.menuButton}>
                             <IconButton
                                 aria-label="Shopping Cart"
                                 color="inherit"
