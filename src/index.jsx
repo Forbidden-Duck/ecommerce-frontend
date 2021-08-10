@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import App from './App';
-//import rootReducer from './store/rootReducer'; 
+import rootReducer from './store/rootReducer'; 
 import './index.css';
 
-// TODO Create redux store
+// Initialise redux store
+const store = configureStore({reducer: rootReducer});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </StrictMode>,
   document.getElementById('root')
 );
