@@ -27,6 +27,8 @@ function Navbar() {
         },
         title: {
             flexGrow: 1,
+            color: "inherit",
+            textDecoration: "none",
         },
         header: {
             justifyContent: "space-between",
@@ -54,7 +56,12 @@ function Navbar() {
     return (
         <AppBar position="static">
             <Toolbar className={classes.header}>
-                <Typography variant="h6" className={classes.title}>
+                <Typography
+                    variant="h6"
+                    className={classes.title}
+                    component={Link}
+                    to="/"
+                >
                     Ecommerce Store
                 </Typography>
                 <div>
