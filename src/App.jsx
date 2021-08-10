@@ -16,7 +16,7 @@ import Navbar from "./components/Navbar/Navbar";
 
 function App() {
     return (
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, background: "#222" }}>
             <Router>
                 <Navbar />
                 <Switch>

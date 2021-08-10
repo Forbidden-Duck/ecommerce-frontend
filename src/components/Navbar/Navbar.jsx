@@ -32,7 +32,7 @@ function Navbar() {
     // TODO Cart items
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" style={{ background: "#228B22" }}>
             <Toolbar className={classes.header}>
                 <Typography variant="h6" className={classes.title}>
                     Ecommerce Store
