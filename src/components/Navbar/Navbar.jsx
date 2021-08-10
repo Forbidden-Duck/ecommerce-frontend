@@ -62,9 +62,9 @@ function Navbar() {
                 >
                     Ecommerce Store
                 </Typography>
-                <div className={classes.menuButton}>
+                <div>
                     {!isAuthenticated && (
-                        <div>
+                        <div className={classes.menuButton}>
                             <Typography
                                 style={{ paddingRight: 20 }}
                                 variant="p"
@@ -85,7 +85,7 @@ function Navbar() {
                         </div>
                     )}
                     {isAuthenticated && (
-                        <div>
+                        <div className={classes.menuButton}>
                             <IconButton
                                 aria-label="Shopping Cart"
                                 color="inherit"
