@@ -10,6 +10,7 @@ import "./App.css";
 // TODO Routes
 import Home from "./routes/Home/Home";
 import Login from "./routes/Login/Login";
+import Register from "./routes/Register/Register";
 
 import Navbar from "./components/Navbar/Navbar";
 // TODO LoggedInRoute (For logged in only routes)
@@ -24,6 +25,7 @@ function App() {
                     {/* Public Routes */}
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={Login} />
+                    <Route path="/register" component={Register} />
 
                     {/* Logged-in Only Routes */}
 

@@ -28,6 +28,7 @@ const authSlice = createSlice({
             // Register success
             .addCase(authActions.registerUser.fulfilled, (state, action) => {
                 state.isPending = false;
+                state.error = null;
             })
             // Register failure
             .addCase(authActions.registerUser.rejected, (state, action) => {
@@ -47,6 +48,7 @@ const authSlice = createSlice({
                 state.isAuthenticated = true;
                 state.isAdmin = admin;
                 state.jwt = jwt;
+                state.error = null;
             })
             // Login failure
             .addCase(authActions.loginUser.rejected, (state, action) => {
@@ -64,6 +66,7 @@ const authSlice = createSlice({
                     state.isAuthenticated = true;
                     state.isAdmin = admin;
                     state.jwt = jwt;
+                    state.error = null;
                 }
             )
             // Refresh token failed
@@ -80,6 +83,7 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
                 state.isAdmin = false;
                 state.jwt = null;
+                state.error = null;
             })
             // Logout failure
             .addCase(authActions.logoutUser.rejected, (state, action) => {

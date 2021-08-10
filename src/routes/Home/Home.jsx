@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Home.css";
-// TODO preload login
 
 function Home() {
     return (

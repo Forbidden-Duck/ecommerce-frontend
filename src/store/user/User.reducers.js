@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as userActions from "./User.actions";
-import { loginUser, refreshUserToken } from "../auth/Auth.actions";
+import {
+    registerUser,
+    loginUser,
+    refreshUserToken,
+    logoutUser,
+} from "../auth/Auth.actions";
 
 const userSlice = createSlice({
     name: "user",
@@ -13,6 +18,11 @@ const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // Register success
+            .addCase(registerUser.fulfilled, (state, action) => {
+                const { user } = action.payload;
+                state.user = user;
+            })
             // Login success
             .addCase(loginUser.fulfilled, (state, action) => {
                 const { userid } = action.payload;
@@ -22,6 +32,10 @@ const userSlice = createSlice({
             .addCase(refreshUserToken.fulfilled, (state, action) => {
                 const { userid } = action.payload;
                 state.userid = userid;
+            })
+            // Logout success
+            .addCase(logoutUser.fulfilled, (state, action) => {
+                state.user = null;
             })
 
             // Get user pending
@@ -34,6 +48,7 @@ const userSlice = createSlice({
                 const { user } = action.payload;
                 state.isFetching = false;
                 state.user = user;
+                state.error = null;
             })
             // Get user failure
             .addCase(userActions.getUser.rejected, (state, action) => {
