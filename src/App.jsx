@@ -9,6 +9,7 @@ import "./App.css";
 
 // TODO Routes
 import Home from "./routes/Home/Home";
+import Login from "./routes/Login/Login";
 
 import Navbar from "./components/Navbar/Navbar";
 // TODO LoggedInRoute (For logged in only routes)
@@ -22,6 +23,7 @@ function App() {
                 <Switch>
                     {/* Public Routes */}
                     <Route exact path="/" component={Home} />
+                    <Route path="/login" component={Login} />
 
                     {/* Logged-in Only Routes */}
 
