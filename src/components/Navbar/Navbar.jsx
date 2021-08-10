@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Badge from "@material-ui/core/Badge";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
@@ -8,10 +8,15 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { makeStyles } from "@material-ui/core/styles";
+import { logoutUser } from "../../store/auth/Auth.actions";
 
 function Navbar() {
+    const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
         root: {
             flexGrow: 1,
@@ -30,6 +35,17 @@ function Navbar() {
     }));
     const classes = useStyles();
 
+    const [profileMenu, setProfileMenu] = useState(null);
+    const handleProfileClick = (evt) => {
+        setProfileMenu(evt.currentTarget);
+    };
+    const handleProfileClose = () => {
+        setProfileMenu(null);
+    };
+    const handleLogout = async () => {
+        await dispatch(logoutUser());
+    };
+
     const { isAuthenticated } = useSelector((state) => state.auth);
     // TODO Cart items
 
@@ -46,23 +62,49 @@ function Navbar() {
                         </Button>
                     )}
                     {isAuthenticated && (
-                        <Typography variant="h6" className={classes.title}>
-                            Logged in
-                        </Typography>
+                        <div>
+                            <IconButton
+                                aria-label="Shopping Cart"
+                                color="inherit"
+                                component={Link}
+                                to={"/cart"}
+                            >
+                                <Badge
+                                    badgeContent={
+                                        0 /* TODO No cart items store */
+                                    }
+                                    color="secondary"
+                                >
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            </IconButton>
+                            <div>
+                                <IconButton
+                                    aria-controls="profile-select"
+                                    aria-haspopup="true"
+                                    onClick={handleProfileClick}
+                                >
+                                    <AccountCircleIcon
+                                        style={{ color: "white" }}
+                                    />
+                                </IconButton>
+                                <Menu
+                                    id="profile-select"
+                                    anchorEl={profileMenu}
+                                    keepMounted
+                                    open={Boolean(profileMenu)}
+                                    onClose={handleProfileClose}
+                                >
+                                    <MenuItem componenet={Link} to={"/profile"}>
+                                        Profile
+                                    </MenuItem>
+                                    <MenuItem onClick={handleLogout}>
+                                        Logout
+                                    </MenuItem>
+                                </Menu>
+                            </div>
+                        </div>
                     )}
-                    <IconButton
-                        aria-label="Shopping Cart"
-                        color="inherit"
-                        component={Link}
-                        to={"/cart"}
-                    >
-                        <Badge
-                            badgeContent={0 /* TODO No cart items store */}
-                            color="secondary"
-                        >
-                            <ShoppingCartIcon />
-                        </Badge>
-                    </IconButton>
                 </div>
             </Toolbar>
         </AppBar>
