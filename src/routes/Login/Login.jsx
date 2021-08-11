@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { InputAdornment, IconButton } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import { loginUser } from "../../store/auth/Auth.actions";
@@ -22,6 +25,9 @@ function Login() {
     if (isAuthenticated) {
         history.push("/");
     }
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     const useStyles = makeStyles((theme) => ({
         title: {
@@ -75,8 +81,24 @@ function Login() {
                             label="Password"
                             name="password"
                             id="password-input"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             autoComplete="on"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                        >
+                                            {showPassword ? (
+                                                <Visibility />
+                                            ) : (
+                                                <VisibilityOff />
+                                            )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                         {error && <div>{formatError(error)}</div>}
                         <Button
