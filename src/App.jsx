@@ -24,27 +24,22 @@ function App() {
     const { isAuthenticated, jwt, refreshError, isPending } = useSelector(
         (state) => state.auth
     );
+    const [timer, setTimer] = useState(null);
 
     if (!isAuthenticated && !refreshError && !isPending) {
+        // Log user in with refresh token
         dispatch(refreshUserToken());
     }
 
-    // const [timer, setTimer] = useState(null);
-
-    // console.log(timer);
-    // if (isAuthenticated && !timer) {
-    //     const expiryDate = new Date(jwt.expiresIn);
-    //     const difference = expiryDate.getTime() - new Date().getTime();
-    //     console.log("inside");
-    //     setTimer(
-    //         setTimeout(() => {
-    //             console.log("timeout");
-    //         }, 5000)
-    //     );
-    // } else if (!isAuthenticated && timer) {
-    //     clearTimeout(timer);
-    //     setTimer(null);
-    // }
+    if (isAuthenticated && !timer) {
+        // Refresh token when JWT expires
+        const expiryDate = new Date(jwt.expiresIn);
+        const difference = expiryDate.getTime() - new Date().getTime();
+        setTimer(setTimeout(() => dispatch(refreshUserToken()), difference));
+    } else if (!isAuthenticated && timer) {
+        clearTimeout(timer);
+        setTimer(null);
+    }
 
     return (
         <div style={{ flex: 1, background: "#222" }}>
