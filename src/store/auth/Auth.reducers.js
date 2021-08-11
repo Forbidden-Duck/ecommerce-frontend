@@ -49,10 +49,10 @@ const authSlice = createSlice({
             })
             // Login success
             .addCase(authActions.loginUser.fulfilled, (state, action) => {
-                const { jwt, admin } = action.payload;
+                const { jwt, user } = action.payload;
                 state.isPending = false;
                 state.isAuthenticated = true;
-                state.isAdmin = admin;
+                state.isAdmin = user.admin;
                 state.jwt = jwt;
                 state.error = null;
                 state.refreshError = null;
@@ -73,9 +73,9 @@ const authSlice = createSlice({
             .addCase(
                 authActions.refreshUserToken.fulfilled,
                 (state, action) => {
-                    const { jwt, admin } = action.payload;
+                    const { jwt, user } = action.payload;
                     state.isAuthenticated = true;
-                    state.isAdmin = admin;
+                    state.isAdmin = user.admin;
                     state.jwt = jwt;
                     state.refreshError = null;
                     state.isPending = false;
