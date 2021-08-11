@@ -9,6 +9,7 @@ import "./index.css";
 // Initialise redux store
 const store = configureStore({ reducer: rootReducer });
 
+console.log("Allo, what you doing in here?");
 ReactDOM.render(
     <StrictMode>
         <Provider store={store}>
