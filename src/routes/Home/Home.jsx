@@ -15,7 +15,7 @@ function Home() {
 
     const [hasUser, setHasUser] = useState(false);
     if (isAuthenticated && userid && !hasUser) {
-        handleGetUser({ userid, token: jwt });
+        handleGetUser({ userid, token: jwt.token });
         setHasUser(true);
     }
 
