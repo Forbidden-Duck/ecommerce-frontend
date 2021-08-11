@@ -35,7 +35,7 @@ const userSlice = createSlice({
             })
             // Logout success
             .addCase(logoutUser.fulfilled, (state, action) => {
-                state.user = null;
+                state.userid = null;
             })
 
             // Get user pending
@@ -71,7 +71,6 @@ const userSlice = createSlice({
 
             // Delete user success
             .addCase(userActions.deleteUser.fulfilled, (state, action) => {
-                state.userid = null;
                 state.user = null;
                 state.error = null;
             })
