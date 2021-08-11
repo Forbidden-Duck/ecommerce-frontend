@@ -55,6 +55,7 @@ const authSlice = createSlice({
                 state.isAdmin = admin;
                 state.jwt = jwt;
                 state.error = null;
+                state.refreshError = null;
             })
             // Login failure
             .addCase(authActions.loginUser.rejected, (state, action) => {
