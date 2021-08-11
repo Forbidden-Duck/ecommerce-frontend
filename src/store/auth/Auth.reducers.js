@@ -9,6 +9,7 @@ const authSlice = createSlice({
         isAuthenticated: false,
         isAdmin: false,
         error: null,
+        refreshError: null,
         jwt: null,
     },
     reducers: {},
@@ -63,6 +64,10 @@ const authSlice = createSlice({
                 state.error = message;
             })
 
+            // Refresh token pending
+            .addCase(authActions.refreshUserToken.pending, (state, action) => {
+                state.isPending = true;
+            })
             // Refresh token success
             .addCase(
                 authActions.refreshUserToken.fulfilled,
@@ -71,7 +76,8 @@ const authSlice = createSlice({
                     state.isAuthenticated = true;
                     state.isAdmin = admin;
                     state.jwt = jwt;
-                    state.error = null;
+                    state.refreshError = null;
+                    state.isPending = false;
                 }
             )
             // Refresh token failed
@@ -80,20 +86,27 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
                 state.jwt = null;
                 state.isAdmin = false;
-                state.error = message;
+                state.refreshError = message;
+                state.isPending = false;
             })
 
+            // Logout pending
+            .addCase(authActions.logoutUser.pending, (state, action) => {
+                state.isPending = true;
+            })
             // Logout success
             .addCase(authActions.logoutUser.fulfilled, (state, action) => {
                 state.isAuthenticated = false;
                 state.isAdmin = false;
                 state.jwt = null;
                 state.error = null;
+                state.isPending = false;
             })
             // Logout failure
             .addCase(authActions.logoutUser.rejected, (state, action) => {
                 const { message } = action.error;
                 state.error = message;
+                state.isPending = false;
             });
     },
 });
