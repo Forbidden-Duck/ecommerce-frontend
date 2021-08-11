@@ -9,7 +9,11 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
-import { registerUser, clearError } from "../../store/auth/Auth.actions";
+import {
+    loginUser,
+    registerUser,
+    clearError,
+} from "../../store/auth/Auth.actions";
 import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
 import "./Register.css";
@@ -18,11 +22,6 @@ function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
     const { error, isPending } = useSelector((state) => state.auth);
-    const { user } = useSelector((state) => state.user);
-
-    if (user) {
-        history.push("/");
-    }
 
     const [doClear, setDoClear] = useState(true);
     if (doClear) {
@@ -41,9 +40,21 @@ function Login() {
     }));
     const classes = useStyles();
 
+    const handleLogin = async (credentials) => {
+        if (credentials && credentials.email && credentials.password) {
+            await dispatch(loginUser(credentials));
+        }
+        history.push("/");
+    };
     const handleRegister = async (credentials) => {
         await dispatch(registerUser(credentials));
     };
+
+    const [onSubmit, setOnSubmit] = useState({ submitClick: false, auth: {} });
+    if (onSubmit.submitClick && !error) {
+        handleLogin(onSubmit.auth);
+        setOnSubmit({ submitClick: false, auth: {} });
+    }
 
     const credentialsSchema = Yup.object().shape({
         firstname: Yup.string()
@@ -76,6 +87,10 @@ function Login() {
                             lastname,
                             email,
                             password,
+                        });
+                        setOnSubmit({
+                            submitClick: true,
+                            auth: { email, password },
                         });
                     }}
                 >
