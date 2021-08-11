@@ -9,7 +9,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
-import { registerUser } from "../../store/auth/Auth.actions";
+import { registerUser, clearError } from "../../store/auth/Auth.actions";
 import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
 import "./Register.css";
@@ -22,6 +22,12 @@ function Login() {
 
     if (user) {
         history.push("/");
+    }
+
+    const [doClear, setDoClear] = useState(true);
+    if (doClear) {
+        dispatch(clearError());
+        setDoClear(false);
     }
 
     const [showPassword, setShowPassword] = useState(false);
@@ -79,23 +85,26 @@ function Login() {
                             label="First name"
                             name="firstname"
                             id="firstname-input"
+                            autoComplete="given-name"
                         />
                         <TextField
                             label="Last name"
                             name="lastname"
                             id="lastname-input"
+                            autoComplete="family-name"
                         />
                         <TextField
                             label="Email"
                             name="email"
                             id="email-input"
+                            autoComplete="email"
                         />
                         <TextField
                             label="Password"
                             name="password"
                             id="password-input"
                             type={showPassword ? "text" : "password"}
-                            autoComplete="on"
+                            autoComplete="current-password"
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -118,6 +127,7 @@ function Login() {
                             name="confirmPassword"
                             id="confirmpassword-input"
                             type={showPassword ? "text" : "password"}
+                            autoComplete="off"
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">

@@ -10,7 +10,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
-import { loginUser } from "../../store/auth/Auth.actions";
+import { loginUser, clearError } from "../../store/auth/Auth.actions";
 import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
 import "./Login.css";
@@ -24,6 +24,12 @@ function Login() {
 
     if (isAuthenticated) {
         history.push("/");
+    }
+
+    const [doClear, setDoClear] = useState(true);
+    if (doClear) {
+        dispatch(clearError());
+        setDoClear(false);
     }
 
     const [showPassword, setShowPassword] = useState(false);
@@ -76,13 +82,14 @@ function Login() {
                             label="Email"
                             name="email"
                             id="email-input"
+                            autoComplete="email"
                         />
                         <TextField
                             label="Password"
                             name="password"
                             id="password-input"
                             type={showPassword ? "text" : "password"}
-                            autoComplete="on"
+                            autoComplete="current-password"
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">

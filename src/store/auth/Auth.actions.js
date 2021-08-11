@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import * as authAPI from "../../api/auth";
 
 export const registerUser = createAsyncThunk(
@@ -47,3 +47,5 @@ export const logoutUser = createAsyncThunk(
         await authAPI.logout();
     }
 );
+
+export const clearError = createAction("auth/clearError");

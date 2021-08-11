@@ -21,6 +21,11 @@ const authSlice = createSlice({
                 state.jwt = null;
             })
 
+            // Clear error state
+            .addCase(authActions.clearError, (state) => {
+                state.error = null;
+            })
+
             // Register pending
             .addCase(authActions.registerUser.pending, (state, action) => {
                 state.isPending = true;
