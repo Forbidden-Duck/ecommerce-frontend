@@ -26,7 +26,6 @@ function Login() {
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
-    const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     const useStyles = makeStyles((theme) => ({
         title: {
@@ -103,9 +102,6 @@ function Login() {
                                         <IconButton
                                             aria-label="toggle password visibility"
                                             onClick={handleClickShowPassword}
-                                            onMouseDown={
-                                                handleMouseDownPassword
-                                            }
                                         >
                                             {showPassword ? (
                                                 <Visibility />
@@ -128,9 +124,6 @@ function Login() {
                                         <IconButton
                                             aria-label="toggle password visibility"
                                             onClick={handleClickShowPassword}
-                                            onMouseDown={
-                                                handleMouseDownPassword
-                                            }
                                         >
                                             {showPassword ? (
                                                 <Visibility />
@@ -152,7 +145,6 @@ function Login() {
                             Submit
                         </Button>
                         <Typography
-                            variant="p"
                             className={classes.title}
                             component={Link}
                             to="/login"

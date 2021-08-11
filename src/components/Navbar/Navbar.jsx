@@ -67,7 +67,6 @@ function Navbar() {
                         <div className={classes.menuButton}>
                             <Typography
                                 style={{ paddingRight: 20 }}
-                                variant="p"
                                 className={classes.title}
                                 component={Link}
                                 to="/login"
@@ -75,7 +74,6 @@ function Navbar() {
                                 Login
                             </Typography>
                             <Typography
-                                variant="p"
                                 className={classes.title}
                                 component={Link}
                                 to="/register"

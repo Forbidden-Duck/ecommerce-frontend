@@ -88,7 +88,6 @@ function Login() {
                             Submit
                         </Button>
                         <Typography
-                            variant="p"
                             className={classes.title}
                             component={Link}
                             to="/register"
