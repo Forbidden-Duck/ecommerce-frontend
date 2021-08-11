@@ -52,7 +52,7 @@ const authSlice = createSlice({
                 state.isPending = false;
                 state.isAuthenticated = true;
                 state.isAdmin = admin;
-                state.jwt = jwt;
+                state.jwt = jwt.token;
                 state.error = null;
             })
             // Login failure
@@ -70,7 +70,7 @@ const authSlice = createSlice({
                     const { jwt, admin } = action.payload;
                     state.isAuthenticated = true;
                     state.isAdmin = admin;
-                    state.jwt = jwt;
+                    state.jwt = jwt.token;
                     state.error = null;
                 }
             )

@@ -38,6 +38,11 @@ const userSlice = createSlice({
                 state.userid = null;
             })
 
+            // Clear user error
+            .addCase(userActions.clearUserError, (state) => {
+                state.error = null;
+            })
+
             // Get user pending
             .addCase(userActions.getUser.pending, (state, action) => {
                 state.isFetching = true;

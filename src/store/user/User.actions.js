@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import * as userAPI from "../../api/user";
 
 export const getUser = createAsyncThunk(
@@ -6,7 +6,7 @@ export const getUser = createAsyncThunk(
     async (data, thunkAPI) => {
         const res = await userAPI.getOne(data.userid, data.token);
         return {
-            user: res
+            user: res,
         };
     }
 );
@@ -16,7 +16,7 @@ export const updateUser = createAsyncThunk(
     async (data, thunkAPI) => {
         const res = await userAPI.updateOne(data.userid, data.token, data.data);
         return {
-            user: res
+            user: res,
         };
     }
 );
@@ -27,3 +27,5 @@ export const deleteUser = createAsyncThunk(
         await userAPI.deleteOne(data.userid, data.token);
     }
 );
+
+export const clearUserError = createAction("api/clearUserError");
