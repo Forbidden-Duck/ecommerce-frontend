@@ -94,7 +94,7 @@ function Login() {
                             label="Password"
                             name="password"
                             id="password-input"
-                            type={showPassword ? "password" : "text"}
+                            type={showPassword ? "text" : "password"}
                             autoComplete="on"
                             InputProps={{
                                 endAdornment: (
@@ -117,7 +117,7 @@ function Login() {
                             label="Confirm Password"
                             name="confirmPassword"
                             id="confirmpassword-input"
-                            type={showPassword ? "password" : "text"}
+                            type={showPassword ? "text" : "password"}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
