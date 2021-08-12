@@ -180,6 +180,7 @@ function Navbar() {
                                         badgeContent={
                                             0 /* TODO No cart items store */
                                         }
+                                        max={99}
                                         color="secondary"
                                     >
                                         <ShoppingCartIcon />
