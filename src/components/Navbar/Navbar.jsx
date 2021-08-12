@@ -21,10 +21,8 @@ import { logoutUser } from "../../store/auth/Auth.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 function Navbar() {
     const dispatch = useDispatch();
+    const { darkMode } = useSelector((state) => state.site);
     const useStyles = makeStyles((theme) => ({
-        root: {
-            flexGrow: 1,
-        },
         menuButton: {
             marginRight: theme.spacing(2),
             display: "flex",
@@ -38,7 +36,8 @@ function Navbar() {
         header: {
             justifyContent: "space-between",
             minHeight: 68,
-            background: "#228B22",
+            background: darkMode ? "#222" : "#fff",
+            color: darkMode ? "#ccd2d4" : "#2f2f2f",
         },
     }));
     const classes = useStyles();
@@ -56,7 +55,6 @@ function Navbar() {
         checked: {},
         track: { backgroundColor: "#b0b0b0" },
     })(Switch);
-    const { darkMode } = useSelector((state) => state.site);
     const [themeSwitch, setThemeSwitch] = useState(darkMode);
     const handleThemeSwitch = () => {
         dispatch(setDarkMode(!darkMode));
@@ -125,7 +123,11 @@ function Navbar() {
                                     onClick={handleSiteClick}
                                 >
                                     <KeyboardArrowDownIcon
-                                        style={{ color: "white" }}
+                                        style={{
+                                            color: darkMode
+                                                ? "#ccd2d4"
+                                                : "#2f2f2f",
+                                        }}
                                     />
                                 </IconButton>
                                 <Menu
@@ -191,7 +193,11 @@ function Navbar() {
                                     onClick={handleProfileClick}
                                 >
                                     <AccountCircleIcon
-                                        style={{ color: "white" }}
+                                        style={{
+                                            color: darkMode
+                                                ? "#ccd2d4"
+                                                : "#2f2f2f",
+                                        }}
                                     />
                                 </IconButton>
                                 <Menu
