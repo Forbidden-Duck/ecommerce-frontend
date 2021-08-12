@@ -26,7 +26,6 @@ function Home() {
             left: "-0.05%",
             width: "100%",
             height: "50%",
-            border: `1px solid rgb(${glowColour})`,
             boxShadow: `0px 1px 3px rgba(0, 0, 0, 0.05) inset, 0px 0px 20px rgba(${glowColour}, 1)`,
         },
         text: {
