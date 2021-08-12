@@ -43,7 +43,7 @@ function App() {
 
     const { darkMode } = useSelector((state) => state.site);
     return (
-        <div style={{ flex: 1, background: darkMode ? "#222" : "#fff" }}>
+        <div style={{ flex: 1, background: darkMode ? "#292929" : "#f2f2f2" }}>
             <Router>
                 <Navbar />
                 <Switch>
