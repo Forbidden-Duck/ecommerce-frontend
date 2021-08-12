@@ -8,11 +8,17 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { makeStyles } from "@material-ui/core/styles";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import PersonIcon from "@material-ui/icons/Person";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Brightness3Icon from "@material-ui/icons/Brightness3"; // Dark/Moon
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
-
+import { setDarkMode } from "../../store/site/Site.actions";
 function Navbar() {
     const dispatch = useDispatch();
     const useStyles = makeStyles((theme) => ({
@@ -22,6 +28,7 @@ function Navbar() {
         menuButton: {
             marginRight: theme.spacing(2),
             display: "flex",
+            alignItems: "center",
         },
         title: {
             flexGrow: 1,
@@ -36,16 +43,45 @@ function Navbar() {
     }));
     const classes = useStyles();
 
-    const [profileMenu, setProfileMenu] = useState(null);
-    const handleProfileClick = (evt) => {
-        setProfileMenu(evt.currentTarget);
+    const BlueSwitch = withStyles({
+        switchBase: {
+            color: "#2791e8",
+            "&$checked": {
+                color: "#1e7cc9",
+            },
+            "&$checked + $track": {
+                backgroundColor: "#1e7cc9",
+            },
+        },
+        checked: {},
+        track: { backgroundColor: "#b0b0b0" },
+    })(Switch);
+    const { darkMode } = useSelector((state) => state.site);
+    const [themeSwitch, setThemeSwitch] = useState(darkMode);
+    const handleThemeSwitch = () => {
+        dispatch(setDarkMode(!darkMode));
+        setThemeSwitch(!darkMode);
     };
+
+    // Logged in/Profile Menu
+    const [profileMenu, setProfileMenu] = useState(null);
     const handleProfileClose = () => {
         setProfileMenu(null);
+    };
+    const handleProfileClick = (evt) => {
+        setProfileMenu(evt.currentTarget);
     };
     const handleLogout = async () => {
         handleProfileClose();
         await dispatch(logoutUser());
+    };
+    // Logged out/Site menu
+    const [siteMenu, setSiteMenu] = useState(null);
+    const handleSiteClose = () => {
+        setSiteMenu(null);
+    };
+    const handleSiteClick = (evt) => {
+        setSiteMenu(evt.currentTarget);
     };
 
     const { isAuthenticated } = useSelector((state) => state.auth);
@@ -63,42 +99,91 @@ function Navbar() {
                     Ecommerce Store
                 </Typography>
                 <div>
-                    {!isAuthenticated && (
+                    {!isAuthenticated ? (
                         <div className={classes.menuButton}>
-                            <Typography
-                                style={{ paddingRight: 20 }}
-                                className={classes.title}
-                                component={Link}
-                                to="/login"
-                            >
-                                Login
-                            </Typography>
-                            <Typography
-                                className={classes.title}
-                                component={Link}
-                                to="/register"
-                            >
-                                Register
-                            </Typography>
-                        </div>
-                    )}
-                    {isAuthenticated && (
-                        <div className={classes.menuButton}>
-                            <IconButton
-                                aria-label="Shopping Cart"
-                                color="inherit"
-                                component={Link}
-                                to={"/cart"}
-                            >
-                                <Badge
-                                    badgeContent={
-                                        0 /* TODO No cart items store */
-                                    }
-                                    color="secondary"
+                            <div>
+                                <Typography
+                                    style={{ paddingRight: 20 }}
+                                    className={classes.title}
+                                    component={Link}
+                                    to="/login"
                                 >
-                                    <ShoppingCartIcon />
-                                </Badge>
-                            </IconButton>
+                                    Login
+                                </Typography>
+                                <Typography
+                                    className={classes.title}
+                                    component={Link}
+                                    to="/register"
+                                >
+                                    Register
+                                </Typography>
+                            </div>
+                            <div>
+                                <IconButton
+                                    aria-controls="site-select"
+                                    aria-haspopup="true"
+                                    onClick={handleSiteClick}
+                                >
+                                    <KeyboardArrowDownIcon
+                                        style={{ color: "white" }}
+                                    />
+                                </IconButton>
+                                <Menu
+                                    id="site-select"
+                                    anchorEl={siteMenu}
+                                    /* Popup appears below the site text*/
+                                    getContentAnchorEl={null}
+                                    anchorOrigin={{
+                                        vertical: "bottom",
+                                        horizontal: "center",
+                                    }}
+                                    transformOrigin={{
+                                        vertical: "top",
+                                        horizontal: "center",
+                                    }}
+                                    keepMounted
+                                    open={Boolean(siteMenu)}
+                                    onClose={handleSiteClose}
+                                >
+                                    <MenuItem>
+                                        <Brightness3Icon
+                                            style={{ color: "#4d4d4d" }}
+                                            onClick={handleThemeSwitch}
+                                        />
+                                        <FormControlLabel
+                                            value="title"
+                                            control={
+                                                <BlueSwitch
+                                                    checked={themeSwitch}
+                                                    onChange={handleThemeSwitch}
+                                                />
+                                            }
+                                            label="Dark Mode"
+                                            labelPlacement="start"
+                                        />
+                                    </MenuItem>
+                                </Menu>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={classes.menuButton}>
+                            <div>
+                                <IconButton
+                                    aria-label="Shopping Cart"
+                                    color="inherit"
+                                    component={Link}
+                                    to={"/cart"}
+                                >
+                                    <Badge
+                                        badgeContent={
+                                            0 /* TODO No cart items store */
+                                        }
+                                        color="secondary"
+                                    >
+                                        <ShoppingCartIcon />
+                                    </Badge>
+                                </IconButton>
+                            </div>
                             <div>
                                 <IconButton
                                     aria-controls="profile-select"
@@ -128,13 +213,32 @@ function Navbar() {
                                 >
                                     <MenuItem
                                         onClick={handleProfileClose}
-                                        componenet={Link}
+                                        component={Link}
                                         to={"/profile"}
                                     >
-                                        Profile
+                                        <PersonIcon
+                                            style={{ color: "#4d4d4d" }}
+                                        />
+                                        <Typography style={{ paddingLeft: 10 }}>
+                                            Profile
+                                        </Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={handleThemeSwitch}>
+                                        <Brightness3Icon
+                                            style={{ color: "#4d4d4d" }}
+                                        />
+                                        <Typography style={{ paddingLeft: 10 }}>
+                                            Dark Mode
+                                        </Typography>
+                                        <BlueSwitch checked={themeSwitch} />
                                     </MenuItem>
                                     <MenuItem onClick={handleLogout}>
-                                        Logout
+                                        <ExitToAppIcon
+                                            style={{ color: "#4d4d4d" }}
+                                        />
+                                        <Typography style={{ paddingLeft: 10 }}>
+                                            Logout
+                                        </Typography>
                                     </MenuItem>
                                 </Menu>
                             </div>

@@ -41,8 +41,9 @@ function App() {
         setTimer(null);
     }
 
+    const { darkMode } = useSelector((state) => state.site);
     return (
-        <div style={{ flex: 1, background: "#222" }}>
+        <div style={{ flex: 1, background: darkMode ? "#222" : "#fff" }}>
             <Router>
                 <Navbar />
                 <Switch>
