@@ -23,7 +23,7 @@ function Home() {
             backgroundSize: "cover",
             position: "absolute",
             top: "20%",
-            left: "0%",
+            left: "-0.05%",
             width: "100%",
             height: "50%",
             border: `1px solid rgb(${glowColour})`,
