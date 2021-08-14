@@ -1,5 +1,4 @@
-.app {
-    width: 95vw;
+.appRegister {
     min-height: 92vh;
     display: flex;
     margin: auto;
@@ -7,8 +6,7 @@
     justify-content: center;
 }
 
-.formWrapper {
-    min-width: 30vw;
+.formWrapperRegister {
     padding: 30px 20px;
     background-color: #fff;
     box-shadow: 0 0 1.5rem rgba(105, 105, 105, 0.5);
@@ -16,13 +14,31 @@
     margin-bottom: 30px;
 }
 
-.baseFormHeading {
+.baseFormHeadingRegister {
     text-transform: capitalize;
     font-size: 2em;
     font-weight: normal;
 }
 
-.baseForm {
+.baseFormRegister {
     display: grid;
     row-gap: 30px;
+}
+
+@media only screen and (max-width: 1400px) {
+    .formWrapperRegister {
+        min-width: 50vw;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .formWrapperRegister {
+        min-width: 70vw;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .formWrapperRegister {
+        min-width: 90vw;
+    }
 }

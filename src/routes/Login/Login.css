@@ -1,5 +1,5 @@
-.app {
-    width: 95vw;
+.appLogin {
+    width: 100vw;
     min-height: 92vh;
     display: flex;
     margin: auto;
@@ -7,7 +7,7 @@
     justify-content: center;
 }
 
-.formWrapper {
+.formWrapperLogin {
     padding: 30px 20px;
     background-color: #fff;
     box-shadow: 0 0 1.5rem rgba(105, 105, 105, 0.5);
@@ -15,24 +15,24 @@
     margin-bottom: 30px;
 }
 
-.baseFormHeading {
+.baseFormHeadingLogin {
     text-transform: capitalize;
     font-size: 2em;
     font-weight: normal;
 }
 
-.baseForm {
+.baseFormLogin {
     display: grid;
     row-gap: 30px;
 }
 
-.social-btn-container {
+.social-btn-containerLogin {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 5%;
 }
 
-.google-btn {
+.google-btnLogin {
     background-color: #db4437;
     color: #ffffff;
 }

@@ -74,8 +74,8 @@ function Login() {
     });
 
     return (
-        <div className="app">
-            <div className="formWrapper">
+        <div className="appRegister">
+            <div className="formWrapperRegister">
                 <Formik
                     initialValues={{ email: "", password: "" }}
                     validationSchema={credentialsSchema}
@@ -94,8 +94,8 @@ function Login() {
                         });
                     }}
                 >
-                    <Form className="baseForm">
-                        <h1 className="baseFormHeading">Register</h1>
+                    <Form className="baseFormRegister">
+                        <h1 className="baseFormHeadingRegister">Register</h1>
                         <TextField
                             label="First name"
                             name="firstname"
@@ -176,6 +176,7 @@ function Login() {
                         >
                             Login instead?
                         </Typography>
+                        <div style={{ width: "30vw", display: "flex" }}></div>
                     </Form>
                 </Formik>
             </div>

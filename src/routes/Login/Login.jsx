@@ -65,8 +65,8 @@ function Login() {
     });
 
     return (
-        <div className="app">
-            <div className="formWrapper">
+        <div className="appLogin">
+            <div className="formWrapperLogin">
                 <Formik
                     initialValues={{ email: "", password: "" }}
                     validationSchema={credentialsSchema}
@@ -76,8 +76,8 @@ function Login() {
                         await handleLogin({ email, password });
                     }}
                 >
-                    <Form className="baseForm">
-                        <h1 className="baseFormHeading">Login</h1>
+                    <Form className="baseFormLogin">
+                        <h1 className="baseFormHeadingLogin">Login</h1>
                         <TextField
                             label="Email"
                             name="email"
@@ -134,7 +134,7 @@ function Login() {
                             >
                                 <p>Sign in with</p>
                             </div>
-                            <div className="social-btn-container">
+                            <div className="social-btn-containerLogin">
                                 <p>Google to be implemented</p>
                             </div>
                         </div>
