@@ -29,7 +29,6 @@ function Navbar() {
             alignItems: "center",
         },
         title: {
-            flexGrow: 1,
             color: "inherit",
             textDecoration: "none",
         },
@@ -38,6 +37,11 @@ function Navbar() {
             minHeight: 68,
             background: darkMode ? "#222" : "#fff",
             color: darkMode ? "#ccd2d4" : "#2f2f2f",
+        },
+        buttonHover: {
+            "&:hover": {
+                color: "#8f8f8f !important",
+            },
         },
     }));
     const classes = useStyles();
@@ -90,7 +94,7 @@ function Navbar() {
             <Toolbar className={classes.header}>
                 <Typography
                     variant="h6"
-                    className={classes.title}
+                    className={`${classes.title} ${classes.buttonHover}`}
                     component={Link}
                     to="/"
                 >
@@ -102,14 +106,14 @@ function Navbar() {
                             <div>
                                 <Typography
                                     style={{ paddingRight: 20 }}
-                                    className={classes.title}
+                                    className={`${classes.title} ${classes.buttonHover}`}
                                     component={Link}
                                     to="/login"
                                 >
                                     Login
                                 </Typography>
                                 <Typography
-                                    className={classes.title}
+                                    className={`${classes.title} ${classes.buttonHover}`}
                                     component={Link}
                                     to="/register"
                                 >
@@ -123,6 +127,7 @@ function Navbar() {
                                     onClick={handleSiteClick}
                                 >
                                     <KeyboardArrowDownIcon
+                                        className={classes.buttonHover}
                                         style={{
                                             color: darkMode
                                                 ? "#ccd2d4"
@@ -171,6 +176,7 @@ function Navbar() {
                         <div className={classes.menuButton}>
                             <div>
                                 <IconButton
+                                    className={classes.buttonHover}
                                     aria-label="Shopping Cart"
                                     color="inherit"
                                     component={Link}
@@ -194,6 +200,7 @@ function Navbar() {
                                     onClick={handleProfileClick}
                                 >
                                     <AccountCircleIcon
+                                        className={classes.buttonHover}
                                         style={{
                                             color: darkMode
                                                 ? "#ccd2d4"
