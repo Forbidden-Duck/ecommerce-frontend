@@ -1,28 +1,37 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Badge from "@material-ui/core/Badge";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import PersonIcon from "@material-ui/icons/Person";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Brightness3Icon from "@material-ui/icons/Brightness3"; // Dark/Moon
+import {
+    Badge,
+    AppBar,
+    Toolbar,
+    Typography,
+    IconButton,
+    Menu,
+    MenuItem,
+    Switch,
+    FormControlLabel,
+    Drawer,
+} from "@material-ui/core";
+import {
+    Menu as MenuIcon,
+    ShoppingCart as ShoppingCartIcon,
+    AccountCircle as AccountCircleIcon,
+    KeyboardArrowDown as KeyboardArrowDownIcon,
+    Person as PersonIcon,
+    PersonAdd as PersonAddIcon,
+    ExitToApp as ExitToAppIcon,
+    Brightness3 as Brightness3Icon, // Dark moon
+} from "@material-ui/icons";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
-function Navbar() {
+
+function Navbar({ winDim }) {
+    const isMobile = winDim <= 640;
     const dispatch = useDispatch();
     const { darkMode } = useSelector((state) => state.site);
-    const useStyles = makeStyles((theme) => ({
+    const useStylesDesktop = makeStyles((theme) => ({
         menuButton: {
             marginRight: theme.spacing(2),
             display: "flex",
@@ -44,7 +53,13 @@ function Navbar() {
             },
         },
     }));
-    const classes = useStyles();
+    const classesDesktop = useStylesDesktop();
+    const useStylesMobile = makeStyles((theme) => ({
+        menuButton: {
+            margin: theme.spacing(0.7),
+        },
+    }));
+    const classesMobile = useStylesMobile();
 
     const BlueSwitch = withStyles({
         switchBase: {
@@ -86,176 +101,309 @@ function Navbar() {
         setSiteMenu(evt.currentTarget);
     };
 
+    // Mobile drawer state
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const handleDrawer = () => setDrawerOpen(!drawerOpen);
+
     const { isAuthenticated } = useSelector((state) => state.auth);
     // TODO Cart items
 
     return (
         <AppBar position="static">
-            <Toolbar className={classes.header}>
+            <Toolbar className={classesDesktop.header}>
                 <Typography
                     variant="h6"
-                    className={`${classes.title} ${classes.buttonHover}`}
+                    className={`${classesDesktop.title} ${classesDesktop.buttonHover}`}
                     component={Link}
                     to="/"
                 >
                     Ecommerce Store
                 </Typography>
                 <div>
-                    {!isAuthenticated ? (
-                        <div className={classes.menuButton}>
-                            <div>
-                                <Typography
-                                    style={{ paddingRight: 20 }}
-                                    className={`${classes.title} ${classes.buttonHover}`}
-                                    component={Link}
-                                    to="/login"
-                                >
-                                    Login
-                                </Typography>
-                                <Typography
-                                    className={`${classes.title} ${classes.buttonHover}`}
-                                    component={Link}
-                                    to="/register"
-                                >
-                                    Register
-                                </Typography>
-                            </div>
-                            <div>
-                                <IconButton
-                                    aria-controls="site-select"
-                                    aria-haspopup="true"
-                                    onClick={handleSiteClick}
-                                >
-                                    <KeyboardArrowDownIcon
-                                        className={classes.buttonHover}
-                                        style={{
-                                            color: darkMode
-                                                ? "#ccd2d4"
-                                                : "#2f2f2f",
-                                        }}
-                                    />
-                                </IconButton>
-                                <Menu
-                                    id="site-select"
-                                    anchorEl={siteMenu}
-                                    /* Popup appears below the site text*/
-                                    getContentAnchorEl={null}
-                                    anchorOrigin={{
-                                        vertical: "bottom",
-                                        horizontal: "center",
+                    {isMobile ? (
+                        <div>
+                            <IconButton
+                                aria-controls="site-select"
+                                aria-haspopup="true"
+                                onClick={handleDrawer}
+                            >
+                                <MenuIcon
+                                    className={classesDesktop.buttonHover}
+                                    style={{
+                                        color: darkMode ? "#ccd2d4" : "#2f2f2f",
                                     }}
-                                    transformOrigin={{
-                                        vertical: "top",
-                                        horizontal: "center",
-                                    }}
-                                    keepMounted
-                                    open={Boolean(siteMenu)}
-                                    onClose={handleSiteClose}
-                                >
-                                    <MenuItem>
-                                        <Brightness3Icon
-                                            style={{ color: "#4d4d4d" }}
-                                            onClick={handleThemeSwitch}
-                                        />
-                                        <FormControlLabel
-                                            value="title"
-                                            control={
+                                />
+                            </IconButton>
+                            <Drawer
+                                anchor="right"
+                                open={drawerOpen}
+                                onClose={handleDrawer}
+                            >
+                                {!isAuthenticated ? (
+                                    <div className={classesMobile.menuButton}>
+                                        <div>
+                                            <MenuItem
+                                                component={Link}
+                                                to={"/login"}
+                                            >
+                                                <PersonIcon
+                                                    style={{ color: "#4d4d4d" }}
+                                                />
+                                                <Typography
+                                                    style={{ paddingLeft: 10 }}
+                                                >
+                                                    Login
+                                                </Typography>
+                                            </MenuItem>
+                                            <MenuItem
+                                                component={Link}
+                                                to={"/register"}
+                                            >
+                                                <PersonAddIcon
+                                                    style={{ color: "#4d4d4d" }}
+                                                />
+                                                <Typography
+                                                    style={{ paddingLeft: 10 }}
+                                                >
+                                                    Logout
+                                                </Typography>
+                                            </MenuItem>
+                                            <MenuItem
+                                                onClick={handleThemeSwitch}
+                                            >
+                                                <Brightness3Icon
+                                                    style={{ color: "#4d4d4d" }}
+                                                />
+                                                <Typography
+                                                    style={{ paddingLeft: 10 }}
+                                                >
+                                                    Dark Mode
+                                                </Typography>
                                                 <BlueSwitch
                                                     checked={themeSwitch}
-                                                    onChange={handleThemeSwitch}
                                                 />
-                                            }
-                                            label="Dark Mode"
-                                            labelPlacement="start"
-                                        />
-                                    </MenuItem>
-                                </Menu>
-                            </div>
+                                            </MenuItem>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <MenuItem
+                                            component={Link}
+                                            to={"/profile"}
+                                        >
+                                            <PersonIcon
+                                                style={{ color: "#4d4d4d" }}
+                                            />
+                                            <Typography
+                                                style={{ paddingLeft: 10 }}
+                                            >
+                                                Profile
+                                            </Typography>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleThemeSwitch}>
+                                            <Brightness3Icon
+                                                style={{ color: "#4d4d4d" }}
+                                            />
+                                            <Typography
+                                                style={{ paddingLeft: 10 }}
+                                            >
+                                                Dark Mode
+                                            </Typography>
+                                            <BlueSwitch checked={themeSwitch} />
+                                        </MenuItem>
+                                        <MenuItem onClick={handleLogout}>
+                                            <ExitToAppIcon
+                                                style={{ color: "#4d4d4d" }}
+                                            />
+                                            <Typography
+                                                style={{ paddingLeft: 10 }}
+                                            >
+                                                Logout
+                                            </Typography>
+                                        </MenuItem>
+                                    </div>
+                                )}
+                            </Drawer>
                         </div>
                     ) : (
-                        <div className={classes.menuButton}>
-                            <div>
-                                <IconButton
-                                    className={classes.buttonHover}
-                                    aria-label="Shopping Cart"
-                                    color="inherit"
-                                    component={Link}
-                                    to={"/cart"}
-                                >
-                                    <Badge
-                                        badgeContent={
-                                            0 /* TODO No cart items store */
-                                        }
-                                        max={99}
-                                        color="secondary"
-                                    >
-                                        <ShoppingCartIcon />
-                                    </Badge>
-                                </IconButton>
-                            </div>
-                            <div>
-                                <IconButton
-                                    aria-controls="profile-select"
-                                    aria-haspopup="true"
-                                    onClick={handleProfileClick}
-                                >
-                                    <AccountCircleIcon
-                                        className={classes.buttonHover}
-                                        style={{
-                                            color: darkMode
-                                                ? "#ccd2d4"
-                                                : "#2f2f2f",
-                                        }}
-                                    />
-                                </IconButton>
-                                <Menu
-                                    id="profile-select"
-                                    anchorEl={profileMenu}
-                                    /* Popup appears below the profile text*/
-                                    getContentAnchorEl={null}
-                                    anchorOrigin={{
-                                        vertical: "bottom",
-                                        horizontal: "center",
-                                    }}
-                                    transformOrigin={{
-                                        vertical: "top",
-                                        horizontal: "center",
-                                    }}
-                                    keepMounted
-                                    open={Boolean(profileMenu)}
-                                    onClose={handleProfileClose}
-                                >
-                                    <MenuItem
-                                        onClick={handleProfileClose}
-                                        component={Link}
-                                        to={"/profile"}
-                                    >
-                                        <PersonIcon
-                                            style={{ color: "#4d4d4d" }}
-                                        />
-                                        <Typography style={{ paddingLeft: 10 }}>
-                                            Profile
+                        <div>
+                            {!isAuthenticated ? (
+                                <div className={classesDesktop.menuButton}>
+                                    <div>
+                                        <Typography
+                                            style={{ paddingRight: 20 }}
+                                            className={`${classesDesktop.title} ${classesDesktop.buttonHover}`}
+                                            component={Link}
+                                            to="/login"
+                                        >
+                                            Login
                                         </Typography>
-                                    </MenuItem>
-                                    <MenuItem onClick={handleThemeSwitch}>
-                                        <Brightness3Icon
-                                            style={{ color: "#4d4d4d" }}
-                                        />
-                                        <Typography style={{ paddingLeft: 10 }}>
-                                            Dark Mode
+                                        <Typography
+                                            className={`${classesDesktop.title} ${classesDesktop.buttonHover}`}
+                                            component={Link}
+                                            to="/register"
+                                        >
+                                            Register
                                         </Typography>
-                                        <BlueSwitch checked={themeSwitch} />
-                                    </MenuItem>
-                                    <MenuItem onClick={handleLogout}>
-                                        <ExitToAppIcon
-                                            style={{ color: "#4d4d4d" }}
-                                        />
-                                        <Typography style={{ paddingLeft: 10 }}>
-                                            Logout
-                                        </Typography>
-                                    </MenuItem>
-                                </Menu>
-                            </div>
+                                    </div>
+                                    <div>
+                                        <IconButton
+                                            aria-controls="site-select"
+                                            aria-haspopup="true"
+                                            onClick={handleSiteClick}
+                                        >
+                                            <KeyboardArrowDownIcon
+                                                className={
+                                                    classesDesktop.buttonHover
+                                                }
+                                                style={{
+                                                    color: darkMode
+                                                        ? "#ccd2d4"
+                                                        : "#2f2f2f",
+                                                }}
+                                            />
+                                        </IconButton>
+                                        <Menu
+                                            id="site-select"
+                                            anchorEl={siteMenu}
+                                            /* Popup appears below the site text*/
+                                            getContentAnchorEl={null}
+                                            anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "center",
+                                            }}
+                                            transformOrigin={{
+                                                vertical: "top",
+                                                horizontal: "center",
+                                            }}
+                                            keepMounted
+                                            open={Boolean(siteMenu)}
+                                            onClose={handleSiteClose}
+                                        >
+                                            <MenuItem>
+                                                <Brightness3Icon
+                                                    style={{ color: "#4d4d4d" }}
+                                                    onClick={handleThemeSwitch}
+                                                />
+                                                <FormControlLabel
+                                                    value="title"
+                                                    control={
+                                                        <BlueSwitch
+                                                            checked={
+                                                                themeSwitch
+                                                            }
+                                                            onChange={
+                                                                handleThemeSwitch
+                                                            }
+                                                        />
+                                                    }
+                                                    label="Dark Mode"
+                                                    labelPlacement="start"
+                                                />
+                                            </MenuItem>
+                                        </Menu>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className={classesDesktop.menuButton}>
+                                    <div>
+                                        <IconButton
+                                            className={
+                                                classesDesktop.buttonHover
+                                            }
+                                            aria-label="Shopping Cart"
+                                            color="inherit"
+                                            component={Link}
+                                            to={"/cart"}
+                                        >
+                                            <Badge
+                                                badgeContent={
+                                                    0 /* TODO No cart items store */
+                                                }
+                                                max={99}
+                                                color="secondary"
+                                            >
+                                                <ShoppingCartIcon />
+                                            </Badge>
+                                        </IconButton>
+                                    </div>
+                                    <div>
+                                        <IconButton
+                                            aria-controls="profile-select"
+                                            aria-haspopup="true"
+                                            onClick={handleProfileClick}
+                                        >
+                                            <AccountCircleIcon
+                                                className={
+                                                    classesDesktop.buttonHover
+                                                }
+                                                style={{
+                                                    color: darkMode
+                                                        ? "#ccd2d4"
+                                                        : "#2f2f2f",
+                                                }}
+                                            />
+                                        </IconButton>
+                                        <Menu
+                                            id="profile-select"
+                                            anchorEl={profileMenu}
+                                            /* Popup appears below the profile text*/
+                                            getContentAnchorEl={null}
+                                            anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "center",
+                                            }}
+                                            transformOrigin={{
+                                                vertical: "top",
+                                                horizontal: "center",
+                                            }}
+                                            keepMounted
+                                            open={Boolean(profileMenu)}
+                                            onClose={handleProfileClose}
+                                        >
+                                            <MenuItem
+                                                onClick={handleProfileClose}
+                                                component={Link}
+                                                to={"/profile"}
+                                            >
+                                                <PersonIcon
+                                                    style={{ color: "#4d4d4d" }}
+                                                />
+                                                <Typography
+                                                    style={{ paddingLeft: 10 }}
+                                                >
+                                                    Profile
+                                                </Typography>
+                                            </MenuItem>
+                                            <MenuItem
+                                                onClick={handleThemeSwitch}
+                                            >
+                                                <Brightness3Icon
+                                                    style={{ color: "#4d4d4d" }}
+                                                />
+                                                <Typography
+                                                    style={{ paddingLeft: 10 }}
+                                                >
+                                                    Dark Mode
+                                                </Typography>
+                                                <BlueSwitch
+                                                    checked={themeSwitch}
+                                                />
+                                            </MenuItem>
+                                            <MenuItem onClick={handleLogout}>
+                                                <ExitToAppIcon
+                                                    style={{ color: "#4d4d4d" }}
+                                                />
+                                                <Typography
+                                                    style={{ paddingLeft: 10 }}
+                                                >
+                                                    Logout
+                                                </Typography>
+                                            </MenuItem>
+                                        </Menu>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
