@@ -92,6 +92,10 @@ function Navbar({ winDim }) {
         handleProfileClose();
         await dispatch(logoutUser());
     };
+    const handleLogoutMobile = async () => {
+        handleDrawer();
+        await handleLogout();
+    };
     // Logged out/Site menu
     const [siteMenu, setSiteMenu] = useState(null);
     const handleSiteClose = () => {
@@ -143,6 +147,7 @@ function Navbar({ winDim }) {
                                     <div className={classesMobile.menuButton}>
                                         <div>
                                             <MenuItem
+                                                onClick={handleDrawer}
                                                 component={Link}
                                                 to={"/login"}
                                             >
@@ -156,6 +161,7 @@ function Navbar({ winDim }) {
                                                 </Typography>
                                             </MenuItem>
                                             <MenuItem
+                                                onClick={handleDrawer}
                                                 component={Link}
                                                 to={"/register"}
                                             >
@@ -188,6 +194,7 @@ function Navbar({ winDim }) {
                                 ) : (
                                     <div>
                                         <MenuItem
+                                            onClick={handleDrawer}
                                             component={Link}
                                             to={"/profile"}
                                         >
@@ -211,7 +218,7 @@ function Navbar({ winDim }) {
                                             </Typography>
                                             <BlueSwitch checked={themeSwitch} />
                                         </MenuItem>
-                                        <MenuItem onClick={handleLogout}>
+                                        <MenuItem onClick={handleLogoutMobile}>
                                             <ExitToAppIcon
                                                 style={{ color: "#4d4d4d" }}
                                             />
