@@ -14,9 +14,10 @@ import { refreshUserToken } from "./store/auth/Auth.actions";
 import Home from "./routes/Home/Home";
 import Login from "./routes/Login/Login";
 import Register from "./routes/Register/Register";
+import Profile from "./routes/Profile/Profile";
 
 import Navbar from "./components/Navbar/Navbar";
-// TODO LoggedInRoute (For logged in only routes)
+import LoggedInRoute from "./components/LoggedInRoute/LoggedInRoute";
 // TODO AdminRoute (For admin specific routes)
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
                     <Route path="/register" component={Register} />
 
                     {/* Logged-in Only Routes */}
+                    <LoggedInRoute exact path="/profile" component={Profile} />
 
                     <Redirect from="*" to="/" />
                 </Switch>
