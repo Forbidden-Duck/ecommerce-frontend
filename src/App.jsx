@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     BrowserRouter as Router,
     Redirect,
@@ -20,6 +20,17 @@ import Navbar from "./components/Navbar/Navbar";
 // TODO AdminRoute (For admin specific routes)
 
 function App() {
+    // Handle window resize
+    const [winDim, setWinDim] = useState(null);
+    useEffect(() => {
+        setWinDim(window.innerWidth);
+    }, []);
+    useEffect(() => {
+        const handleResize = () => setWinDim(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const dispatch = useDispatch();
     const { isAuthenticated, jwt, refreshError, isPending } = useSelector(
         (state) => state.auth
