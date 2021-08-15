@@ -25,7 +25,10 @@ function Home() {
     const classes = useStyles();
 
     return (
-        <section className="home-section">
+        <section
+            className="home-section"
+            style={{ background: darkMode ? "#292929" : "#f2f2f2" }}
+        >
             <div className={classes.background} />
             <Typography className="home-text" variant="h1">
                 Welcome
