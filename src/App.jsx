@@ -56,7 +56,7 @@ function App() {
     return (
         <div style={{ flex: 1, background: darkMode ? "#292929" : "#f2f2f2" }}>
             <Router>
-                <Navbar />
+                <Navbar winDim={winDim} />
                 <Switch>
                     {/* Public Routes */}
                     <Route exact path="/" component={Home} />
