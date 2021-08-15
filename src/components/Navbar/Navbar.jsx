@@ -165,7 +165,7 @@ function Navbar({ winDim }) {
                                                 <Typography
                                                     style={{ paddingLeft: 10 }}
                                                 >
-                                                    Logout
+                                                    Register
                                                 </Typography>
                                             </MenuItem>
                                             <MenuItem
