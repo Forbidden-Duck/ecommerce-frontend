@@ -114,7 +114,7 @@ function Login() {
                             type="submit"
                             isLoading={isPending}
                         >
-                            Submit
+                            Login
                         </Button>
                         <Typography
                             className={classes.title}
