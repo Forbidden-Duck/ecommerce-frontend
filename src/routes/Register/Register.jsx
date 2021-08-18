@@ -44,7 +44,10 @@ function Login() {
         if (credentials && credentials.email && credentials.password) {
             await dispatch(loginUser(credentials));
         }
-        history.push("/");
+        const redirect = new URLSearchParams(location.search).get("redirect");
+        redirect
+            ? history.push(decodeURIComponent(redirect))
+            : history.push("/");
     };
     const handleRegister = async (credentials) => {
         await dispatch(registerUser(credentials));
