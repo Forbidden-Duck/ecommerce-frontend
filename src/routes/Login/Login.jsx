@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useHistory } from "react-router-dom";
@@ -22,9 +22,11 @@ function Login() {
         (state) => state.auth
     );
 
-    if (isAuthenticated) {
-        history.push("/");
-    }
+    useEffect(() => {
+        if (isAuthenticated) {
+            history.push("/");
+        }
+    }, [isAuthenticated]);
 
     const [doClear, setDoClear] = useState(true);
     if (doClear) {
