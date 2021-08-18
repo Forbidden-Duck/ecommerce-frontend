@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
-import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment, IconButton } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -21,6 +20,7 @@ import "./Register.css";
 function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
     const { error, isPending } = useSelector((state) => state.auth);
 
     const [doClear, setDoClear] = useState(true);
@@ -172,7 +172,7 @@ function Login() {
                         <Typography
                             className={classes.title}
                             component={Link}
-                            to="/login"
+                            to={`/login${location.search}`}
                         >
                             Login instead?
                         </Typography>

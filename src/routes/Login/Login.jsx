@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
-import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment, IconButton } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -127,7 +126,7 @@ function Login() {
                         <Typography
                             className={classes.title}
                             component={Link}
-                            to="/register"
+                            to={`/register${location.search}`}
                         >
                             Sign up instead?
                         </Typography>

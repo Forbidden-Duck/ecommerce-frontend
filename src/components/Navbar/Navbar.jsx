@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     Badge,
@@ -30,6 +30,7 @@ import { setDarkMode } from "../../store/site/Site.actions";
 
 function Navbar({ isMobile }) {
     const dispatch = useDispatch();
+    const location = useLocation();
     const { isAuthenticated, userid } = useSelector((state) => state.auth);
     const { darkMode } = useSelector((state) => state.site);
     const useStylesDesktop = makeStyles((theme) => ({
@@ -113,6 +114,8 @@ function Navbar({ isMobile }) {
 
     // TODO Cart items
 
+    const loginPath = `/login${location.search}`;
+    const registerPath = `/register${location.search}`;
     return (
         <AppBar position="static">
             <Toolbar className={classesDesktop.header}>
@@ -150,7 +153,7 @@ function Navbar({ isMobile }) {
                                             <MenuItem
                                                 onClick={handleDrawer}
                                                 component={Link}
-                                                to={"/login"}
+                                                to={loginPath}
                                             >
                                                 <PersonIcon
                                                     style={{ color: "#4d4d4d" }}
@@ -164,7 +167,7 @@ function Navbar({ isMobile }) {
                                             <MenuItem
                                                 onClick={handleDrawer}
                                                 component={Link}
-                                                to={"/register"}
+                                                to={registerPath}
                                             >
                                                 <PersonAddIcon
                                                     style={{ color: "#4d4d4d" }}
@@ -242,14 +245,14 @@ function Navbar({ isMobile }) {
                                             style={{ paddingRight: 20 }}
                                             className={`${classesDesktop.title} ${classesDesktop.buttonHover}`}
                                             component={Link}
-                                            to="/login"
+                                            to={loginPath}
                                         >
                                             Login
                                         </Typography>
                                         <Typography
                                             className={`${classesDesktop.title} ${classesDesktop.buttonHover}`}
                                             component={Link}
-                                            to="/register"
+                                            to={registerPath}
                                         >
                                             Register
                                         </Typography>
