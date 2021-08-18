@@ -7,6 +7,7 @@ const userSlice = createSlice({
     initialState: {
         isFetching: false,
         error: null,
+        fetchedUser: null,
         userCache: {},
     },
     reducers: {},
@@ -28,8 +29,14 @@ const userSlice = createSlice({
                 state.error = null;
             })
 
+            /// Get user from cache
+            .addCase(userActions.getUserFromCache, (state, action) => {
+                if (typeof action.payload === "string") {
+                    state.fetchedUser = state.userCache[action.payload] || null;
+                }
+            })
             // Delete user from cache
-            .addCase(userActions.deleteFromCache, (state, action) => {
+            .addCase(userActions.deleteUserFromCache, (state, action) => {
                 if (typeof action.payload === "string") {
                     delete state.userCache[action.payload];
                 }

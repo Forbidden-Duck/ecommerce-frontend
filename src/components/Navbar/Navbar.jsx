@@ -25,7 +25,7 @@ import {
 } from "@material-ui/icons";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
-import { deleteFromCache } from "../../store/user/User.actions";
+import { deleteUserFromCache } from "../../store/user/User.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 
 function Navbar({ isMobile }) {
@@ -92,7 +92,7 @@ function Navbar({ isMobile }) {
     const handleLogout = async () => {
         handleProfileClose();
         await dispatch(logoutUser());
-        dispatch(deleteFromCache(userid));
+        dispatch(deleteUserFromCache(userid));
     };
     const handleLogoutMobile = async () => {
         handleDrawer();
