@@ -34,9 +34,7 @@ function Home() {
     const [name, setName] = useState("Loading...");
     useEffect(() => {
         setName(
-            fetchedUser?._id === userid
-                ? fetchedUser.firstname
-                : "Failed to load"
+            fetchedUser?._id === userid ? fetchedUser.firstname : "Loading..."
         );
     }, [userid, fetchedUser]);
 
