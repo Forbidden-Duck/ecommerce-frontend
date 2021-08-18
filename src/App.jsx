@@ -21,17 +21,6 @@ import LoggedInRoute from "./components/LoggedInRoute/LoggedInRoute";
 // TODO AdminRoute (For admin specific routes)
 
 function App() {
-    // Handle window resize
-    const [winDim, setWinDim] = useState(null);
-    useEffect(() => {
-        setWinDim(window.innerWidth);
-    }, []);
-    useEffect(() => {
-        const handleResize = () => setWinDim(window.innerWidth);
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
     const dispatch = useDispatch();
     const { isAuthenticated, jwt, refreshError, isPending } = useSelector(
         (state) => state.auth
@@ -57,7 +46,7 @@ function App() {
     return (
         <div style={{ flex: 1, background: darkMode ? "#292929" : "#f2f2f2" }}>
             <Router>
-                <Navbar winDim={winDim} />
+                <Navbar />
                 <Switch>
                     {/* Public Routes */}
                     <Route exact path="/" component={Home} />

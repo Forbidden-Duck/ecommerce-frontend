@@ -12,6 +12,7 @@ import {
     Switch,
     FormControlLabel,
     Drawer,
+    useMediaQuery,
 } from "@material-ui/core";
 import {
     Menu as MenuIcon,
@@ -27,8 +28,8 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 
-function Navbar({ winDim }) {
-    const isMobile = winDim <= 640;
+function Navbar() {
+    const isMobile = useMediaQuery("(max-width:640px)");
     const dispatch = useDispatch();
     const { darkMode } = useSelector((state) => state.site);
     const useStylesDesktop = makeStyles((theme) => ({
