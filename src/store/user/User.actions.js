@@ -42,3 +42,4 @@ export const deleteUser = createAsyncThunk(
 );
 
 export const clearUserError = createAction("api/clearUserError");
+export const deleteFromCache = createAction("api/deleteUserFromCache");

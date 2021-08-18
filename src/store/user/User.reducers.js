@@ -7,7 +7,6 @@ const userSlice = createSlice({
     initialState: {
         isFetching: false,
         error: null,
-        authenticatedUser: null,
         userCache: {},
     },
     reducers: {},
@@ -16,21 +15,24 @@ const userSlice = createSlice({
             // Login success
             .addCase(loginUser.fulfilled, (state, action) => {
                 const { user } = action.payload;
-                state.authenticatedUser = user;
+                state.userCache[user._id] = user;
             })
             // Refresh token success
             .addCase(refreshUserToken.fulfilled, (state, action) => {
                 const { user } = action.payload;
-                state.authenticatedUser = user;
-            })
-            // Logout success
-            .addCase(logoutUser.fulfilled, (state, action) => {
-                state.authenticatedUser = null;
+                state.userCache[user._id] = user;
             })
 
             // Clear user error
             .addCase(userActions.clearUserError, (state) => {
                 state.error = null;
+            })
+
+            // Delete user from cache
+            .addCase(userActions.deleteFromCache, (state, action) => {
+                if (typeof action.payload === "string") {
+                    delete state.userCache[action.payload];
+                }
             })
 
             // Get users pending

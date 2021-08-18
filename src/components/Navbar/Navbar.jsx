@@ -26,10 +26,12 @@ import {
 } from "@material-ui/icons";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
+import { deleteFromCache } from "../../store/user/User.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 
 function Navbar({ isMobile }) {
     const dispatch = useDispatch();
+    const { isAuthenticated, userid } = useSelector((state) => state.auth);
     const { darkMode } = useSelector((state) => state.site);
     const useStylesDesktop = makeStyles((theme) => ({
         menuButton: {
@@ -91,6 +93,7 @@ function Navbar({ isMobile }) {
     const handleLogout = async () => {
         handleProfileClose();
         await dispatch(logoutUser());
+        dispatch(deleteFromCache(userid));
     };
     const handleLogoutMobile = async () => {
         handleDrawer();
@@ -109,7 +112,6 @@ function Navbar({ isMobile }) {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const handleDrawer = () => setDrawerOpen(!drawerOpen);
 
-    const { isAuthenticated } = useSelector((state) => state.auth);
     // TODO Cart items
 
     return (

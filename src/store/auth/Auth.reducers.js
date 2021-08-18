@@ -7,7 +7,7 @@ const authSlice = createSlice({
     initialState: {
         isPending: false,
         isAuthenticated: false,
-        isAdmin: false,
+        userid: null,
         error: null,
         refreshError: null,
         jwt: null,
@@ -17,9 +17,13 @@ const authSlice = createSlice({
         builder
             // Delete user success
             .addCase(deleteUser.fulfilled, (state, action) => {
-                state.isAuthenticated = false;
-                state.error = null;
-                state.jwt = null;
+                const { userid } = action.payload;
+                if (state.userid === userid) {
+                    state.isAuthenticated = false;
+                    state.userid = null;
+                    state.error = null;
+                    state.jwt = null;
+                }
             })
 
             // Clear error state
@@ -52,7 +56,7 @@ const authSlice = createSlice({
                 const { jwt, user } = action.payload;
                 state.isPending = false;
                 state.isAuthenticated = true;
-                state.isAdmin = user.admin;
+                state.userid = user._id;
                 state.jwt = jwt;
                 state.error = null;
                 state.refreshError = null;
@@ -61,7 +65,6 @@ const authSlice = createSlice({
             .addCase(authActions.loginUser.rejected, (state, action) => {
                 const { message } = action.error;
                 state.isPending = false;
-                state.isAdmin = false;
                 state.error = message;
             })
 
@@ -75,7 +78,7 @@ const authSlice = createSlice({
                 (state, action) => {
                     const { jwt, user } = action.payload;
                     state.isAuthenticated = true;
-                    state.isAdmin = user.admin;
+                    state.userid = user._id;
                     state.jwt = jwt;
                     state.refreshError = null;
                     state.isPending = false;
@@ -85,8 +88,8 @@ const authSlice = createSlice({
             .addCase(authActions.refreshUserToken.rejected, (state, action) => {
                 const { message } = action.error;
                 state.isAuthenticated = false;
+                state.userid = null;
                 state.jwt = null;
-                state.isAdmin = false;
                 state.refreshError = message;
                 state.isPending = false;
             })
@@ -98,7 +101,7 @@ const authSlice = createSlice({
             // Logout success
             .addCase(authActions.logoutUser.fulfilled, (state, action) => {
                 state.isAuthenticated = false;
-                state.isAdmin = false;
+                state.userid = false;
                 state.jwt = null;
                 state.error = null;
                 state.isPending = false;
