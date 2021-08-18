@@ -28,8 +28,7 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 
-function Navbar() {
-    const isMobile = useMediaQuery("(max-width:640px)");
+function Navbar({ isMobile }) {
     const dispatch = useDispatch();
     const { darkMode } = useSelector((state) => state.site);
     const useStylesDesktop = makeStyles((theme) => ({

@@ -20,7 +20,12 @@ import Navbar from "./components/Navbar/Navbar";
 import LoggedInRoute from "./components/LoggedInRoute/LoggedInRoute";
 // TODO AdminRoute (For admin specific routes)
 
+import { useMediaQuery } from "@material-ui/core";
+
 function App() {
+    // is mobile check
+    const isMobile = useMediaQuery("(max-width:640px)");
+
     const dispatch = useDispatch();
     const { isAuthenticated, jwt, refreshError, isPending } = useSelector(
         (state) => state.auth
@@ -46,7 +51,7 @@ function App() {
     return (
         <div style={{ flex: 1, background: darkMode ? "#292929" : "#f2f2f2" }}>
             <Router>
-                <Navbar />
+                <Navbar isMobile={isMobile} />
                 <Switch>
                     {/* Public Routes */}
                     <Route exact path="/" component={Home} />
