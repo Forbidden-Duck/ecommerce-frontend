@@ -129,7 +129,28 @@ function Navbar({ isMobile }) {
                 </Typography>
                 <div>
                     {isMobile ? (
-                        <div>
+                        <div style={{ display: "flex" }}>
+                            {isAuthenticated && (
+                                <div>
+                                    <IconButton
+                                        className={classesDesktop.buttonHover}
+                                        aria-label="Shopping Cart"
+                                        color="inherit"
+                                        component={Link}
+                                        to={"/cart"}
+                                    >
+                                        <Badge
+                                            badgeContent={
+                                                0 /* TODO No cart items store */
+                                            }
+                                            max={99}
+                                            color="secondary"
+                                        >
+                                            <ShoppingCartIcon />
+                                        </Badge>
+                                    </IconButton>
+                                </div>
+                            )}
                             <IconButton
                                 aria-controls="site-select"
                                 aria-haspopup="true"
