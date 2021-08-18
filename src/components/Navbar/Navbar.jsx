@@ -12,7 +12,6 @@ import {
     Switch,
     FormControlLabel,
     Drawer,
-    useMediaQuery,
 } from "@material-ui/core";
 import {
     Menu as MenuIcon,

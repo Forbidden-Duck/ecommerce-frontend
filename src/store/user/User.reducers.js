@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as userActions from "./User.actions";
-import { loginUser, refreshUserToken, logoutUser } from "../auth/Auth.actions";
+import { loginUser, refreshUserToken } from "../auth/Auth.actions";
 
 const userSlice = createSlice({
     name: "user",
