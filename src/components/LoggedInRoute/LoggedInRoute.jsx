@@ -11,7 +11,11 @@ function LoggedInRoute({ Component, ...rest }) {
                 isAuthenticated || isPending ? (
                     <Component {...props} />
                 ) : (
-                    <Redirect to="/login" />
+                    <Redirect
+                        to={`/login?redirect=${encodeURIComponent(
+                            `${window.location.pathname}${window.location.search}`
+                        )}`}
+                    />
                 )
             }
         />

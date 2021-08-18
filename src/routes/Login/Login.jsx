@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment, IconButton } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -18,15 +18,21 @@ import "./Login.css";
 function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
     const { error, isPending, isAuthenticated } = useSelector(
         (state) => state.auth
     );
 
     useEffect(() => {
         if (isAuthenticated) {
-            history.push("/");
+            const redirect = new URLSearchParams(location.search).get(
+                "redirect"
+            );
+            redirect
+                ? history.push(decodeURIComponent(redirect))
+                : history.push("/");
         }
-    }, [isAuthenticated, history]);
+    }, [isAuthenticated, history, location]);
 
     const [doClear, setDoClear] = useState(true);
     if (doClear) {
