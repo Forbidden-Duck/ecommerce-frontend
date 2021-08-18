@@ -69,7 +69,7 @@ function Profile() {
 
     const { userid } = useSelector((state) => state.auth);
     const { fetchedUser } = useSelector((state) => state.user);
-    if (!fetchedUser || fetchedUser._id !== userid) {
+    if (userid && fetchedUser?._id !== userid) {
         dispatch(getUserFromCache(userid));
     }
 
