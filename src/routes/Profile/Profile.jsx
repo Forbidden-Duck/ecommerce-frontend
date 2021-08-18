@@ -81,7 +81,7 @@ function Profile() {
 
     useEffect(() => {
         setUser(
-            fetchedUser && fetchedUser._id === userid
+            fetchedUser?._id === userid
                 ? {
                       name: `${fetchedUser.firstname} ${fetchedUser.lastname}`,
                       email: fetchedUser.email,
