@@ -1,11 +1,11 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { getUserFromCache } from "../../store/user/User.actions";
+import { useDispatch, useSelector } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import "./Home.css";
 
 function Home() {
-    const { authenticatedUser } = useSelector((state) => state.user);
     const { darkMode } = useSelector((state) => state.site);
     const glowColour = darkMode ? Array(3).fill("255") : Array(3).fill("0");
 
@@ -24,6 +24,22 @@ function Home() {
     }));
     const classes = useStyles();
 
+    // Get user from cache
+    const dispatch = useDispatch();
+    const { userid } = useSelector((state) => state.auth);
+    const { fetchedUser } = useSelector((state) => state.user);
+    if (!fetchedUser || fetchedUser._id !== userid) {
+        dispatch(getUserFromCache(userid));
+    }
+    const [name, setName] = useState("Loading...");
+    useEffect(() => {
+        setName(
+            fetchedUser?._id === userid
+                ? fetchedUser.firstname
+                : "Failed to load"
+        );
+    }, [userid, fetchedUser]);
+
     return (
         <section
             className="home-section"
@@ -31,10 +47,7 @@ function Home() {
         >
             <div className={classes.background} />
             <Typography className="home-text" variant="h1">
-                Welcome
-                {authenticatedUser &&
-                    authenticatedUser.firstname &&
-                    ` ${authenticatedUser.firstname}`}
+                Welcome {userid && name}
             </Typography>
         </section>
     );
