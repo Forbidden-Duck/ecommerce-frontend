@@ -26,7 +26,7 @@ function Login() {
         if (isAuthenticated) {
             history.push("/");
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, history]);
 
     const [doClear, setDoClear] = useState(true);
     if (doClear) {
