@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { IconButton, Typography, Card } from "@material-ui/core";
+import { IconButton, Typography, Card, Chip } from "@material-ui/core";
+import { Gavel as GavelIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import {
@@ -47,6 +48,11 @@ function Profile() {
             margin: "10px 0px",
             width: "200px",
             height: "200px",
+        },
+        tag: {
+            top: "37%",
+            left: "13%",
+            position: "absolute",
         },
         footer: {
             fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
@@ -96,6 +102,13 @@ function Profile() {
             <Card className={classes.card}>
                 <div className={classes.content}>
                     <div className={classes.pfp} />
+                    {fetchedUser?.admin && (
+                        <Chip
+                            className={classes.tag}
+                            label={<GavelIcon />}
+                            color="primary"
+                        />
+                    )}
                     <Typography variant="h4">{user.name}</Typography>
                     <Typography>{user.email}</Typography>
                 </div>
