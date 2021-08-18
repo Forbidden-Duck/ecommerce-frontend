@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     Badge,
@@ -30,6 +30,7 @@ import { setDarkMode } from "../../store/site/Site.actions";
 
 function Navbar({ isMobile }) {
     const dispatch = useDispatch();
+    const history = useHistory();
     const location = useLocation();
     const { isAuthenticated, userid } = useSelector((state) => state.auth);
     const { darkMode } = useSelector((state) => state.site);
@@ -94,6 +95,7 @@ function Navbar({ isMobile }) {
         handleProfileClose();
         await dispatch(logoutUser());
         dispatch(deleteUserFromCache(userid));
+        history.push("/");
     };
     const handleLogoutMobile = async () => {
         handleDrawer();
