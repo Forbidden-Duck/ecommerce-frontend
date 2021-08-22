@@ -24,7 +24,10 @@ export const getUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
     "api/updateUser",
     async (data, thunkAPI) => {
-        const res = await userAPI.updateOne(data.userid, data.token, data.data);
+        const res = await userAPI.updateOne(data.userid, data.token, {
+            user: data.user,
+            password: data.password,
+        });
         return {
             user: res,
         };
@@ -37,6 +40,7 @@ export const deleteUser = createAsyncThunk(
         await userAPI.deleteOne(data.userid, data.token);
         return {
             userid: data.userid,
+            password: data.password,
         };
     }
 );
