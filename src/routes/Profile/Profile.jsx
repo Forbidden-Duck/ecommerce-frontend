@@ -139,7 +139,7 @@ function Profile() {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-    const userSchema = Yup.object()
+    const editSchema = Yup.object()
         .shape({
             firstname: Yup.string().min(
                 2,
@@ -236,7 +236,7 @@ function Profile() {
                         lastname: "",
                         password: "",
                     }}
-                    validationSchema={userSchema}
+                    validationSchema={editSchema}
                     validateOnBlur
                     onSubmit={async (values) => {
                         const { email, firstname, lastname, password } = values;
