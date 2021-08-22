@@ -124,8 +124,8 @@ function Profile() {
 
     const [onSubmit, setOnSubmit] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
-    const handleEditClick = () => {
-        setEditProfile(!editProfile);
+    const handleEditClick = (value) => {
+        setEditProfile(typeof value === "boolean" ? value : !editProfile);
         setOnSubmit(false);
         dispatch(clearUserError());
     };
@@ -175,7 +175,7 @@ function Profile() {
     };
 
     if (onSubmit && !error) {
-        handleEditClick();
+        handleEditClick(false);
         dispatch(getUserFromCache(userid));
     }
 
