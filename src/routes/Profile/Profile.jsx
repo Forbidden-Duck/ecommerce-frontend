@@ -181,7 +181,7 @@ function Profile() {
 
     return (
         <div className={classes.app}>
-            {!editProfile ? (
+            {!editProfile && (
                 <Card className={classes.card}>
                     <div className={classes.cardContent}>
                         <div className={classes.cardPfp} />
@@ -209,7 +209,8 @@ function Profile() {
                         <p>Created At • {user.createdAt}</p>
                     </div>
                 </Card>
-            ) : (
+            )}
+            {editProfile && (
                 <Formik
                     initialValues={{
                         email: "",
