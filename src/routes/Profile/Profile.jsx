@@ -87,10 +87,6 @@ function Profile() {
             width: "600px",
             position: "relative",
         },
-        formHeader: {
-            marginTop: "10px",
-            marginLeft: "10px",
-        },
     }));
     const classes = useStyles();
 
@@ -234,13 +230,10 @@ function Profile() {
                 >
                     {(formProps) => (
                         <Card className={classes.formCard}>
-                            <Typography
-                                className={classes.formHeader}
-                                variant="h4"
-                            >
-                                Edit Profile
-                            </Typography>
                             <Form className={classes.form}>
+                                <Typography variant="h4">
+                                    Edit Profile
+                                </Typography>
                                 <TextField
                                     label="Email"
                                     name="email"
