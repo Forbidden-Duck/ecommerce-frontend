@@ -36,11 +36,14 @@ export const updateOne = async (userid, token, data) => {
     }
 };
 
-export const deleteOne = async (userid, token) => {
+export const deleteOne = async (userid, token, password) => {
     try {
         return (
             await API.delete(`api/user/${userid}`, {
                 headers: { authorization: `Bearer ${token}` },
+                data: {
+                    password,
+                },
             })
         ).data;
     } catch (err) {

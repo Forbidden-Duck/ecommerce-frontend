@@ -37,7 +37,7 @@ export const updateUser = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
     "api/deleteUser",
     async (data, thunkAPI) => {
-        await userAPI.deleteOne(data.userid, data.token);
+        await userAPI.deleteOne(data.userid, data.token, data.password);
         return {
             userid: data.userid,
             password: data.password,

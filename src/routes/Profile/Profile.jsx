@@ -123,21 +123,24 @@ function Profile() {
         );
     }, [userid, fetchedUser]);
 
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
     const [onSubmit, setOnSubmit] = useState(false);
+
     const [editProfile, setEditProfile] = useState(false);
     const handleEditClick = (value) => {
         setEditProfile(typeof value === "boolean" ? value : !editProfile);
         setOnSubmit(false);
         dispatch(clearUserError());
+        setShowPassword(false);
     };
     const [deleteAccount, setDeleteAccount] = useState(false);
     const handleDeleteClick = (value) => {
         setDeleteAccount(typeof value === "boolean" ? value : !deleteAccount);
         setOnSubmit(false);
         dispatch(clearUserError());
+        setShowPassword(false);
     };
-    const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     const schemaDefaults = {
         password: Yup.string().required("Password is required"),
@@ -178,6 +181,10 @@ function Profile() {
             updateUser({ userid, user, password, token: jwt.token })
         );
     };
+    const handleDelete = async (password) => {
+        await dispatch(deleteUser({ userid, password, token: jwt.token }));
+    };
+
     const formatError = (message) => {
         switch (message) {
             case "Unauthorized":
@@ -189,6 +196,7 @@ function Profile() {
 
     if (onSubmit && !error) {
         handleEditClick(false);
+        handleDeleteClick(false);
         dispatch(getUserFromCache(userid));
     }
 
@@ -332,6 +340,69 @@ function Profile() {
                             </Form>
                         </Card>
                     )}
+                </Formik>
+            )}
+            {deleteAccount && (
+                <Formik
+                    initialValues={{
+                        password: "",
+                    }}
+                    validationSchema={deleteSchema}
+                    validateOnBlur
+                    onSubmit={async (values) => {
+                        const { password } = values;
+                        await handleDelete(password);
+                        setOnSubmit(true);
+                    }}
+                >
+                    <Card className={classes.formCard}>
+                        <Form className={classes.form}>
+                            <Typography variant="h4">Delete Account</Typography>
+                            <TextField
+                                label="Password"
+                                name="password"
+                                id="password-input"
+                                type={showPassword ? "text" : "password"}
+                                autoComplete="current-password"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={
+                                                    handleClickShowPassword
+                                                }
+                                            >
+                                                {showPassword ? (
+                                                    <Visibility />
+                                                ) : (
+                                                    <VisibilityOff />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            {error && <div>{formatError(error)}</div>}
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                isLoading={isPending}
+                            >
+                                Delete
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                type="button"
+                                style={{ marginTop: "-20px" }}
+                                onClick={handleDeleteClick}
+                            >
+                                Cancel
+                            </Button>
+                        </Form>
+                    </Card>
                 </Formik>
             )}
         </div>
