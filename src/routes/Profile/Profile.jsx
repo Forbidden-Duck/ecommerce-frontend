@@ -180,6 +180,7 @@ function Profile() {
 
     if (onSubmit && !error) {
         handleEditClick();
+        dispatch(getUserFromCache(userid));
     }
 
     return (
