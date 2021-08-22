@@ -17,7 +17,7 @@ import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
 import "./Register.css";
 
-function Login() {
+function Register() {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
@@ -187,4 +187,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Register;
