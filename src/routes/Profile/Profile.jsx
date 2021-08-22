@@ -160,6 +160,9 @@ function Profile() {
                 "oneExists"
             );
         });
+    const deleteSchema = Yup.object().shape({
+        password: Yup.string().required("Password is required"),
+    });
 
     const handleSave = async (user, password) => {
         for (const [key, value] of Object.entries(user)) {
