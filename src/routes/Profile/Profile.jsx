@@ -13,6 +13,7 @@ import {
 import {
     Gavel as GavelIcon,
     Edit as EditIcon,
+    Delete as DeleteIcon,
     Visibility,
     VisibilityOff,
 } from "@material-ui/icons";
@@ -129,6 +130,12 @@ function Profile() {
         setOnSubmit(false);
         dispatch(clearUserError());
     };
+    const [deleteAccount, setDeleteAccount] = useState(false);
+    const handleDeleteClick = (value) => {
+        setDeleteAccount(typeof value === "boolean" ? value : !deleteAccount);
+        setOnSubmit(false);
+        dispatch(clearUserError());
+    };
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -181,7 +188,7 @@ function Profile() {
 
     return (
         <div className={classes.app}>
-            {!editProfile && (
+            {!editProfile && !deleteAccount && (
                 <Card className={classes.card}>
                     <div className={classes.cardContent}>
                         <div className={classes.cardPfp} />
@@ -198,12 +205,23 @@ function Profile() {
                     <div className={classes.cardFooter}>
                         {user.name !== "Loading..." && (
                             <Button
+                                style={{ marginRight: "10px" }}
                                 variant="contained"
                                 color="primary"
                                 startIcon={<EditIcon />}
                                 onClick={handleEditClick}
                             >
                                 Edit
+                            </Button>
+                        )}
+                        {user.name !== "Loading..." && (
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                startIcon={<DeleteIcon />}
+                                onClick={handleDeleteClick}
+                            >
+                                Delete
                             </Button>
                         )}
                         <p>Created At • {user.createdAt}</p>
