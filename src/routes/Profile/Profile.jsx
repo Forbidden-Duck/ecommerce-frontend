@@ -139,6 +139,9 @@ function Profile() {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
+    const schemaDefaults = {
+        password: Yup.string().required("Password is required"),
+    };
     const editSchema = Yup.object()
         .shape({
             firstname: Yup.string().min(
@@ -150,7 +153,7 @@ function Profile() {
                 "Last name must be longer than 2 characters"
             ),
             email: Yup.string().email("Invalid email address"),
-            password: Yup.string().required("Password is required"),
+            password: schemaDefaults.password,
         })
         .test("oneExists", null, (user) => {
             if (user.email || user.firstname || user.lastname) return true;
@@ -161,7 +164,7 @@ function Profile() {
             );
         });
     const deleteSchema = Yup.object().shape({
-        password: Yup.string().required("Password is required"),
+        password: schemaDefaults.password,
     });
 
     const handleSave = async (user, password) => {
