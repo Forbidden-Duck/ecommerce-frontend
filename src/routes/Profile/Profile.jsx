@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
-import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     InputAdornment,
@@ -20,7 +18,6 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import {
-    getUser,
     updateUser,
     deleteUser,
     clearUserError,
