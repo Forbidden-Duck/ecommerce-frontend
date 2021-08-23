@@ -59,7 +59,7 @@ function App() {
                     <Route path="/register" component={Register} />
 
                     {/* Logged-in Only Routes */}
-                    <LoggedInRoute exact path="/profile" Component={Profile} />
+                    <LoggedInRoute path="/profile" Component={Profile} />
 
                     <Redirect from="*" to="/" />
                 </Switch>

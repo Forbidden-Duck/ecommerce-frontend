@@ -1,4 +1,11 @@
 import React, { useState, useEffect } from "react";
+import {
+    BrowserRouter as Router,
+    Redirect,
+    Route,
+    Switch,
+    Link,
+} from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,6 +34,16 @@ import Button from "../../components/Button/Button";
 import TextField from "../../components/TextField/TextField";
 
 function Profile() {
+    return (
+        <Router>
+            <Switch>
+                <Route exact path="/profile" component={ProfileHome} />
+            </Switch>
+        </Router>
+    );
+}
+
+function ProfileHome() {
     const dispatch = useDispatch();
 
     // "@media (max-width:600px)"
@@ -216,7 +233,9 @@ function Profile() {
                     <div className={classes.cardFooter}>
                         {user.name !== "Loading..." && (
                             <Button
-                                style={{ marginRight: "10px" }}
+                                style={{
+                                    marginRight: "10px",
+                                }}
                                 variant="contained"
                                 color="primary"
                                 startIcon={<EditIcon />}
@@ -286,12 +305,18 @@ function Profile() {
                                     placeholder={fetchedUser.lastname}
                                 />
                                 {formProps.errors.oneExists && (
-                                    <div style={{ marginTop: "-20px" }}>
+                                    <div
+                                        style={{
+                                            marginTop: "-20px",
+                                        }}
+                                    >
                                         {formProps.errors.oneExists}
                                     </div>
                                 )}
                                 <TextField
-                                    style={{ marginTop: "30px" }}
+                                    style={{
+                                        marginTop: "30px",
+                                    }}
                                     label="Password"
                                     name="password"
                                     id="password-input"
@@ -329,7 +354,9 @@ function Profile() {
                                     variant="contained"
                                     color="secondary"
                                     type="button"
-                                    style={{ marginTop: "-20px" }}
+                                    style={{
+                                        marginTop: "-20px",
+                                    }}
                                     onClick={handleEditClick}
                                 >
                                     Cancel
@@ -393,7 +420,9 @@ function Profile() {
                                 variant="contained"
                                 color="secondary"
                                 type="button"
-                                style={{ marginTop: "-20px" }}
+                                style={{
+                                    marginTop: "-20px",
+                                }}
                                 onClick={handleDeleteClick}
                             >
                                 Cancel
