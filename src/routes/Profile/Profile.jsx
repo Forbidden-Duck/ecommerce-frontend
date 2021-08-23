@@ -64,6 +64,7 @@ function ProfileHome() {
             alignItems: "center",
             flexDirection: "column",
             textAlign: "center",
+            height: "430px",
         },
         cardPfp: {
             backgroundImage: "url(/images/profilePicture.jpg)",
@@ -88,6 +89,10 @@ function ProfileHome() {
             bottom: "0",
             left: "0",
             marginLeft: "10px",
+        },
+        cardFooterButtons: {
+            display: "flex",
+            justifyContent: "center",
         },
         // Form Content
         form: {
@@ -148,7 +153,7 @@ function ProfileHome() {
                     <Typography variant="h4">{user.name}</Typography>
                     <Typography>{user.email}</Typography>
                 </div>
-                <div className={classes.cardFooter}>
+                <div className={classes.cardFooterButtons}>
                     {user.name !== "Loading..." && (
                         <Button
                             style={{
@@ -174,6 +179,8 @@ function ProfileHome() {
                             Delete
                         </Button>
                     )}
+                </div>
+                <div className={classes.cardFooter}>
                     <p>Created At • {user.createdAt}</p>
                 </div>
             </Card>
