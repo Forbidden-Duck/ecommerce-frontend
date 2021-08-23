@@ -6,38 +6,28 @@ import {
     Switch,
     Link,
 } from "react-router-dom";
-import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    InputAdornment,
-    IconButton,
-    Typography,
-    Card,
-    Chip,
-} from "@material-ui/core";
+import { Typography, Card, Chip } from "@material-ui/core";
 import {
     Gavel as GavelIcon,
     Edit as EditIcon,
     Delete as DeleteIcon,
-    Visibility,
-    VisibilityOff,
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import * as Yup from "yup";
-import {
-    updateUser,
-    deleteUser,
-    clearUserError,
-    getUserFromCache,
-} from "../../store/user/User.actions";
+import { getUserFromCache } from "../../store/user/User.actions";
 import Button from "../../components/Button/Button";
-import TextField from "../../components/TextField/TextField";
+
+import ProfileEdit from "./ProfileEdit";
+import ProfileDelete from "./ProfileDelete";
 
 function Profile() {
     return (
         <Router>
             <Switch>
                 <Route exact path="/profile" component={ProfileHome} />
+                <Route exact path="/profile/edit" component={ProfileEdit} />
+                <Route exact path="/profile/delete" component={ProfileDelete} />
+                <Redirect from="*" to="/profile" />
             </Switch>
         </Router>
     );
@@ -105,19 +95,18 @@ function ProfileHome() {
     }));
     const classes = useStyles();
 
-    const { userid, jwt } = useSelector((state) => state.auth);
-    const { fetchedUser, error, isPending } = useSelector(
-        (state) => state.user
-    );
-    if (userid && fetchedUser?._id !== userid) {
-        dispatch(getUserFromCache(userid));
-    }
+    const { userid } = useSelector((state) => state.auth);
+    const { fetchedUser } = useSelector((state) => state.user);
 
     const [user, setUser] = useState({
         name: "Loading...",
         email: "Loading...",
         createdAt: "Loading...",
     });
+
+    useEffect(() => {
+        dispatch(getUserFromCache(userid));
+    }, [dispatch, userid]);
 
     useEffect(() => {
         setUser(
@@ -137,300 +126,50 @@ function ProfileHome() {
         );
     }, [userid, fetchedUser]);
 
-    const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
-    const [onSubmit, setOnSubmit] = useState(false);
-
-    const [editProfile, setEditProfile] = useState(false);
-    const handleEditClick = (value) => {
-        setEditProfile(typeof value === "boolean" ? value : !editProfile);
-        setOnSubmit(false);
-        dispatch(clearUserError());
-        setShowPassword(false);
-    };
-    const [deleteAccount, setDeleteAccount] = useState(false);
-    const handleDeleteClick = (value) => {
-        setDeleteAccount(typeof value === "boolean" ? value : !deleteAccount);
-        setOnSubmit(false);
-        dispatch(clearUserError());
-        setShowPassword(false);
-    };
-
-    const schemaDefaults = {
-        password: Yup.string().required("Password is required"),
-    };
-    const editSchema = Yup.object()
-        .shape({
-            firstname: Yup.string().min(
-                2,
-                "First name must be longer than 2 characters"
-            ),
-            lastname: Yup.string().min(
-                2,
-                "Last name must be longer than 2 characters"
-            ),
-            email: Yup.string().email("Invalid email address"),
-            password: schemaDefaults.password,
-        })
-        .test("oneExists", null, (user) => {
-            if (user.email || user.firstname || user.lastname) return true;
-            return new Yup.ValidationError(
-                "Must edit at least 1 field",
-                null,
-                "oneExists"
-            );
-        });
-    const deleteSchema = Yup.object().shape({
-        password: schemaDefaults.password,
-    });
-
-    const handleSave = async (user, password) => {
-        for (const [key, value] of Object.entries(user)) {
-            // Delete the empty strings
-            if (!value) {
-                delete user[key];
-            }
-        }
-        await dispatch(
-            updateUser({ userid, user, password, token: jwt.token })
-        );
-    };
-    const handleDelete = async (password) => {
-        await dispatch(deleteUser({ userid, password, token: jwt.token }));
-    };
-
-    const formatError = (message) => {
-        switch (message) {
-            case "Unauthorized":
-                return "Incorrect password";
-            default:
-                return message;
-        }
-    };
-
-    if (onSubmit && !error) {
-        handleEditClick(false);
-        handleDeleteClick(false);
-        dispatch(getUserFromCache(userid));
-    }
-
     return (
         <div className={classes.app}>
-            {!editProfile && !deleteAccount && (
-                <Card className={classes.card}>
-                    <div className={classes.cardContent}>
-                        <div className={classes.cardPfp} />
-                        {fetchedUser?.admin && (
-                            <Chip
-                                className={classes.cardTag}
-                                label={<GavelIcon />}
-                                color="primary"
-                            />
-                        )}
-                        <Typography variant="h4">{user.name}</Typography>
-                        <Typography>{user.email}</Typography>
-                    </div>
-                    <div className={classes.cardFooter}>
-                        {user.name !== "Loading..." && (
-                            <Button
-                                style={{
-                                    marginRight: "10px",
-                                }}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon />}
-                                onClick={handleEditClick}
-                            >
-                                Edit
-                            </Button>
-                        )}
-                        {user.name !== "Loading..." && (
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                startIcon={<DeleteIcon />}
-                                onClick={handleDeleteClick}
-                            >
-                                Delete
-                            </Button>
-                        )}
-                        <p>Created At • {user.createdAt}</p>
-                    </div>
-                </Card>
-            )}
-            {editProfile && (
-                <Formik
-                    initialValues={{
-                        email: "",
-                        firstname: "",
-                        lastname: "",
-                        password: "",
-                    }}
-                    validationSchema={editSchema}
-                    validateOnBlur
-                    onSubmit={async (values) => {
-                        const { email, firstname, lastname, password } = values;
-                        await handleSave(
-                            { email, firstname, lastname },
-                            password
-                        );
-                        setOnSubmit(true);
-                    }}
-                >
-                    {(formProps) => (
-                        <Card className={classes.formCard}>
-                            <Form className={classes.form}>
-                                <Typography variant="h4">
-                                    Edit Profile
-                                </Typography>
-                                <TextField
-                                    label="Email"
-                                    name="email"
-                                    id="email-input"
-                                    autoComplete="email"
-                                    placeholder={user.email}
-                                />
-                                <TextField
-                                    label="First name"
-                                    name="firstname"
-                                    id="firstname-input"
-                                    autoComplete="given-name"
-                                    placeholder={fetchedUser.firstname}
-                                />
-                                <TextField
-                                    label="Last name"
-                                    name="lastname"
-                                    id="lastname-input"
-                                    autoComplete="family-name"
-                                    placeholder={fetchedUser.lastname}
-                                />
-                                {formProps.errors.oneExists && (
-                                    <div
-                                        style={{
-                                            marginTop: "-20px",
-                                        }}
-                                    >
-                                        {formProps.errors.oneExists}
-                                    </div>
-                                )}
-                                <TextField
-                                    style={{
-                                        marginTop: "30px",
-                                    }}
-                                    label="Password"
-                                    name="password"
-                                    id="password-input"
-                                    type={showPassword ? "text" : "password"}
-                                    autoComplete="current-password"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={
-                                                        handleClickShowPassword
-                                                    }
-                                                >
-                                                    {showPassword ? (
-                                                        <Visibility />
-                                                    ) : (
-                                                        <VisibilityOff />
-                                                    )}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                                {error && <div>{formatError(error)}</div>}
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                    isLoading={isPending}
-                                >
-                                    Save
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    type="button"
-                                    style={{
-                                        marginTop: "-20px",
-                                    }}
-                                    onClick={handleEditClick}
-                                >
-                                    Cancel
-                                </Button>
-                            </Form>
-                        </Card>
+            <Card className={classes.card}>
+                <div className={classes.cardContent}>
+                    <div className={classes.cardPfp} />
+                    {fetchedUser?.admin && (
+                        <Chip
+                            className={classes.cardTag}
+                            label={<GavelIcon />}
+                            color="primary"
+                        />
                     )}
-                </Formik>
-            )}
-            {deleteAccount && (
-                <Formik
-                    initialValues={{
-                        password: "",
-                    }}
-                    validationSchema={deleteSchema}
-                    validateOnBlur
-                    onSubmit={async (values) => {
-                        const { password } = values;
-                        await handleDelete(password);
-                        setOnSubmit(true);
-                    }}
-                >
-                    <Card className={classes.formCard}>
-                        <Form className={classes.form}>
-                            <Typography variant="h4">Delete Account</Typography>
-                            <TextField
-                                label="Password"
-                                name="password"
-                                id="password-input"
-                                type={showPassword ? "text" : "password"}
-                                autoComplete="current-password"
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={
-                                                    handleClickShowPassword
-                                                }
-                                            >
-                                                {showPassword ? (
-                                                    <Visibility />
-                                                ) : (
-                                                    <VisibilityOff />
-                                                )}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            {error && <div>{formatError(error)}</div>}
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                isLoading={isPending}
-                            >
-                                Delete
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                type="button"
-                                style={{
-                                    marginTop: "-20px",
-                                }}
-                                onClick={handleDeleteClick}
-                            >
-                                Cancel
-                            </Button>
-                        </Form>
-                    </Card>
-                </Formik>
-            )}
+                    <Typography variant="h4">{user.name}</Typography>
+                    <Typography>{user.email}</Typography>
+                </div>
+                <div className={classes.cardFooter}>
+                    {user.name !== "Loading..." && (
+                        <Button
+                            style={{
+                                marginRight: "10px",
+                            }}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<EditIcon />}
+                            component={Link}
+                            to="/profile/edit"
+                        >
+                            Edit
+                        </Button>
+                    )}
+                    {user.name !== "Loading..." && (
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            startIcon={<DeleteIcon />}
+                            component={Link}
+                            to="/profile/delete"
+                        >
+                            Delete
+                        </Button>
+                    )}
+                    <p>Created At • {user.createdAt}</p>
+                </div>
+            </Card>
         </div>
     );
 }
