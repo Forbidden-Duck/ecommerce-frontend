@@ -50,6 +50,9 @@ function ProfileEditPassword() {
         dispatch(clearUserError());
     }, [dispatch, userid]);
 
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const handleClickShowNewPassword = () =>
+        setShowNewPassword(!showNewPassword);
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -121,7 +124,7 @@ function ProfileEditPassword() {
                                     label="New Password"
                                     name="newPassword"
                                     id="newpassword-input"
-                                    type={showPassword ? "text" : "password"}
+                                    type={showNewPassword ? "text" : "password"}
                                     autoComplete="new-password"
                                     InputProps={{
                                         endAdornment: (
@@ -129,10 +132,10 @@ function ProfileEditPassword() {
                                                 <IconButton
                                                     aria-label="toggle password visibility"
                                                     onClick={
-                                                        handleClickShowPassword
+                                                        handleClickShowNewPassword
                                                     }
                                                 >
-                                                    {showPassword ? (
+                                                    {showNewPassword ? (
                                                         <Visibility />
                                                     ) : (
                                                         <VisibilityOff />
@@ -146,7 +149,7 @@ function ProfileEditPassword() {
                                     label="Confirm New Password"
                                     name="newPasswordConfirm"
                                     id="newpasswordconfirm-input"
-                                    type={showPassword ? "text" : "password"}
+                                    type={showNewPassword ? "text" : "password"}
                                     autoComplete="off"
                                     InputProps={{
                                         endAdornment: (
@@ -154,10 +157,10 @@ function ProfileEditPassword() {
                                                 <IconButton
                                                     aria-label="toggle password visibility"
                                                     onClick={
-                                                        handleClickShowPassword
+                                                        handleClickShowNewPassword
                                                     }
                                                 >
-                                                    {showPassword ? (
+                                                    {showNewPassword ? (
                                                         <Visibility />
                                                     ) : (
                                                         <VisibilityOff />
