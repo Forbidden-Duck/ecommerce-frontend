@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,11 +23,9 @@ function Register() {
     const location = useLocation();
     const { error, isPending } = useSelector((state) => state.auth);
 
-    const [doClear, setDoClear] = useState(true);
-    if (doClear) {
+    useEffect(() => {
         dispatch(clearError());
-        setDoClear(false);
-    }
+    }, [dispatch]);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -40,24 +38,41 @@ function Register() {
     }));
     const classes = useStyles();
 
-    const handleLogin = async (credentials) => {
-        if (credentials && credentials.email && credentials.password) {
-            await dispatch(loginUser(credentials));
-        }
-        const redirect = new URLSearchParams(location.search).get("redirect");
-        redirect
-            ? history.push(decodeURIComponent(redirect))
-            : history.push("/");
-    };
     const handleRegister = async (credentials) => {
         await dispatch(registerUser(credentials));
     };
 
-    const [onSubmit, setOnSubmit] = useState({ submitClick: false, auth: {} });
-    if (onSubmit.submitClick && !error) {
-        handleLogin(onSubmit.auth);
-        setOnSubmit({ submitClick: false, auth: {} });
-    }
+    const [submit, setSubmit] = useState({ submitClick: false, auth: {} });
+    useEffect(() => {
+        if (submit.submitClick && !error) {
+            (async () => {
+                if (submit.auth && submit.auth.email && submit.auth.password) {
+                    await dispatch(loginUser(submit.auth));
+                }
+                const redirect = new URLSearchParams(location.search).get(
+                    "redirect"
+                );
+                redirect
+                    ? history.push(decodeURIComponent(redirect))
+                    : history.push("/");
+            })();
+            setSubmit({ submitClick: false, auth: {} });
+        }
+    }, [history, error, submit, setSubmit, dispatch, location]);
+
+    const onSubmit = async (values) => {
+        const { firstname, lastname, email, password } = values;
+        await handleRegister({
+            firstname,
+            lastname,
+            email,
+            password,
+        });
+        setSubmit({
+            submitClick: true,
+            auth: { email, password },
+        });
+    };
 
     const credentialsSchema = Yup.object().shape({
         firstname: Yup.string()
@@ -83,19 +98,7 @@ function Register() {
                     initialValues={{ email: "", password: "" }}
                     validationSchema={credentialsSchema}
                     validateOnBlur
-                    onSubmit={async (values) => {
-                        const { firstname, lastname, email, password } = values;
-                        await handleRegister({
-                            firstname,
-                            lastname,
-                            email,
-                            password,
-                        });
-                        setOnSubmit({
-                            submitClick: true,
-                            auth: { email, password },
-                        });
-                    }}
+                    onSubmit={onSubmit}
                 >
                     <Form className="baseFormRegister">
                         <h1 className="baseFormHeadingRegister">Register</h1>

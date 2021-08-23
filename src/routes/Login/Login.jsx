@@ -33,11 +33,9 @@ function Login() {
         }
     }, [isAuthenticated, history, location]);
 
-    const [doClear, setDoClear] = useState(true);
-    if (doClear) {
+    useEffect(() => {
         dispatch(clearError());
-        setDoClear(false);
-    }
+    }, [dispatch]);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
