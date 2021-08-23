@@ -125,7 +125,7 @@ function Register() {
                             name="password"
                             id="password-input"
                             type={showPassword ? "text" : "password"}
-                            autoComplete="current-password"
+                            autoComplete="new-password"
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
