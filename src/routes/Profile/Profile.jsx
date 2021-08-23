@@ -18,6 +18,7 @@ import { getUserFromCache } from "../../store/user/User.actions";
 import Button from "../../components/Button/Button";
 
 import ProfileEdit from "./ProfileEdit";
+import ProfileEditPassword from "./ProfileEditPassword";
 import ProfileDelete from "./ProfileDelete";
 
 function Profile() {
@@ -25,8 +26,14 @@ function Profile() {
         <Router>
             <Switch>
                 <Route exact path="/profile" component={ProfileHome} />
-                <Route exact path="/profile/edit" component={ProfileEdit} />
                 <Route exact path="/profile/delete" component={ProfileDelete} />
+                <Route exact path="/profile/edit" component={ProfileEdit} />
+                <Route
+                    exact
+                    path="/profile/edit/password"
+                    component={ProfileEditPassword}
+                />
+                <Redirect from="/profile/edit/*" to="/profile/edit" />
                 <Redirect from="*" to="/profile" />
             </Switch>
         </Router>

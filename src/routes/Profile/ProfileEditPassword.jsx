@@ -8,22 +8,14 @@ import {
     Typography,
     Card,
 } from "@material-ui/core";
-import {
-    Lock as PasswordIcon,
-    Visibility,
-    VisibilityOff,
-} from "@material-ui/icons";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
-import {
-    updateUser,
-    clearUserError,
-    getUserFromCache,
-} from "../../store/user/User.actions";
+import { updateUser, clearUserError } from "../../store/user/User.actions";
 import Button from "../../components/Button/Button";
 import TextField from "../../components/TextField/TextField";
 
-function ProfileEdit() {
+function ProfileEditPassword() {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -54,59 +46,21 @@ function ProfileEdit() {
         (state) => state.user
     );
 
-    const [user, setUser] = useState({
-        name: "Loading...",
-        email: "Loading...",
-        createdAt: "Loading...",
-    });
-
     useEffect(() => {
         dispatch(clearUserError());
-        dispatch(getUserFromCache(userid));
     }, [dispatch, userid]);
-
-    useEffect(() => {
-        setUser(
-            fetchedUser?._id === userid
-                ? {
-                      name: `${fetchedUser.firstname} ${fetchedUser.lastname}`,
-                      email: fetchedUser.email,
-                      createdAt: new Date(
-                          fetchedUser.createdAt
-                      ).toLocaleString(),
-                  }
-                : {
-                      name: "Loading...",
-                      email: "Loading...",
-                      createdAt: "Loading...",
-                  }
-        );
-    }, [userid, fetchedUser]);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-    const editSchema = Yup.object()
-        .shape({
-            firstname: Yup.string().min(
-                2,
-                "First name must be longer than 2 characters"
-            ),
-            lastname: Yup.string().min(
-                2,
-                "Last name must be longer than 2 characters"
-            ),
-            email: Yup.string().email("Invalid email address"),
-            password: Yup.string().required("Password is required"),
-        })
-        .test("oneExists", null, (user) => {
-            if (user.email || user.firstname || user.lastname) return true;
-            return new Yup.ValidationError(
-                "Must edit at least 1 field",
-                null,
-                "oneExists"
-            );
-        });
+    const editSchema = Yup.object().shape({
+        newPassword: Yup.string().required("New Password is required"),
+        newPasswordConfirm: Yup.string().oneOf(
+            [Yup.ref("newPassword"), null],
+            "New password does not match"
+        ),
+        password: Yup.string().required("Password is required"),
+    });
 
     const handleSave = async (user, password) => {
         for (const [key, value] of Object.entries(user)) {
@@ -139,8 +93,8 @@ function ProfileEdit() {
     }, [history, error, submit, setSubmit]);
 
     const onSubmit = async (values) => {
-        const { email, firstname, lastname, password } = values;
-        await handleSave({ email, firstname, lastname }, password);
+        const { newPassword, password } = values;
+        await handleSave({ password: newPassword }, password);
         setSubmit(true);
     };
 
@@ -149,9 +103,8 @@ function ProfileEdit() {
             {fetchedUser && (
                 <Formik
                     initialValues={{
-                        email: "",
-                        firstname: "",
-                        lastname: "",
+                        newPassword: "",
+                        newPasswordConfirm: "",
                         password: "",
                     }}
                     validationSchema={editSchema}
@@ -165,46 +118,55 @@ function ProfileEdit() {
                                     Edit Profile
                                 </Typography>
                                 <TextField
-                                    label="Email"
-                                    name="email"
-                                    id="email-input"
-                                    autoComplete="email"
-                                    placeholder={user.email}
+                                    label="New Password"
+                                    name="newPassword"
+                                    id="newpassword-input"
+                                    type={showPassword ? "text" : "password"}
+                                    autoComplete="new-password"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={
+                                                        handleClickShowPassword
+                                                    }
+                                                >
+                                                    {showPassword ? (
+                                                        <Visibility />
+                                                    ) : (
+                                                        <VisibilityOff />
+                                                    )}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                 />
                                 <TextField
-                                    label="First name"
-                                    name="firstname"
-                                    id="firstname-input"
-                                    autoComplete="given-name"
-                                    placeholder={fetchedUser.firstname}
+                                    label="Confirm New Password"
+                                    name="newPasswordConfirm"
+                                    id="newpasswordconfirm-input"
+                                    type={showPassword ? "text" : "password"}
+                                    autoComplete="off"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={
+                                                        handleClickShowPassword
+                                                    }
+                                                >
+                                                    {showPassword ? (
+                                                        <Visibility />
+                                                    ) : (
+                                                        <VisibilityOff />
+                                                    )}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                 />
-                                <TextField
-                                    label="Last name"
-                                    name="lastname"
-                                    id="lastname-input"
-                                    autoComplete="family-name"
-                                    placeholder={fetchedUser.lastname}
-                                />
-                                {formProps.errors.oneExists && (
-                                    <div
-                                        style={{
-                                            marginTop: "-20px",
-                                        }}
-                                    >
-                                        {formProps.errors.oneExists}
-                                    </div>
-                                )}
-                                <div>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        startIcon={<PasswordIcon />}
-                                        component={Link}
-                                        to="/profile/edit/password"
-                                    >
-                                        Change Password
-                                    </Button>
-                                </div>
                                 <TextField
                                     style={{
                                         marginTop: "30px",
@@ -250,7 +212,7 @@ function ProfileEdit() {
                                         marginTop: "-20px",
                                     }}
                                     component={Link}
-                                    to={"/profile"}
+                                    to={"/profile/edit"}
                                 >
                                     Cancel
                                 </Button>
@@ -263,4 +225,4 @@ function ProfileEdit() {
     );
 }
 
-export default ProfileEdit;
+export default ProfileEditPassword;
