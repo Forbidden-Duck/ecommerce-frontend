@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     BrowserRouter as Router,
     Redirect,
@@ -32,20 +32,24 @@ function App() {
     );
     const [timer, setTimer] = useState(null);
 
-    if (!isAuthenticated && !refreshError && !isPending) {
-        // Log user in with refresh token
-        dispatch(refreshUserToken());
-    }
+    useEffect(() => {
+        if (!isAuthenticated && !refreshError && !isPending) {
+            // Log user in with refresh token
+            dispatch(refreshUserToken());
+        }
 
-    if (isAuthenticated && !timer) {
-        // Refresh token when JWT expires
-        const expiryDate = new Date(jwt.expiresIn);
-        const difference = expiryDate.getTime() - new Date().getTime();
-        setTimer(setTimeout(() => dispatch(refreshUserToken()), difference));
-    } else if (!isAuthenticated && timer) {
-        clearTimeout(timer);
-        setTimer(null);
-    }
+        if (isAuthenticated && !timer) {
+            // Refresh token when JWT expires
+            const expiryDate = new Date(jwt.expiresIn);
+            const difference = expiryDate.getTime() - new Date().getTime();
+            setTimer(
+                setTimeout(() => dispatch(refreshUserToken()), difference)
+            );
+        } else if (!isAuthenticated && timer) {
+            clearTimeout(timer);
+            setTimer(null);
+        }
+    }, [isAuthenticated, refreshError, isPending, timer, dispatch, jwt]);
 
     const { darkMode } = useSelector((state) => state.site);
     return (
