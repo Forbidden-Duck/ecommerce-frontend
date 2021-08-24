@@ -56,7 +56,7 @@ function Home() {
                         pause={
                             3153999999999.88916
                         } /* Wait 1 century before typing again :) */
-                        typingInterval={120}
+                        typingInterval={150}
                     />
                 )}
             </Typography>
