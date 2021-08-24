@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { getUserFromCache } from "../../store/user/User.actions";
 import { useDispatch, useSelector } from "react-redux";
+import ReactRotatingText from "react-rotating-text";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import "./Home.css";
@@ -26,19 +27,12 @@ function Home() {
 
     // Get user from cache
     const dispatch = useDispatch();
-    const { userid } = useSelector((state) => state.auth);
+    const { isAuthenticated, userid } = useSelector((state) => state.auth);
     const { fetchedUser } = useSelector((state) => state.user);
-    const [name, setName] = useState("Loading...");
 
     useEffect(() => {
         dispatch(getUserFromCache(userid));
     }, [dispatch, userid]);
-
-    useEffect(() => {
-        setName(
-            fetchedUser?._id === userid ? fetchedUser.firstname : "Loading..."
-        );
-    }, [userid, fetchedUser]);
 
     return (
         <section
@@ -47,7 +41,24 @@ function Home() {
         >
             <div className={classes.background} />
             <Typography className="home-text" variant="h1">
-                Welcome {userid && name}
+                {isAuthenticated && fetchedUser && (
+                    <ReactRotatingText
+                        items={[`Welcome ${fetchedUser.firstname}`]}
+                        pause={
+                            3153999999999.88916
+                        } /* Wait 1 century before typing again :) */
+                        typingInterval={120}
+                    />
+                )}
+                {!isAuthenticated && (
+                    <ReactRotatingText
+                        items={["Welcome"]}
+                        pause={
+                            3153999999999.88916
+                        } /* Wait 1 century before typing again :) */
+                        typingInterval={120}
+                    />
+                )}
             </Typography>
         </section>
     );
