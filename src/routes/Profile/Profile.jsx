@@ -94,16 +94,6 @@ function ProfileHome() {
             display: "flex",
             justifyContent: "center",
         },
-        // Form Content
-        form: {
-            display: "grid",
-            rowGap: "30px",
-            margin: "30px",
-        },
-        formCard: {
-            width: "600px",
-            position: "relative",
-        },
     }));
     const classes = useStyles();
 
