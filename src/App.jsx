@@ -19,7 +19,7 @@ import Unauthorized from "./routes/Errors/Unauthorized";
 
 import Navbar from "./components/Navbar/Navbar";
 import LoggedInRoute from "./components/LoggedInRoute/LoggedInRoute";
-// TODO AdminRoute (For admin specific routes)
+import AdminRoute from "./components/AdminRoute/AdminRoute";
 
 import { useMediaQuery } from "@material-ui/core";
 
