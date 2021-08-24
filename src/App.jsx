@@ -15,6 +15,7 @@ import Home from "./routes/Home/Home";
 import Login from "./routes/Login/Login";
 import Register from "./routes/Register/Register";
 import Profile from "./routes/Profile/Profile";
+import Unauthorized from "./routes/Errors/Unauthorized";
 
 import Navbar from "./components/Navbar/Navbar";
 import LoggedInRoute from "./components/LoggedInRoute/LoggedInRoute";
@@ -64,6 +65,13 @@ function App() {
 
                     {/* Logged-in Only Routes */}
                     <LoggedInRoute path="/profile" Component={Profile} />
+
+                    {/* Admin Only Routes */}
+                    <Route
+                        exact
+                        path="/unauthorized"
+                        component={Unauthorized}
+                    />
 
                     <Redirect from="*" to="/" />
                 </Switch>
