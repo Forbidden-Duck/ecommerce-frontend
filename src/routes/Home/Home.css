@@ -12,22 +12,5 @@
     left: 50%;
     width: 100%;
     transform: translate(-50%, -100%);
-}
-
-@media only screen and (max-width: 763px) {
-    .home-text {
-        transform: translate(-50%, -70%);
-    }
-}
-
-@media only screen and (max-width: 572px) {
-    .home-text {
-        font-size: 4.5rem !important;
-    }
-}
-
-@media only screen and (max-width: 300px) {
-    .home-text {
-        font-size: 3.5rem !important;
-    }
+    font-size: clamp(2em, 10vw, 6em) !important;
 }
