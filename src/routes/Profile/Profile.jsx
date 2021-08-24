@@ -64,7 +64,7 @@ function ProfileHome() {
             alignItems: "center",
             flexDirection: "column",
             textAlign: "center",
-            height: "430px",
+            height: "405px",
         },
         cardPfp: {
             backgroundImage: "url(/images/profilePicture.jpg)",
@@ -114,6 +114,7 @@ function ProfileHome() {
         name: "Loading...",
         email: "Loading...",
         createdAt: "Loading...",
+        modifiedAt: "Loading...",
     });
 
     useEffect(() => {
@@ -129,11 +130,15 @@ function ProfileHome() {
                       createdAt: new Date(
                           fetchedUser.createdAt
                       ).toLocaleString(),
+                      modifiedAt: fetchedUser.modifiedAt
+                          ? new Date(fetchedUser.modifiedAt).toLocaleString()
+                          : "N/A",
                   }
                 : {
                       name: "Loading...",
                       email: "Loading...",
                       createdAt: "Loading...",
+                      modifiedAt: "Loading...",
                   }
         );
     }, [userid, fetchedUser]);
@@ -182,6 +187,7 @@ function ProfileHome() {
                 </div>
                 <div className={classes.cardFooter}>
                     <p>Created At • {user.createdAt}</p>
+                    <p>Last Saved At • {user.modifiedAt}</p>
                 </div>
             </Card>
         </div>
