@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,6 +18,7 @@ import {
     ShoppingCart as ShoppingCartIcon,
     AccountCircle as AccountCircleIcon,
     KeyboardArrowDown as KeyboardArrowDownIcon,
+    Gavel as GavelIcon,
     Person as PersonIcon,
     PersonAdd as PersonAddIcon,
     ExitToApp as ExitToAppIcon,
@@ -25,7 +26,10 @@ import {
 } from "@material-ui/icons";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
-import { deleteUserFromCache } from "../../store/user/User.actions";
+import {
+    deleteUserFromCache,
+    getUserFromCache,
+} from "../../store/user/User.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 
 function Navbar({ isMobile }) {
@@ -33,7 +37,14 @@ function Navbar({ isMobile }) {
     const history = useHistory();
     const location = useLocation();
     const { isAuthenticated, userid } = useSelector((state) => state.auth);
+    const { fetchedUser } = useSelector((state) => state.user);
     const { darkMode } = useSelector((state) => state.site);
+
+    // Fetch the user
+    useEffect(() => {
+        dispatch(getUserFromCache(userid));
+    }, [dispatch, userid]);
+
     const useStylesDesktop = makeStyles((theme) => ({
         menuButton: {
             marginRight: theme.spacing(2),
@@ -220,6 +231,26 @@ function Navbar({ isMobile }) {
                                     </div>
                                 ) : (
                                     <div>
+                                        {fetchedUser && fetchedUser.admin && (
+                                            <MenuItem
+                                                onClick={handleProfileClose}
+                                                component={Link}
+                                                to={"/admin"}
+                                            >
+                                                <GavelIcon
+                                                    style={{
+                                                        color: "#4d4d4d",
+                                                    }}
+                                                />
+                                                <Typography
+                                                    style={{
+                                                        paddingLeft: 10,
+                                                    }}
+                                                >
+                                                    Admin
+                                                </Typography>
+                                            </MenuItem>
+                                        )}
                                         <MenuItem
                                             onClick={handleDrawer}
                                             component={Link}
@@ -395,6 +426,26 @@ function Navbar({ isMobile }) {
                                             open={Boolean(profileMenu)}
                                             onClose={handleProfileClose}
                                         >
+                                            {fetchedUser && fetchedUser.admin && (
+                                                <MenuItem
+                                                    onClick={handleProfileClose}
+                                                    component={Link}
+                                                    to={"/admin"}
+                                                >
+                                                    <GavelIcon
+                                                        style={{
+                                                            color: "#4d4d4d",
+                                                        }}
+                                                    />
+                                                    <Typography
+                                                        style={{
+                                                            paddingLeft: 10,
+                                                        }}
+                                                    >
+                                                        Admin
+                                                    </Typography>
+                                                </MenuItem>
+                                            )}
                                             <MenuItem
                                                 onClick={handleProfileClose}
                                                 component={Link}
