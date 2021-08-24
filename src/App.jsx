@@ -16,6 +16,7 @@ import Login from "./routes/Login/Login";
 import Register from "./routes/Register/Register";
 import Profile from "./routes/Profile/Profile";
 import Unauthorized from "./routes/Errors/Unauthorized";
+import Admin from "./routes/Admin/Admin";
 
 import Navbar from "./components/Navbar/Navbar";
 import LoggedInRoute from "./components/LoggedInRoute/LoggedInRoute";
@@ -72,6 +73,7 @@ function App() {
                         path="/unauthorized"
                         component={Unauthorized}
                     />
+                    <AdminRoute path="/admin" Component={Admin} />
 
                     <Redirect from="*" to="/" />
                 </Switch>
