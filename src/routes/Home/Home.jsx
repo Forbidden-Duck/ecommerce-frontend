@@ -28,10 +28,12 @@ function Home() {
     const dispatch = useDispatch();
     const { userid } = useSelector((state) => state.auth);
     const { fetchedUser } = useSelector((state) => state.user);
-    if (!fetchedUser || fetchedUser._id !== userid) {
-        dispatch(getUserFromCache(userid));
-    }
     const [name, setName] = useState("Loading...");
+
+    useEffect(() => {
+        dispatch(getUserFromCache(userid));
+    }, [dispatch, userid]);
+
     useEffect(() => {
         setName(
             fetchedUser?._id === userid ? fetchedUser.firstname : "Loading..."
