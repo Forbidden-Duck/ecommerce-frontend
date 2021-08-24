@@ -233,7 +233,7 @@ function Navbar({ isMobile }) {
                                     <div>
                                         {fetchedUser && fetchedUser.admin && (
                                             <MenuItem
-                                                onClick={handleProfileClose}
+                                                onClick={handleDrawer}
                                                 component={Link}
                                                 to={"/admin"}
                                             >
