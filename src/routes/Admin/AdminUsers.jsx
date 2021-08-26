@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    withStyles,
-    makeStyles,
-    Button,
-    Typography,
-    Avatar,
-} from "@material-ui/core";
+import { makeStyles, Button } from "@material-ui/core";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import {
-    Gavel as GavelIcon,
     ArrowBack as GoBackIcon,
     Visibility as ViewIcon,
 } from "@material-ui/icons";
@@ -25,7 +18,6 @@ const tableColumns = [
 
 function AdminUsers() {
     const dispatch = useDispatch();
-    const { darkMode } = useSelector((state) => state.site);
 
     const useStyles = makeStyles((theme) => ({
         // Global
