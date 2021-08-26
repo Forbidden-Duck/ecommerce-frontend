@@ -60,148 +60,24 @@ function AdminUsers() {
     const { userid, jwt } = useSelector((state) => state.auth);
     const { userCache } = useSelector((state) => state.user);
 
-    const [users, setUsers] = useState([
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Bob",
-            lastname: "John",
-            admin: true,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "John",
-            lastname: "Doe",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Harrison",
-            lastname: "Howard",
-            admin: true,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Michael",
-            lastname: "Cox",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Mitchel",
-            lastname: "Gavel",
-            admin: true,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Diane",
-            lastname: "Meginley",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Paul",
-            lastname: "Meginley",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Wilson",
-            lastname: "Fisk",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Lincoln",
-            lastname: "Thompson",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Rory",
-            lastname: "Bushell",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Steve",
-            lastname: "Rogers",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Andre",
-            lastname: "Latin",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Loki",
-            lastname: "Odin-son",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Thor",
-            lastname: "Odin-son",
-            admin: true,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Michael",
-            lastname: "Caine",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Jeremy",
-            lastname: "Clarkson",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Owen",
-            lastname: "Wilson",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Austin",
-            lastname: "Powers",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Jeremy",
-            lastname: "Renner",
-            admin: false,
-        },
-        {
-            _id: Math.floor(Math.random() * 999999999),
-            firstname: "Tom",
-            lastname: "Hiddleston",
-            admin: false,
-        },
-    ]);
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         dispatch(getUsers({ token: jwt.token }));
     }, [dispatch, jwt]);
 
-    // useEffect(() => {
-    //     // Filter out the logged in user
-    //     setUsers(
-    //         userCache
-    //             ? Object.values(userCache).filter((user) => user._id !== userid)
-    //             : false
-    //     );
-    // }, [userid, userCache, setUsers]);
+    useEffect(() => {
+        // Filter out the logged in user
+        setUsers(
+            userCache
+                ? Object.values(userCache).filter((user) => user._id !== userid)
+                : false
+        );
+    }, [userid, userCache, setUsers]);
 
     const [selected, setSelected] = useState("");
     const handleNewSelected = (model) => {
         setSelected(model[0]);
-    };
-    const handleViewClick = () => {
-        alert(`/admin/user/${selected}`);
     };
 
     return (
@@ -223,7 +99,8 @@ function AdminUsers() {
                             variant="contained"
                             color="primary"
                             startIcon={<ViewIcon />}
-                            onClick={handleViewClick}
+                            component={Link}
+                            to={`/admin/user/${selected}`}
                         >
                             View User
                         </Button>
