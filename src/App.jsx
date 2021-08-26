@@ -5,7 +5,6 @@ import {
     Route,
     Switch,
 } from "react-router-dom";
-import "./App.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { refreshUserToken } from "./store/auth/Auth.actions";
@@ -22,7 +21,7 @@ import Navbar from "./components/Navbar/Navbar";
 import LoggedInRoute from "./components/LoggedInRoute/LoggedInRoute";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 
-import { useMediaQuery } from "@material-ui/core";
+import { useMediaQuery, makeStyles } from "@material-ui/core";
 
 function App() {
     // is mobile check
@@ -54,8 +53,17 @@ function App() {
     }, [isAuthenticated, refreshError, isPending, timer, dispatch, jwt]);
 
     const { darkMode } = useSelector((state) => state.site);
+
+    const useStyles = makeStyles((theme) => ({
+        app: {
+            background: darkMode ? "#292929" : "#f2f2f2",
+            flex: 1,
+        },
+    }));
+    const classes = useStyles();
+
     return (
-        <div style={{ flex: 1, background: darkMode ? "#292929" : "#f2f2f2" }}>
+        <div className={classes.app}>
             <Router>
                 <Navbar isMobile={isMobile} />
                 <Switch>
