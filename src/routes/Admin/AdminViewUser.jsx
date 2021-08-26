@@ -33,6 +33,11 @@ function AdminViewUser() {
             width: "350px",
             marginBottom: "5px",
         },
+        error: {
+            background: "rgba(255,0,0,.5)",
+            width: "100%",
+            fontWeight: 500,
+        },
         // Card Content
         card: {
             width: "350px",
@@ -88,7 +93,7 @@ function AdminViewUser() {
     const classes = useStyles();
 
     const { jwt } = useSelector((state) => state.auth);
-    const { fetchedUser } = useSelector((state) => state.user);
+    const { fetchedUser, error } = useSelector((state) => state.user);
 
     const [user, setUser] = useState({
         name: "Loading...",
@@ -154,6 +159,11 @@ function AdminViewUser() {
             </div>
             <Card className={classes.card}>
                 <div className={classes.cardContent}>
+                    {error && (
+                        <Typography className={classes.error}>
+                            {error}
+                        </Typography>
+                    )}
                     <div className={classes.cardPfp} />
                     {fetchedUser?.admin && (
                         <Chip
