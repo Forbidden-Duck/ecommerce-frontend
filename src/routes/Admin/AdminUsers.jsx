@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles, Button } from "@material-ui/core";
+import { makeStyles, Button, useMediaQuery } from "@material-ui/core";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import {
     ArrowBack as GoBackIcon,
@@ -18,6 +18,8 @@ const tableColumns = [
 
 function AdminUsers() {
     const dispatch = useDispatch();
+    // is too small
+    const isTooSmall = useMediaQuery("(max-width:415px)");
 
     const useStyles = makeStyles((theme) => ({
         // Global
@@ -102,7 +104,9 @@ function AdminUsers() {
                     <div className={classes.gridWrapper}>
                         <DataGrid
                             className={classes.grid}
-                            components={{ Toolbar: GridToolbar }}
+                            components={{
+                                Toolbar: !isTooSmall && GridToolbar,
+                            }}
                             columns={tableColumns}
                             rows={users.map((user) => ({
                                 id: user._id,
