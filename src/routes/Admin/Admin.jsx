@@ -6,13 +6,13 @@ import {
     Switch,
     Link,
 } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Typography, makeStyles, useMediaQuery } from "@material-ui/core";
 import { Person as PersonIcon } from "@material-ui/icons";
-import { getUserFromCache } from "../../store/user/User.actions";
 import { Button } from "@material-ui/core";
 
 import AdminUsers from "./AdminUsers";
+import AdminViewUser from "./AdminViewUser";
 
 function Admin() {
     return (
@@ -20,6 +20,11 @@ function Admin() {
             <Switch>
                 <Route exact path="/admin" component={AdminHome} />
                 <Route exact path="/admin/users" component={AdminUsers} />
+                <Route
+                    exact
+                    path="/admin/user/:userid"
+                    component={AdminViewUser}
+                />
                 <Redirect from="*" to="/admin" />
             </Switch>
         </Router>
@@ -27,7 +32,6 @@ function Admin() {
 }
 
 function AdminHome() {
-    const dispatch = useDispatch();
     const { darkMode } = useSelector((state) => state.site);
     const isSmall = useMediaQuery("(max-width:550px)");
 
@@ -49,19 +53,15 @@ function AdminHome() {
     const classes = useStyles();
 
     const { userid } = useSelector((state) => state.auth);
-    const { fetchedUser } = useSelector((state) => state.user);
+    const { authedUser } = useSelector((state) => state.user);
 
     const [firstName, setFirstName] = useState("Loading...");
 
     useEffect(() => {
-        dispatch(getUserFromCache(userid));
-    }, [dispatch, userid]);
-
-    useEffect(() => {
         setFirstName(
-            fetchedUser?._id === userid ? fetchedUser.firstname : "Loading..."
+            authedUser?._id === userid ? authedUser.firstname : "Loading..."
         );
-    }, [userid, fetchedUser]);
+    }, [userid, authedUser]);
 
     return (
         <div className={classes.app}>
