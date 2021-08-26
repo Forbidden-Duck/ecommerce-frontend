@@ -12,11 +12,14 @@ import { Person as PersonIcon } from "@material-ui/icons";
 import { getUserFromCache } from "../../store/user/User.actions";
 import { Button } from "@material-ui/core";
 
+import AdminUsers from "./AdminUsers";
+
 function Admin() {
     return (
         <Router>
             <Switch>
                 <Route exact path="/admin" component={AdminHome} />
+                <Route exact path="/admin/users" component={AdminUsers} />
                 <Redirect from="*" to="/admin" />
             </Switch>
         </Router>
