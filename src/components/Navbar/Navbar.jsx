@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -26,10 +26,7 @@ import {
 } from "@material-ui/icons";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
-import {
-    deleteUserFromCache,
-    getUserFromCache,
-} from "../../store/user/User.actions";
+import { deleteUserFromCache } from "../../store/user/User.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 
 function Navbar({ isMobile }) {
@@ -37,13 +34,8 @@ function Navbar({ isMobile }) {
     const history = useHistory();
     const location = useLocation();
     const { isAuthenticated, userid } = useSelector((state) => state.auth);
-    const { fetchedUser } = useSelector((state) => state.user);
+    const { authedUser } = useSelector((state) => state.user);
     const { darkMode } = useSelector((state) => state.site);
-
-    // Fetch the user
-    useEffect(() => {
-        dispatch(getUserFromCache(userid));
-    }, [dispatch, userid]);
 
     const useStylesDesktop = makeStyles((theme) => ({
         menuButton: {
@@ -231,7 +223,7 @@ function Navbar({ isMobile }) {
                                     </div>
                                 ) : (
                                     <div>
-                                        {fetchedUser && fetchedUser.admin && (
+                                        {authedUser && authedUser.admin && (
                                             <MenuItem
                                                 onClick={handleDrawer}
                                                 component={Link}
@@ -426,7 +418,7 @@ function Navbar({ isMobile }) {
                                             open={Boolean(profileMenu)}
                                             onClose={handleProfileClose}
                                         >
-                                            {fetchedUser && fetchedUser.admin && (
+                                            {authedUser && authedUser.admin && (
                                                 <MenuItem
                                                     onClick={handleProfileClose}
                                                     component={Link}

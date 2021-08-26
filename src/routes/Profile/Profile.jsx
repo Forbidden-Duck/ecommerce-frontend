@@ -6,7 +6,7 @@ import {
     Switch,
     Link,
 } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Typography, Card, Chip } from "@material-ui/core";
 import {
     Gavel as GavelIcon,
@@ -14,7 +14,6 @@ import {
     Delete as DeleteIcon,
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { getUserFromCache } from "../../store/user/User.actions";
 import Button from "../../components/Button/Button";
 
 import ProfileEdit from "./ProfileEdit";
@@ -41,9 +40,6 @@ function Profile() {
 }
 
 function ProfileHome() {
-    const dispatch = useDispatch();
-
-    // "@media (max-width:600px)"
     const useStyles = makeStyles((theme) => ({
         // Global
         app: {
@@ -97,8 +93,7 @@ function ProfileHome() {
     }));
     const classes = useStyles();
 
-    const { userid } = useSelector((state) => state.auth);
-    const { fetchedUser } = useSelector((state) => state.user);
+    const { authedUser } = useSelector((state) => state.user);
 
     const [user, setUser] = useState({
         name: "Loading...",
@@ -108,20 +103,16 @@ function ProfileHome() {
     });
 
     useEffect(() => {
-        dispatch(getUserFromCache(userid));
-    }, [dispatch, userid]);
-
-    useEffect(() => {
         setUser(
-            fetchedUser?._id === userid
+            authedUser?._id
                 ? {
-                      name: `${fetchedUser.firstname} ${fetchedUser.lastname}`,
-                      email: fetchedUser.email,
+                      name: `${authedUser.firstname} ${authedUser.lastname}`,
+                      email: authedUser.email,
                       createdAt: new Date(
-                          fetchedUser.createdAt
+                          authedUser.createdAt
                       ).toLocaleString(),
-                      modifiedAt: fetchedUser.modifiedAt
-                          ? new Date(fetchedUser.modifiedAt).toLocaleString()
+                      modifiedAt: authedUser.modifiedAt
+                          ? new Date(authedUser.modifiedAt).toLocaleString()
                           : "N/A",
                   }
                 : {
@@ -131,14 +122,14 @@ function ProfileHome() {
                       modifiedAt: "Loading...",
                   }
         );
-    }, [userid, fetchedUser]);
+    }, [authedUser]);
 
     return (
         <div className={classes.app}>
             <Card className={classes.card}>
                 <div className={classes.cardContent}>
                     <div className={classes.cardPfp} />
-                    {fetchedUser?.admin && (
+                    {authedUser?.admin && (
                         <Chip
                             className={classes.cardTag}
                             label={<GavelIcon />}

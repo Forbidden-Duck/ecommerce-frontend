@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-import { getUserFromCache } from "../../store/user/User.actions";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import ReactRotatingText from "react-rotating-text";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -26,13 +25,8 @@ function Home() {
     const classes = useStyles();
 
     // Get user from cache
-    const dispatch = useDispatch();
-    const { isAuthenticated, userid } = useSelector((state) => state.auth);
-    const { fetchedUser } = useSelector((state) => state.user);
-
-    useEffect(() => {
-        dispatch(getUserFromCache(userid));
-    }, [dispatch, userid]);
+    const { isAuthenticated } = useSelector((state) => state.auth);
+    const { authedUser } = useSelector((state) => state.user);
 
     return (
         <section
@@ -41,9 +35,9 @@ function Home() {
         >
             <div className={classes.background} />
             <Typography className="home-text" variant="h1">
-                {isAuthenticated && fetchedUser && (
+                {isAuthenticated && authedUser && (
                     <ReactRotatingText
-                        items={[`Welcome ${fetchedUser.firstname}`]}
+                        items={[`Welcome ${authedUser.firstname}`]}
                         pause={
                             3153999999999.88916
                         } /* Wait 1 century before typing again :) */

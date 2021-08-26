@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as userActions from "./User.actions";
-import { loginUser, refreshUserToken } from "../auth/Auth.actions";
+import { loginUser, refreshUserToken, logoutUser } from "../auth/Auth.actions";
 
 const userSlice = createSlice({
     name: "user",
     initialState: {
         isPending: false,
         error: null,
+        authedUser: null,
         fetchedUser: null,
         userCache: {},
     },
@@ -17,11 +18,17 @@ const userSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 const { user } = action.payload;
                 state.userCache[user._id] = user;
+                state.authedUser = user;
             })
             // Refresh token success
             .addCase(refreshUserToken.fulfilled, (state, action) => {
                 const { user } = action.payload;
                 state.userCache[user._id] = user;
+                state.authedUser = user;
+            })
+            // Logout success
+            .addCase(logoutUser.fulfilled, (state, action) => {
+                state.authedUser = null;
             })
 
             // Clear user error
@@ -109,6 +116,9 @@ const userSlice = createSlice({
             .addCase(userActions.deleteUser.fulfilled, (state, action) => {
                 const { userid } = action.payload;
                 delete state.userCache[userid];
+                if (state.authedUser?._id === userid) {
+                    state.authedUser = null;
+                }
                 state.isPending = false;
                 state.error = null;
             })

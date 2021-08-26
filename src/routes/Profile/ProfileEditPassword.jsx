@@ -42,13 +42,11 @@ function ProfileEditPassword() {
     const classes = useStyles();
 
     const { userid, jwt } = useSelector((state) => state.auth);
-    const { fetchedUser, error, isPending } = useSelector(
-        (state) => state.user
-    );
+    const { authedUser, error, isPending } = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(clearUserError());
-    }, [dispatch, userid]);
+    }, [dispatch]);
 
     const [showNewPassword, setShowNewPassword] = useState(false);
     const handleClickShowNewPassword = () =>
@@ -103,7 +101,7 @@ function ProfileEditPassword() {
 
     return (
         <div className={classes.app}>
-            {fetchedUser && (
+            {authedUser && (
                 <Formik
                     initialValues={{
                         newPassword: "",

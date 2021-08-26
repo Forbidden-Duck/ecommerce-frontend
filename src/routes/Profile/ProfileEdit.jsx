@@ -15,11 +15,7 @@ import {
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
-import {
-    updateUser,
-    clearUserError,
-    getUserFromCache,
-} from "../../store/user/User.actions";
+import { updateUser, clearUserError } from "../../store/user/User.actions";
 import Button from "../../components/Button/Button";
 import TextField from "../../components/TextField/TextField";
 
@@ -50,9 +46,7 @@ function ProfileEdit() {
     const classes = useStyles();
 
     const { userid, jwt } = useSelector((state) => state.auth);
-    const { fetchedUser, error, isPending } = useSelector(
-        (state) => state.user
-    );
+    const { authedUser, error, isPending } = useSelector((state) => state.user);
 
     const [user, setUser] = useState({
         name: "Loading...",
@@ -62,17 +56,16 @@ function ProfileEdit() {
 
     useEffect(() => {
         dispatch(clearUserError());
-        dispatch(getUserFromCache(userid));
-    }, [dispatch, userid]);
+    }, [dispatch]);
 
     useEffect(() => {
         setUser(
-            fetchedUser?._id === userid
+            authedUser?._id
                 ? {
-                      name: `${fetchedUser.firstname} ${fetchedUser.lastname}`,
-                      email: fetchedUser.email,
+                      name: `${authedUser.firstname} ${authedUser.lastname}`,
+                      email: authedUser.email,
                       createdAt: new Date(
-                          fetchedUser.createdAt
+                          authedUser.createdAt
                       ).toLocaleString(),
                   }
                 : {
@@ -81,7 +74,7 @@ function ProfileEdit() {
                       createdAt: "Loading...",
                   }
         );
-    }, [userid, fetchedUser]);
+    }, [authedUser]);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -146,7 +139,7 @@ function ProfileEdit() {
 
     return (
         <div className={classes.app}>
-            {fetchedUser && (
+            {authedUser && (
                 <Formik
                     initialValues={{
                         email: "",
@@ -176,14 +169,14 @@ function ProfileEdit() {
                                     name="firstname"
                                     id="firstname-input"
                                     autoComplete="given-name"
-                                    placeholder={fetchedUser.firstname}
+                                    placeholder={authedUser.firstname}
                                 />
                                 <TextField
                                     label="Last name"
                                     name="lastname"
                                     id="lastname-input"
                                     autoComplete="family-name"
-                                    placeholder={fetchedUser.lastname}
+                                    placeholder={authedUser.lastname}
                                 />
                                 {formProps.errors.oneExists && (
                                     <div
