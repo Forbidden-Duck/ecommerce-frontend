@@ -85,7 +85,7 @@ function AdminUsers() {
                         component={Link}
                         to="/admin"
                     >
-                        Go back
+                        {isTooSmall ? "Back" : "Go back"}
                     </Button>
                     {selected && (
                         <Button
@@ -96,7 +96,7 @@ function AdminUsers() {
                             component={Link}
                             to={`/admin/user/${selected}`}
                         >
-                            View User
+                            {isTooSmall ? "View" : "View User"}
                         </Button>
                     )}
                 </div>
