@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Typography, Card, Chip } from "@material-ui/core";
 import {
+    Person as IDIcon,
     ArrowBack as GoBackIcon,
     Gavel as GavelIcon,
     Edit as EditIcon,
@@ -11,6 +12,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { getUserFromCache, getUser } from "../../store/user/User.actions";
 import Button from "../../components/Button/Button";
+import useClipboard from "react-use-clipboard";
 
 function AdminViewUser() {
     const dispatch = useDispatch();
@@ -43,6 +45,8 @@ function AdminViewUser() {
             flexDirection: "column",
             textAlign: "center",
             height: "405px",
+            wordWrap: "break-word",
+            wordBreak: "break-all",
         },
         cardPfp: {
             backgroundImage: "url(/images/profilePicture.jpg)",
@@ -122,10 +126,15 @@ function AdminViewUser() {
         );
     }, [userid, fetchedUser]);
 
+    const [isCopied, setCopy] = useClipboard(userid, {
+        successDuration: 2000,
+    });
+
     return (
         <div className={classes.app}>
             <div className={classes.buttonWrapper}>
                 <Button
+                    style={{ marginRight: "5px" }}
                     variant="contained"
                     color="secondary"
                     startIcon={<GoBackIcon />}
@@ -133,6 +142,14 @@ function AdminViewUser() {
                     to="/admin/users"
                 >
                     Go back
+                </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<IDIcon />}
+                    onClick={setCopy}
+                >
+                    {isCopied ? "Copied!" : "Copy ID"}
                 </Button>
             </div>
             <Card className={classes.card}>
