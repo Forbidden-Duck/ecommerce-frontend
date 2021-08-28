@@ -21,7 +21,9 @@ function Register() {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
-    const { error, isPending } = useSelector((state) => state.auth);
+    const { isAuthenticated, error, isPending } = useSelector(
+        (state) => state.auth
+    );
 
     useEffect(() => {
         dispatch(clearError());
@@ -46,7 +48,12 @@ function Register() {
     useEffect(() => {
         if (submit.submitClick && !error) {
             (async () => {
-                if (submit.auth && submit.auth.email && submit.auth.password) {
+                if (
+                    submit.auth &&
+                    submit.auth.email &&
+                    submit.auth.password &&
+                    !isAuthenticated
+                ) {
                     await dispatch(loginUser(submit.auth));
                 }
                 const redirect = new URLSearchParams(location.search).get(
