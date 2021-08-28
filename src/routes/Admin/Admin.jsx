@@ -25,8 +25,10 @@ function Admin() {
                     path="/admin/user/:userid"
                     component={AdminViewUser}
                 />
-                <Redirect from="/admin/user" to="/admin/users" />
-                <Redirect from="/admin/users/*" to="/admin/users" />
+                <Redirect
+                    from={["/admin/user", "/admin/users/*"]}
+                    to="/admin/users"
+                />
                 <Redirect from="*" to="/admin" />
             </Switch>
         </Router>
