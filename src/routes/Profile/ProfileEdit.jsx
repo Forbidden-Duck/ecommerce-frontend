@@ -115,6 +115,7 @@ function ProfileEdit() {
 
     const formatError = (message) => {
         switch (message) {
+            case "Password is required to validate the user":
             case "Unauthorized":
                 return "Incorrect password";
             default:
