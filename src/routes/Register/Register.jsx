@@ -44,30 +44,51 @@ function Register() {
         await dispatch(registerUser(credentials));
     };
 
-    const [submit, setSubmit] = useState({ submitClick: false, auth: {} });
+    const [submit, setSubmit] = useState({
+        submitClick: false,
+        auth: {},
+        setFieldValue: null,
+    });
     useEffect(() => {
         if (submit.submitClick && !error) {
-            (async () => {
-                if (
-                    submit.auth &&
-                    submit.auth.email &&
-                    submit.auth.password &&
-                    !isAuthenticated
-                ) {
-                    await dispatch(loginUser(submit.auth));
+            if (!isAuthenticated) {
+                (async () => {
+                    if (
+                        submit.auth &&
+                        submit.auth.email &&
+                        submit.auth.password
+                    ) {
+                        await dispatch(loginUser(submit.auth));
+                    }
+                    const redirect = new URLSearchParams(location.search).get(
+                        "redirect"
+                    );
+                    redirect
+                        ? history.push(decodeURIComponent(redirect))
+                        : history.push("/");
+                })();
+            } else {
+                if (submit.setFieldValue) {
+                    submit.setFieldValue("firstname", "");
+                    submit.setFieldValue("lastname", "");
+                    submit.setFieldValue("email", "");
+                    submit.setFieldValue("password", "");
+                    submit.setFieldValue("confirmPassword", "");
                 }
-                const redirect = new URLSearchParams(location.search).get(
-                    "redirect"
-                );
-                redirect
-                    ? history.push(decodeURIComponent(redirect))
-                    : history.push("/");
-            })();
-            setSubmit({ submitClick: false, auth: {} });
+            }
+            setSubmit({ submitClick: false, auth: {}, setFieldValue: null });
         }
-    }, [history, error, submit, setSubmit, dispatch, location]);
+    }, [
+        history,
+        error,
+        submit,
+        setSubmit,
+        dispatch,
+        location,
+        isAuthenticated,
+    ]);
 
-    const onSubmit = async (values) => {
+    const onSubmit = async (values, { setFieldValue }) => {
         const { firstname, lastname, email, password } = values;
         await handleRegister({
             firstname,
@@ -78,6 +99,7 @@ function Register() {
         setSubmit({
             submitClick: true,
             auth: { email, password },
+            setFieldValue,
         });
     };
 
