@@ -126,7 +126,7 @@ function AdminEditUser() {
     const handleSave = async (user, password) => {
         for (const [key, value] of Object.entries(user)) {
             // Delete the empty strings
-            if (typeof value === "string" && !value) {
+            if (!value) {
                 delete user[key];
             }
         }
