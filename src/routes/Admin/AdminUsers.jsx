@@ -62,11 +62,7 @@ function AdminUsers() {
 
     useEffect(() => {
         // Filter out the logged in user
-        setUsers(
-            userCache
-                ? Object.values(userCache).filter((user) => user._id !== userid)
-                : false
-        );
+        setUsers(userCache ? Object.values(userCache) : false);
     }, [userid, userCache, setUsers]);
 
     const [selected, setSelected] = useState("");
