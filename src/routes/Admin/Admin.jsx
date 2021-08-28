@@ -13,6 +13,7 @@ import { Button } from "@material-ui/core";
 
 import AdminUsers from "./AdminUsers";
 import AdminViewUser from "./AdminViewUser";
+import AdminEditUser from "./AdminEditUser";
 
 function Admin() {
     return (
@@ -24,6 +25,11 @@ function Admin() {
                     exact
                     path="/admin/user/:userid"
                     component={AdminViewUser}
+                />
+                <Route
+                    exact
+                    path="/admin/user/:userid/edit"
+                    component={AdminEditUser}
                 />
                 <Redirect from="/admin/user" to="/admin/users" />
                 <Redirect from="/admin/users/*" to="/admin/users" />
