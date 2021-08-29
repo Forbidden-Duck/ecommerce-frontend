@@ -31,8 +31,3 @@
     grid-template-columns: repeat(2, 1fr);
     column-gap: 5%;
 }
-
-.google-btnLogin {
-    background-color: #db4437;
-    color: #ffffff;
-}

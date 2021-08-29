@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { InputAdornment, IconButton } from "@material-ui/core";
+import { InputAdornment, IconButton, Divider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -11,17 +11,20 @@ import * as Yup from "yup";
 import {
     loginUser,
     registerUser,
+    googleAuth,
     clearError,
 } from "../../store/auth/Auth.actions";
 import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
 import "./Register.css";
 
+import { GoogleLogin } from "react-google-login";
+
 function Register() {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
-    const { isAuthenticated, error, isPending } = useSelector(
+    const { googleError, isAuthenticated, error, isPending } = useSelector(
         (state) => state.auth
     );
 
@@ -43,15 +46,27 @@ function Register() {
     const handleRegister = async (credentials) => {
         await dispatch(registerUser(credentials));
     };
+    const formatGoogleError = (message) => {
+        switch (message) {
+            case "Missing authorization header":
+            case "invalid_token":
+            case "Unauthorized":
+            case "Missing password in the body":
+                return message; //"Failed to authorize";
+            default:
+                return message;
+        }
+    };
 
     const [submit, setSubmit] = useState({
         submitClick: false,
         auth: {},
         setFieldValue: null,
+        googleAuth: null,
     });
     useEffect(() => {
         if (submit.submitClick && !error) {
-            if (!isAuthenticated) {
+            if (!isAuthenticated || submit.googleAuth) {
                 (async () => {
                     if (
                         submit.auth &&
@@ -100,6 +115,14 @@ function Register() {
             submitClick: true,
             auth: { email, password },
             setFieldValue,
+        });
+    };
+
+    const handleGoogle = async (res) => {
+        await dispatch(googleAuth({ token: res.tokenId }));
+        setSubmit({
+            submitClick: true,
+            googleAuth: true,
         });
     };
 
@@ -211,7 +234,37 @@ function Register() {
                         >
                             Login instead?
                         </Typography>
-                        <div style={{ width: "30vw", display: "flex" }}></div>
+                        <Divider />
+                        <div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <p>Sign up with</p>
+                            </div>
+                            <div className="social-btn-containerRegister">
+                                {process.env.REACT_APP_GOOGLE_CLIENT_ID && (
+                                    <div>
+                                        <GoogleLogin
+                                            clientId={
+                                                process.env
+                                                    .REACT_APP_GOOGLE_CLIENT_ID
+                                            }
+                                            buttonText="Sign up with Google"
+                                            onSuccess={handleGoogle}
+                                            cookiePolicy={"single_host_origin"}
+                                        />
+                                        {googleError && (
+                                            <div style={{ color: "red" }}>
+                                                {formatGoogleError(googleError)}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </Form>
                 </Formik>
             </div>
