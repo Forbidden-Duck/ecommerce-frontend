@@ -48,7 +48,7 @@ function AdminDeleteUser() {
     const classes = useStyles();
 
     const { jwt } = useSelector((state) => state.auth);
-    const { fetchedUser, error, isPending } = useSelector(
+    const { authedUser, fetchedUser, error, isPending } = useSelector(
         (state) => state.user
     );
 
@@ -64,7 +64,9 @@ function AdminDeleteUser() {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     const deleteSchema = Yup.object().shape({
-        password: Yup.string().required("Password is required"),
+        password:
+            !authedUser.authedGoogle &&
+            Yup.string().required("Password is required"),
     });
 
     const handleDelete = async (password) =>
@@ -112,30 +114,34 @@ function AdminDeleteUser() {
                                 ? "Can not delete an admin"
                                 : "Delete User"}
                         </Typography>
-                        <TextField
-                            label="Password"
-                            name="password"
-                            id="password-input"
-                            type={showPassword ? "text" : "password"}
-                            autoComplete="current-password"
-                            disabled={fetchedUser?.admin}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                        >
-                                            {showPassword ? (
-                                                <Visibility />
-                                            ) : (
-                                                <VisibilityOff />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
+                        {!authedUser?.authedGoogle && (
+                            <TextField
+                                label="Password"
+                                name="password"
+                                id="password-input"
+                                type={showPassword ? "text" : "password"}
+                                autoComplete="current-password"
+                                disabled={fetchedUser?.admin}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={
+                                                    handleClickShowPassword
+                                                }
+                                            >
+                                                {showPassword ? (
+                                                    <Visibility />
+                                                ) : (
+                                                    <VisibilityOff />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        )}
                         {error && <div>{formatError(error)}</div>}
                         <Button
                             variant="contained"
