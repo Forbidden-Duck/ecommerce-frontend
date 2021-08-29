@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as userActions from "./User.actions";
-import { loginUser, refreshUserToken, logoutUser } from "../auth/Auth.actions";
+import {
+    loginUser,
+    googleAuth,
+    refreshUserToken,
+    logoutUser,
+} from "../auth/Auth.actions";
 
 const userSlice = createSlice({
     name: "user",
@@ -16,6 +21,12 @@ const userSlice = createSlice({
         builder
             // Login success
             .addCase(loginUser.fulfilled, (state, action) => {
+                const { user } = action.payload;
+                state.userCache[user._id] = user;
+                state.authedUser = user;
+            })
+            // GoogleAuth success
+            .addCase(googleAuth.fulfilled, (state, action) => {
                 const { user } = action.payload;
                 state.userCache[user._id] = user;
                 state.authedUser = user;

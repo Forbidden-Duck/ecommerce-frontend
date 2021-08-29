@@ -9,6 +9,7 @@ const authSlice = createSlice({
         isAuthenticated: false,
         userid: null,
         error: null,
+        googleError: null,
         refreshError: null,
         jwt: null,
     },
@@ -29,6 +30,7 @@ const authSlice = createSlice({
             // Clear error state
             .addCase(authActions.clearError, (state) => {
                 state.error = null;
+                state.googleError = null;
             })
 
             // Register pending
@@ -59,6 +61,7 @@ const authSlice = createSlice({
                 state.userid = user._id;
                 state.jwt = jwt;
                 state.error = null;
+                state.googleError = null;
                 state.refreshError = null;
             })
             // Login failure
@@ -66,6 +69,26 @@ const authSlice = createSlice({
                 const { message } = action.error;
                 state.isPending = false;
                 state.error = message;
+            })
+
+            // GoogleAuth pending
+            .addCase(authActions.googleAuth.pending, (state, action) => {
+                state.isPending = true;
+            })
+            // GoogleAuth success
+            .addCase(authActions.googleAuth.fulfilled, (state, action) => {
+                const { jwt, user } = action.payload;
+                state.isPending = false;
+                state.isAuthenticated = true;
+                state.userid = user._id;
+                state.jwt = jwt;
+                state.googleError = null;
+                state.refreshError = null;
+            })
+            .addCase(authActions.googleAuth.rejected, (state, action) => {
+                const { message } = action.error;
+                state.isPending = false;
+                state.googleError = message;
             })
 
             // Refresh token pending

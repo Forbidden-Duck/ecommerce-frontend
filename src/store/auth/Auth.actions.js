@@ -26,6 +26,21 @@ export const loginUser = createAsyncThunk(
     }
 );
 
+export const googleAuth = createAsyncThunk(
+    "auth/googleAuth",
+    async (data, thunkAPI) => {
+        const res = await authAPI.google(data.token);
+        return {
+            user: res.user,
+            admin: res.admin,
+            jwt: {
+                token: res.token,
+                expiresIn: res.expiresIn,
+            },
+        };
+    }
+);
+
 export const refreshUserToken = createAsyncThunk(
     "auth/refreshUserToken",
     async (data, thunkAPI) => {

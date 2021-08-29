@@ -9,16 +9,22 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
-import { loginUser, clearError } from "../../store/auth/Auth.actions";
+import {
+    loginUser,
+    googleAuth,
+    clearError,
+} from "../../store/auth/Auth.actions";
 import TextField from "../../components/TextField/TextField";
 import Button from "../../components/Button/Button";
 import "./Login.css";
+
+import { GoogleLogin } from "react-google-login";
 
 function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
-    const { error, isPending, isAuthenticated } = useSelector(
+    const { googleError, error, isPending, isAuthenticated } = useSelector(
         (state) => state.auth
     );
 
@@ -61,6 +67,17 @@ function Login() {
                 return message;
         }
     };
+    const formatGoogleError = (message) => {
+        switch (message) {
+            case "Missing authorization header":
+            case "invalid_token":
+            case "Unauthorized":
+            case "Missing password in the body":
+                return message; //"Failed to authorize";
+            default:
+                return message;
+        }
+    };
 
     const credentialsSchema = Yup.object().shape({
         email: Yup.string()
@@ -68,6 +85,10 @@ function Login() {
             .required("Email address is required"),
         password: Yup.string().required("Password is required"),
     });
+
+    const handleGoogle = async (res) => {
+        await dispatch(googleAuth({ token: res.tokenId }));
+    };
 
     return (
         <div className="appLogin">
@@ -140,7 +161,23 @@ function Login() {
                                 <p>Sign in with</p>
                             </div>
                             <div className="social-btn-containerLogin">
-                                <p>Google to be implemented</p>
+                                {process.env.REACT_APP_GOOGLE_CLIENT_ID && (
+                                    <div>
+                                        <GoogleLogin
+                                            clientId={
+                                                process.env
+                                                    .REACT_APP_GOOGLE_CLIENT_ID
+                                            }
+                                            onSuccess={handleGoogle}
+                                            cookiePolicy={"single_host_origin"}
+                                        />
+                                        {googleError && (
+                                            <div style={{ color: "red" }}>
+                                                {formatGoogleError(googleError)}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </Form>

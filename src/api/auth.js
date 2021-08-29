@@ -16,6 +16,20 @@ export const login = async (data) => {
     }
 };
 
+export const google = async (token) => {
+    try {
+        return (
+            await API.post("auth/google", undefined, {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+            })
+        ).data;
+    } catch (err) {
+        throw err.response.data;
+    }
+};
+
 export const refreshtoken = async () => {
     try {
         return (await API.post("auth/refresh_token")).data;
