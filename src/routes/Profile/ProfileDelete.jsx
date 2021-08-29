@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,7 +17,6 @@ import TextField from "../../components/TextField/TextField";
 
 function ProfileDelete() {
     const dispatch = useDispatch();
-    const history = useHistory();
 
     const useStyles = makeStyles((theme) => ({
         // Global
@@ -42,7 +41,7 @@ function ProfileDelete() {
     const classes = useStyles();
 
     const { userid, jwt } = useSelector((state) => state.auth);
-    const { error, isPending } = useSelector((state) => state.user);
+    const { error, isPending, authedUser } = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(clearUserError());
@@ -52,7 +51,9 @@ function ProfileDelete() {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     const deleteSchema = Yup.object().shape({
-        password: Yup.string().required("Password is required"),
+        password:
+            !authedUser.authedGoogle &&
+            Yup.string().required("Password is required"),
     });
 
     const handleDelete = async (password) =>
@@ -68,19 +69,9 @@ function ProfileDelete() {
         }
     };
 
-    const [submit, setSubmit] = useState(false);
-    useEffect(() => {
-        if (submit && !error) {
-            history.push("/profile");
-        } else if (submit && error) {
-            setSubmit(false);
-        }
-    }, [history, error, submit, setSubmit]);
-
     const onSubmit = async (values) => {
         const { password } = values;
         await handleDelete(password);
-        setSubmit(true);
     };
 
     return (
@@ -96,29 +87,33 @@ function ProfileDelete() {
                 <Card className={classes.formCard}>
                     <Form className={classes.form}>
                         <Typography variant="h4">Delete Account</Typography>
-                        <TextField
-                            label="Password"
-                            name="password"
-                            id="password-input"
-                            type={showPassword ? "text" : "password"}
-                            autoComplete="current-password"
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                        >
-                                            {showPassword ? (
-                                                <Visibility />
-                                            ) : (
-                                                <VisibilityOff />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
+                        {!authedUser?.authedGoogle && (
+                            <TextField
+                                label="Password"
+                                name="password"
+                                id="password-input"
+                                type={showPassword ? "text" : "password"}
+                                autoComplete="current-password"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={
+                                                    handleClickShowPassword
+                                                }
+                                            >
+                                                {showPassword ? (
+                                                    <Visibility />
+                                                ) : (
+                                                    <VisibilityOff />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        )}
                         {error && <div>{formatError(error)}</div>}
                         <Button
                             variant="contained"

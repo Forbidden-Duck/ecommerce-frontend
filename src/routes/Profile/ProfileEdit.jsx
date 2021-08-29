@@ -90,7 +90,9 @@ function ProfileEdit() {
                 "Last name must be longer than 2 characters"
             ),
             email: Yup.string().email("Invalid email address"),
-            password: Yup.string().required("Password is required"),
+            password:
+                !authedUser.authedGoogle &&
+                Yup.string().required("Password is required"),
         })
         .test("oneExists", null, (user) => {
             if (user.email || user.firstname || user.lastname) return true;
@@ -199,34 +201,38 @@ function ProfileEdit() {
                                         Change Password
                                     </Button>
                                 </div>
-                                <TextField
-                                    style={{
-                                        marginTop: "30px",
-                                    }}
-                                    label="Password"
-                                    name="password"
-                                    id="password-input"
-                                    type={showPassword ? "text" : "password"}
-                                    autoComplete="current-password"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={
-                                                        handleClickShowPassword
-                                                    }
-                                                >
-                                                    {showPassword ? (
-                                                        <Visibility />
-                                                    ) : (
-                                                        <VisibilityOff />
-                                                    )}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
+                                {!authedUser?.authedGoogle && (
+                                    <TextField
+                                        style={{
+                                            marginTop: "30px",
+                                        }}
+                                        label="Password"
+                                        name="password"
+                                        id="password-input"
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
+                                        autoComplete="current-password"
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        aria-label="toggle password visibility"
+                                                        onClick={
+                                                            handleClickShowPassword
+                                                        }
+                                                    >
+                                                        {showPassword ? (
+                                                            <Visibility />
+                                                        ) : (
+                                                            <VisibilityOff />
+                                                        )}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                )}
                                 {error && <div>{formatError(error)}</div>}
                                 <Button
                                     variant="contained"

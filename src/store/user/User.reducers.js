@@ -71,6 +71,9 @@ const userSlice = createSlice({
                 state.error = null;
                 for (const user of users) {
                     state.userCache[user._id] = user;
+                    if (state.authedUser._id === user._id) {
+                        state.authedUser = user;
+                    }
                 }
             })
             // Get users failure
@@ -90,6 +93,9 @@ const userSlice = createSlice({
                 const { user } = action.payload;
                 state.isPending = false;
                 state.userCache[user._id] = user;
+                if (state.authedUser._id === user._id) {
+                    state.authedUser = user;
+                }
                 state.error = null;
             })
             // Get user failure
@@ -108,6 +114,9 @@ const userSlice = createSlice({
             .addCase(userActions.updateUser.fulfilled, (state, action) => {
                 const { user } = action.payload;
                 state.userCache[user._id] = user;
+                if (state.authedUser._id === user._id) {
+                    state.authedUser = user;
+                }
                 state.isPending = false;
                 state.error = null;
             })
