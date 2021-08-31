@@ -61,4 +61,6 @@ export const deleteProduct = createAsyncThunk(
 
 export const clearProductError = createAction("api/clearProductError");
 export const getProductFromCache = createAction("api/getProductFromCache");
-export const deleteUserFromCache = createAction("api/deleteProductFromCache");
+export const deleteProductFromCache = createAction(
+    "api/deleteProductFromCache"
+);
