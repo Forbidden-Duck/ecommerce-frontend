@@ -51,7 +51,7 @@ function AdminUsers() {
     }));
     const classes = useStyles();
 
-    const { userid, jwt } = useSelector((state) => state.auth);
+    const { jwt } = useSelector((state) => state.auth);
     const { userCache } = useSelector((state) => state.user);
 
     const [users, setUsers] = useState([]);
@@ -61,8 +61,8 @@ function AdminUsers() {
     }, [dispatch, jwt]);
 
     useEffect(() => {
-        setUsers(userCache ? Object.values(userCache) : []]);
-    }, [userid, userCache, setUsers]);
+        setUsers(userCache ? Object.values(userCache) : []);
+    }, [userCache, setUsers]);
 
     const [selected, setSelected] = useState("");
     const handleNewSelected = (model) => {
