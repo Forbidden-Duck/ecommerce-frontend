@@ -86,7 +86,7 @@ const productSlice = createSlice({
                 }
             )
             // Create product failure
-            .addCase(productActions.deleteProduct.rejected, (state, action) => {
+            .addCase(productActions.createProduct.rejected, (state, action) => {
                 const { message } = action.error;
                 state.isPending = false;
                 state.error = message;
