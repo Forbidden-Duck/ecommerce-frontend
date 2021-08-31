@@ -57,7 +57,7 @@ function AdminProducts() {
             headerName: "Description",
             width: 300,
             renderCell: (params) => (
-                <Tooltip title={params.row.description}>
+                <Tooltip title={params.row.description} enterTouchDelay={0}>
                     <div className={classes.tableCell}>
                         {params.row.description}
                     </div>
