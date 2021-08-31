@@ -17,10 +17,10 @@ import {
     getUser,
     updateUser,
     clearUserError,
-} from "../../store/user/User.actions";
-import Button from "../../components/Button/Button";
-import TextField from "../../components/TextField/TextField";
-import CheckboxField from "../../components/CheckboxField/CheckboxField";
+} from "../../../store/user/User.actions";
+import Button from "../../../components/Button/Button";
+import TextField from "../../../components/TextField/TextField";
+import CheckboxField from "../../../components/CheckboxField/CheckboxField";
 
 function AdminEditUser() {
     const dispatch = useDispatch();

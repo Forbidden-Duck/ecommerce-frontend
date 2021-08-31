@@ -16,9 +16,9 @@ import {
     getUser,
     deleteUser,
     clearUserError,
-} from "../../store/user/User.actions";
-import Button from "../../components/Button/Button";
-import TextField from "../../components/TextField/TextField";
+} from "../../../store/user/User.actions";
+import Button from "../../../components/Button/Button";
+import TextField from "../../../components/TextField/TextField";
 
 function AdminDeleteUser() {
     const dispatch = useDispatch();

@@ -11,10 +11,10 @@ import { Typography, makeStyles, useMediaQuery } from "@material-ui/core";
 import { Person as PersonIcon } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
 
-import AdminUsers from "./AdminUsers";
-import AdminViewUser from "./AdminViewUser";
-import AdminEditUser from "./AdminEditUser";
-import AdminDeleteUser from "./AdminDeleteUser";
+import AdminUsers from "./Users/AdminUsers";
+import AdminViewUser from "./Users/AdminViewUser";
+import AdminEditUser from "./Users/AdminEditUser";
+import AdminDeleteUser from "./Users/AdminDeleteUser";
 
 function Admin() {
     return (

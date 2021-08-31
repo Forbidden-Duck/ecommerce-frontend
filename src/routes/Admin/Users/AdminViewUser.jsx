@@ -10,8 +10,8 @@ import {
     Delete as DeleteIcon,
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { getUserFromCache, getUser } from "../../store/user/User.actions";
-import Button from "../../components/Button/Button";
+import { getUserFromCache, getUser } from "../../../store/user/User.actions";
+import Button from "../../../components/Button/Button";
 import useClipboard from "react-use-clipboard";
 
 function AdminViewUser() {

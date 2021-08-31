@@ -7,7 +7,7 @@ import {
     ArrowBack as GoBackIcon,
     Visibility as ViewIcon,
 } from "@material-ui/icons";
-import { getUsers } from "../../store/user/User.actions";
+import { getUsers } from "../../../store/user/User.actions";
 
 const tableColumns = [
     { field: "id", headerName: "ID", width: 150 },
