@@ -61,7 +61,7 @@ function AdminUsers() {
     }, [dispatch, jwt]);
 
     useEffect(() => {
-        setUsers(userCache ? Object.values(userCache) : false);
+        setUsers(userCache ? Object.values(userCache) : []]);
     }, [userid, userCache, setUsers]);
 
     const [selected, setSelected] = useState("");
