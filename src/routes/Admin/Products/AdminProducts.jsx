@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles, Button, useMediaQuery } from "@material-ui/core";
+import { makeStyles, Button, useMediaQuery, Tooltip } from "@material-ui/core";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import {
     ArrowBack as GoBackIcon,
@@ -10,17 +10,10 @@ import {
 } from "@material-ui/icons";
 import { getProducts } from "../../../store/product/Product.actions";
 
-const tableColumns = [
-    { field: "id", headerName: "ID", width: 150 },
-    { field: "name", headerName: "Name", width: 200 },
-    { field: "description", headerName: "Description", width: 200 },
-    { field: "price", headerName: "Price", width: 150 },
-];
-
 function AdminProducts() {
     const dispatch = useDispatch();
     // is too small
-    const isTooSmall = useMediaQuery("(max-width:415px)");
+    const isTooSmall = useMediaQuery("(max-width:440px)");
 
     const useStyles = makeStyles((theme) => ({
         app: {
@@ -39,7 +32,7 @@ function AdminProducts() {
             left: "0",
         },
         gridWrapper: {
-            marginTop: "60px",
+            marginTop: "45px",
             display: "flex",
             flexFlow: "row wrap",
             height: "70vh",
@@ -48,8 +41,31 @@ function AdminProducts() {
             background: "white",
             color: "inherit",
         },
+        tableCell: {
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+        },
     }));
     const classes = useStyles();
+
+    const tableColumns = [
+        { field: "id", headerName: "ID", width: 150 },
+        { field: "name", headerName: "Name", width: 200 },
+        {
+            field: "description",
+            headerName: "Description",
+            width: 300,
+            renderCell: (params) => (
+                <Tooltip title={params.row.description}>
+                    <div className={classes.tableCell}>
+                        {params.row.description}
+                    </div>
+                </Tooltip>
+            ),
+        },
+        { field: "price", headerName: "Price", width: 150 },
+    ];
 
     const { jwt } = useSelector((state) => state.auth);
     const { productCache } = useSelector((state) => state.product);
@@ -72,18 +88,19 @@ function AdminProducts() {
     return (
         <div className={classes.app}>
             <div className={classes.contentWrapper}>
+                <Button
+                    style={{ marginBottom: "5px" }}
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<GoBackIcon />}
+                    component={Link}
+                    to="/admin"
+                >
+                    {isTooSmall ? "Back" : "Go back"}
+                </Button>
                 <div className={classes.buttonWrapper}>
                     <Button
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<GoBackIcon />}
-                        component={Link}
-                        to="/admin"
-                    >
-                        {isTooSmall ? "Back" : "Go back"}
-                    </Button>
-                    <Button
-                        style={{ marginLeft: "10px" }}
+                        style={{ marginRight: "10px" }}
                         variant="contained"
                         color="primary"
                         startIcon={<CreateIcon />}
@@ -94,7 +111,6 @@ function AdminProducts() {
                     </Button>
                     {selected && (
                         <Button
-                            style={{ marginLeft: "10px" }}
                             variant="contained"
                             color="primary"
                             startIcon={<ViewIcon />}
@@ -117,7 +133,7 @@ function AdminProducts() {
                                 id: product._id,
                                 name: product.name,
                                 description: product.description,
-                                price: product.price,
+                                price: `$${product.price}`,
                             }))}
                             rowsPerPageOptions={[10, 25, 50, 100]}
                             onSelectionModelChange={handleNewSelected}
