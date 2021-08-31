@@ -8,19 +8,28 @@ import {
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Typography, makeStyles, useMediaQuery } from "@material-ui/core";
-import { Person as PersonIcon } from "@material-ui/icons";
+import {
+    Person as PersonIcon,
+    LocalMall as ProductIcon,
+} from "@material-ui/icons";
 import { Button } from "@material-ui/core";
 
+// Users Components
 import AdminUsers from "./Users/AdminUsers";
 import AdminViewUser from "./Users/AdminViewUser";
 import AdminEditUser from "./Users/AdminEditUser";
 import AdminDeleteUser from "./Users/AdminDeleteUser";
+
+// Products Components
+import AdminProducts from "./Products/AdminProducts";
 
 function Admin() {
     return (
         <Router>
             <Switch>
                 <Route exact path="/admin" component={AdminHome} />
+
+                {/* Users Routes */}
                 <Route exact path="/admin/users" component={AdminUsers} />
                 <Route
                     exact
@@ -37,8 +46,16 @@ function Admin() {
                     path="/admin/user/:userid/delete"
                     component={AdminDeleteUser}
                 />
+
+                {/* Products Routes */}
+                <Route exact path="/admin/products" component={AdminProducts} />
+
+                {/* Users Redirects */}
                 <Redirect from="/admin/user" to="/admin/users" />
                 <Redirect from="/admin/users/*" to="/admin/users" />
+                {/* Products Redirects */}
+                <Redirect from="/admin/product" to="/admin/products" />
+                <Redirect from="/admin/products/*" to="/admin/products" />
                 <Redirect from="*" to="/admin" />
             </Switch>
         </Router>
@@ -62,7 +79,9 @@ function AdminHome() {
             fontSize: "clamp(2.3em, 10vw, 4em)",
             color: darkMode ? "#ccd2d4" : "#2f2f2f",
         },
-        button: {},
+        button: {
+            marginRight: "5px",
+        },
     }));
     const classes = useStyles();
 
@@ -83,17 +102,30 @@ function AdminHome() {
                 Hello {firstName}
             </Typography>
             {firstName !== "Loading..." && (
-                <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    startIcon={<PersonIcon />}
-                    size={isSmall ? "small" : "medium"}
-                    component={Link}
-                    to="/admin/users"
-                >
-                    Users
-                </Button>
+                <div>
+                    <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<PersonIcon />}
+                        size={isSmall ? "small" : "medium"}
+                        component={Link}
+                        to="/admin/users"
+                    >
+                        Users
+                    </Button>
+                    <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<ProductIcon />}
+                        size={isSmall ? "small" : "medium"}
+                        component={Link}
+                        to="/admin/products"
+                    >
+                        Products
+                    </Button>
+                </div>
             )}
         </div>
     );
