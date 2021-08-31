@@ -61,7 +61,6 @@ function AdminUsers() {
     }, [dispatch, jwt]);
 
     useEffect(() => {
-        // Filter out the logged in user
         setUsers(userCache ? Object.values(userCache) : false);
     }, [userid, userCache, setUsers]);
 
