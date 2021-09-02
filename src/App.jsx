@@ -13,6 +13,7 @@ import { refreshUserToken } from "./store/auth/Auth.actions";
 import Home from "./routes/Home/Home";
 import Login from "./routes/Login/Login";
 import Register from "./routes/Register/Register";
+import Products from "./routes/Products/Products";
 import Profile from "./routes/Profile/Profile";
 import Unauthorized from "./routes/Errors/Unauthorized";
 import Admin from "./routes/Admin/Admin";
@@ -71,6 +72,7 @@ function App() {
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
+                    <Route path="/products" component={Products} />
 
                     {/* Logged-in Only Routes */}
                     <LoggedInRoute path="/profile" Component={Profile} />
