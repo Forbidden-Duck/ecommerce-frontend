@@ -10,6 +10,7 @@ import "./index.css";
 const store = configureStore({ reducer: rootReducer });
 
 console.log("Allo, what you doing in here?");
+console.log(process.env.REACT_APP_BASEURL);
 ReactDOM.render(
     <StrictMode>
         <Provider store={store}>
