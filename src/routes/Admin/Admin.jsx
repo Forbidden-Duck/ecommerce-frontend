@@ -25,6 +25,7 @@ import AdminProducts from "./Products/AdminProducts";
 import AdminCreateProduct from "./Products/AdminCreateProduct";
 import AdminViewProduct from "./Products/AdminViewProduct";
 import AdminEditProduct from "./Products/AdminEditProduct";
+import AdminDeleteProduct from "./Products/AdminDeleteProduct";
 
 function Admin() {
     return (
@@ -66,6 +67,11 @@ function Admin() {
                     exact
                     path="/admin/product/:productid/edit"
                     component={AdminEditProduct}
+                />
+                <Route
+                    exact
+                    path="/admin/product/:productid/delete"
+                    component={AdminDeleteProduct}
                 />
 
                 {/* Users Redirects */}
