@@ -70,11 +70,6 @@ function AdminViewProduct() {
             width: "200px",
             height: "200px",
         },
-        cardTag: {
-            top: "37%",
-            left: "13%",
-            position: "absolute",
-        },
         cardFooter: {
             fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
             fontSize: ".7rem",
