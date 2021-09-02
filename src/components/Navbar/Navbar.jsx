@@ -17,6 +17,7 @@ import {
 import {
     Menu as MenuIcon,
     ShoppingCart as ShoppingCartIcon,
+    LocalMall as ProductIcon,
     AccountCircle as AccountCircleIcon,
     KeyboardArrowDown as KeyboardArrowDownIcon,
     Gavel as GavelIcon,
@@ -265,6 +266,20 @@ function Navbar({ isMobile }) {
                                                 style={{ paddingLeft: 10 }}
                                             >
                                                 Profile
+                                            </Typography>
+                                        </MenuItem>
+                                        <MenuItem
+                                            onClick={handleDrawer}
+                                            component={Link}
+                                            to={"/products"}
+                                        >
+                                            <ProductIcon
+                                                style={{ color: "#4d4d4d" }}
+                                            />
+                                            <Typography
+                                                style={{ paddingLeft: 10 }}
+                                            >
+                                                Products
                                             </Typography>
                                         </MenuItem>
                                         <MenuItem
