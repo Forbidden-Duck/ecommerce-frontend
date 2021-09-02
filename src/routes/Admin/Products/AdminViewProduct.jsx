@@ -65,9 +65,9 @@ function AdminViewProduct() {
             backgroundImage: "url(/images/productImage.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            borderRadius: "50%",
+            borderRadius: "10%",
             margin: "10px 0px",
-            width: "200px",
+            width: "300px",
             height: "200px",
         },
         cardFooter: {
