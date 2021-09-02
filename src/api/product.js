@@ -24,10 +24,10 @@ export const getOne = async (productid, token) => {
     }
 };
 
-export const createOne = async (productid, token, data) => {
+export const createOne = async (token, data) => {
     try {
         return (
-            await API.post(`api/product/${productid}`, data, {
+            await API.post(`api/product`, data, {
                 headers: { authorization: `Bearer ${token}` },
             })
         ).data;

@@ -24,11 +24,7 @@ export const getProduct = createAsyncThunk(
 export const createProduct = createAsyncThunk(
     "api/createProduct",
     async (data, thunkAPI) => {
-        const res = await productAPI.createOne(
-            data.userid,
-            data.token,
-            data.product
-        );
+        const res = await productAPI.createOne(data.token, data.product);
         return {
             product: res,
         };
