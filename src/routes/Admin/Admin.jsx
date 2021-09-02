@@ -23,6 +23,7 @@ import AdminDeleteUser from "./Users/AdminDeleteUser";
 // Products Components
 import AdminProducts from "./Products/AdminProducts";
 import AdminCreateProduct from "./Products/AdminCreateProduct";
+import AdminViewProduct from "./Products/AdminViewProduct";
 
 function Admin() {
     return (
@@ -54,6 +55,11 @@ function Admin() {
                     exact
                     path="/admin/products/create"
                     component={AdminCreateProduct}
+                />
+                <Route
+                    exact
+                    path="/admin/product/:productid"
+                    component={AdminViewProduct}
                 />
 
                 {/* Users Redirects */}
