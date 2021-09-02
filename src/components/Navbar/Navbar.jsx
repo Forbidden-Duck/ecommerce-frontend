@@ -12,6 +12,7 @@ import {
     Switch,
     FormControlLabel,
     Drawer,
+    Divider,
 } from "@material-ui/core";
 import {
     Menu as MenuIcon,
@@ -43,6 +44,10 @@ function Navbar({ isMobile }) {
             display: "flex",
             alignItems: "center",
         },
+        divider: {
+            marginRight: theme.spacing(1),
+            background: darkMode ? "#ccd2d4" : "#2f2f2f",
+        },
         title: {
             color: "inherit",
             textDecoration: "none",
@@ -52,6 +57,10 @@ function Navbar({ isMobile }) {
             minHeight: 68,
             background: darkMode ? "#222" : "#fff",
             color: darkMode ? "#ccd2d4" : "#2f2f2f",
+        },
+        headerItems: {
+            display: "flex",
+            alignItems: "center",
         },
         buttonHover: {
             "&:hover": {
@@ -124,38 +133,39 @@ function Navbar({ isMobile }) {
     return (
         <AppBar position="static">
             <Toolbar className={classesDesktop.header}>
-                <Typography
-                    variant="h6"
-                    className={`${classesDesktop.title} ${classesDesktop.buttonHover}`}
-                    component={Link}
-                    to="/"
-                >
-                    Ecommerce Store
-                </Typography>
+                <div className={classesDesktop.headerItems}>
+                    <Typography
+                        style={{ marginRight: "10px" }}
+                        variant="h6"
+                        className={`${classesDesktop.title} ${classesDesktop.buttonHover}`}
+                        component={Link}
+                        to="/"
+                    >
+                        Ecommerce Store
+                    </Typography>
+                    {!isMobile && (
+                        <>
+                            <Divider
+                                className={classesDesktop.divider}
+                                orientation="vertical"
+                                flexItem
+                            />
+                            <div style={{ marginTop: "3px" }}>
+                                <Typography
+                                    variant="body1"
+                                    className={`${classesDesktop.title} ${classesDesktop.buttonHover}`}
+                                    component={Link}
+                                    to="/products"
+                                >
+                                    Products
+                                </Typography>
+                            </div>
+                        </>
+                    )}
+                </div>
                 <div>
                     {isMobile ? (
                         <div style={{ display: "flex" }}>
-                            {isAuthenticated && (
-                                <div>
-                                    <IconButton
-                                        className={classesDesktop.buttonHover}
-                                        aria-label="Shopping Cart"
-                                        color="inherit"
-                                        component={Link}
-                                        to={"/cart"}
-                                    >
-                                        <Badge
-                                            badgeContent={
-                                                0 /* TODO No cart items store */
-                                            }
-                                            max={99}
-                                            color="secondary"
-                                        >
-                                            <ShoppingCartIcon />
-                                        </Badge>
-                                    </IconButton>
-                                </div>
-                            )}
                             <IconButton
                                 aria-controls="site-select"
                                 aria-haspopup="true"
@@ -255,6 +265,20 @@ function Navbar({ isMobile }) {
                                                 style={{ paddingLeft: 10 }}
                                             >
                                                 Profile
+                                            </Typography>
+                                        </MenuItem>
+                                        <MenuItem
+                                            onClick={handleDrawer}
+                                            component={Link}
+                                            to={"/cart"}
+                                        >
+                                            <ShoppingCartIcon
+                                                style={{ color: "#4d4d4d" }}
+                                            />
+                                            <Typography
+                                                style={{ paddingLeft: 10 }}
+                                            >
+                                                Cart
                                             </Typography>
                                         </MenuItem>
                                         <MenuItem onClick={handleThemeSwitch}>
