@@ -129,7 +129,7 @@ function AdminCreateProduct() {
                             type="submit"
                             isLoading={isPending}
                         >
-                            Save
+                            Create
                         </Button>
                         <Button
                             variant="contained"
