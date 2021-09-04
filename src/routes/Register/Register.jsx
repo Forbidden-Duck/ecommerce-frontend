@@ -254,6 +254,9 @@ function Register() {
                                             }
                                             buttonText="Sign up with Google"
                                             onSuccess={handleGoogle}
+                                            onFailure={(err) =>
+                                                console.log(err)
+                                            }
                                             cookiePolicy={"single_host_origin"}
                                         />
                                         {googleError && (

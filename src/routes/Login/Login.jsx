@@ -169,6 +169,9 @@ function Login() {
                                                     .REACT_APP_GOOGLE_CLIENT_ID
                                             }
                                             onSuccess={handleGoogle}
+                                            onFailure={(err) =>
+                                                console.log(err)
+                                            }
                                             cookiePolicy={"single_host_origin"}
                                         />
                                         {googleError && (
