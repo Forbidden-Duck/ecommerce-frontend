@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,14 +29,16 @@ import {
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
 import { deleteUserFromCache } from "../../store/user/User.actions";
+import { createCart, findCarts } from "../../store/cart/Cart.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 
 function Navbar({ isMobile }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
-    const { isAuthenticated, userid } = useSelector((state) => state.auth);
+    const { jwt, isAuthenticated, userid } = useSelector((state) => state.auth);
     const { authedUser } = useSelector((state) => state.user);
+    const { authedCart, isPending, error } = useSelector((state) => state.cart);
     const { darkMode } = useSelector((state) => state.site);
 
     const useStylesDesktop = makeStyles((theme) => ({
@@ -95,6 +97,19 @@ function Navbar({ isMobile }) {
         dispatch(setDarkMode(!darkMode));
         setThemeSwitch(!darkMode);
     };
+
+    // Load authed cart
+    useEffect(() => {
+        if (isAuthenticated) {
+            dispatch(findCarts({ token: jwt.token }));
+        }
+    }, [dispatch, isAuthenticated, jwt]);
+    // Create if one was not found
+    useEffect(() => {
+        if (isAuthenticated && !authedCart?._id && !isPending && !error) {
+            dispatch(createCart({ token: jwt.token }));
+        }
+    }, [dispatch, jwt, isAuthenticated, authedCart, isPending, error]);
 
     // Logged in/Profile Menu
     const [profileMenu, setProfileMenu] = useState(null);
@@ -287,9 +302,21 @@ function Navbar({ isMobile }) {
                                             component={Link}
                                             to={"/cart"}
                                         >
-                                            <ShoppingCartIcon
-                                                style={{ color: "#4d4d4d" }}
-                                            />
+                                            <Badge
+                                                badgeContent={
+                                                    authedCart?.items?.reduce(
+                                                        (acc, item) =>
+                                                            acc + item.quantity,
+                                                        0
+                                                    ) || 0
+                                                }
+                                                max={99}
+                                                color="secondary"
+                                            >
+                                                <ShoppingCartIcon
+                                                    style={{ color: "#4d4d4d" }}
+                                                />
+                                            </Badge>
                                             <Typography
                                                 style={{ paddingLeft: 10 }}
                                             >
@@ -414,7 +441,11 @@ function Navbar({ isMobile }) {
                                         >
                                             <Badge
                                                 badgeContent={
-                                                    0 /* TODO No cart items store */
+                                                    authedCart?.items?.reduce(
+                                                        (acc, item) =>
+                                                            acc + item.quantity,
+                                                        0
+                                                    ) || 0
                                                 }
                                                 max={99}
                                                 color="secondary"

@@ -1,17 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as cartActions from "./Cart.actions";
+import {
+    loginUser,
+    googleAuth,
+    refreshUserToken,
+    logoutUser,
+} from "../auth/Auth.actions";
 
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
         isPending: false,
         error: null,
+        authedUserID: null,
+        authedCart: null,
         fetchedCart: null,
         cartCache: {},
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // Login success
+            .addCase(loginUser.fulfilled, (state, action) => {
+                const { user } = action.payload;
+                state.authedUserID = user._id;
+            })
+            // GoogleAuth success
+            .addCase(googleAuth.fulfilled, (state, action) => {
+                const { user } = action.payload;
+                state.authedUserID = user._id;
+            })
+            // Refresh token success
+            .addCase(refreshUserToken.fulfilled, (state, action) => {
+                const { user } = action.payload;
+                state.authedUserID = user._id;
+            })
+            // Logout success
+            .addCase(logoutUser.fulfilled, (state, action) => {
+                state.authedUserID = null;
+            })
+
             // Clear cart error
             .addCase(cartActions.clearCartError, (state) => {
                 state.error = null;
@@ -42,6 +70,9 @@ const cartSlice = createSlice({
                 state.cartCache = {};
                 for (const cart of carts) {
                     state.cartCache[cart._id] = cart;
+                    if (state.authedUserID === cart.userid) {
+                        state.authedCart = cart;
+                    }
                 }
             })
             // Find carts failure
@@ -61,6 +92,9 @@ const cartSlice = createSlice({
                 const { cart } = action.payload;
                 state.isPending = false;
                 state.error = null;
+                if (state.authedUserID === cart.userid) {
+                    state.authedCart = cart;
+                }
                 state.cartCache[cart._id] = cart;
             })
             // Get cart failure
@@ -80,6 +114,9 @@ const cartSlice = createSlice({
                 const { cart } = action.payload;
                 state.isPending = false;
                 state.error = null;
+                if (state.authedUserID === cart.userid) {
+                    state.authedCart = cart;
+                }
                 state.cartCache[cart._id] = cart;
             })
             // Create cart failure
@@ -99,6 +136,9 @@ const cartSlice = createSlice({
                 const { cart } = action.payload;
                 state.isPending = false;
                 state.error = null;
+                if (state.authedUserID === cart.userid) {
+                    state.authedCart = cart;
+                }
                 state.cartCache[cart._id] = cart;
             })
             // Add cart item failure
@@ -118,6 +158,9 @@ const cartSlice = createSlice({
                 const { cart } = action.payload;
                 state.isPending = false;
                 state.error = null;
+                if (state.authedUserID === cart.userid) {
+                    state.authedCart = cart;
+                }
                 state.cartCache[cart._id] = cart;
             })
             // Update cart item failure
@@ -137,6 +180,9 @@ const cartSlice = createSlice({
                 const { cart } = action.payload;
                 state.isPending = false;
                 state.error = null;
+                if (state.authedUserID === cart.userid) {
+                    state.authedCart = cart;
+                }
                 state.cartCache[cart._id] = cart;
             })
             // Delete cart item failure
@@ -156,6 +202,7 @@ const cartSlice = createSlice({
                 const { cartid } = action.payload;
                 state.isPending = false;
                 state.error = null;
+                state.authedCart = null;
                 delete state.cartCache[cartid];
             })
             // Checkout cart failure

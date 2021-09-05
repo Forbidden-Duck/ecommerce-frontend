@@ -17,6 +17,7 @@ import {
     ShoppingCart as CartIcon,
 } from "@material-ui/icons";
 import { getProducts } from "../../store/product/Product.actions";
+import { addCartItem, updateCartItem } from "../../store/cart/Cart.actions";
 import Button from "../../components/Button/Button";
 
 function Products() {
@@ -24,6 +25,7 @@ function Products() {
 
     const { darkMode } = useSelector((state) => state.site);
     const { isAuthenticated, jwt } = useSelector((state) => state.auth);
+    const { authedCart } = useSelector((state) => state.cart);
     const { productCache } = useSelector((state) => state.product);
 
     const isSmall = useMediaQuery("(max-width:550px)");
@@ -118,6 +120,45 @@ function Products() {
         return description;
     };
 
+    const handleAddToCart = (cart, product) => {
+        if (cart) {
+            let cartitem = cart.items.find(
+                (item) => item.productid === product._id
+            );
+            if (cartitem && cartitem._id) {
+                cartitem = {
+                    ...cartitem,
+                };
+                cartitem.quantity++;
+                return () => {
+                    dispatch(
+                        updateCartItem({
+                            cartid: cart._id,
+                            cartitemid: cartitem._id,
+                            token: jwt.token,
+                            cartitem,
+                        })
+                    );
+                };
+            } else {
+                cartitem = {
+                    productid: product._id,
+                    quantity: 1,
+                    price: product.price,
+                };
+                return () => {
+                    dispatch(
+                        addCartItem({
+                            cartid: cart._id,
+                            token: jwt.token,
+                            cartitem,
+                        })
+                    );
+                };
+            }
+        }
+    };
+
     return (
         <div className={classes.app}>
             {isAuthenticated ? (
@@ -200,6 +241,10 @@ function Products() {
                                                                 startIcon={
                                                                     <CartIcon />
                                                                 }
+                                                                onClick={handleAddToCart(
+                                                                    authedCart,
+                                                                    product
+                                                                )}
                                                             >
                                                                 Add to Cart
                                                             </Button>
