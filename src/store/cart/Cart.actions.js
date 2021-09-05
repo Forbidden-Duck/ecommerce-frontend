@@ -67,11 +67,7 @@ export const updateCartItem = createAsyncThunk(
 export const deleteCartItem = createAsyncThunk(
     "api/deleteCartItem",
     async (data, thunkAPI) => {
-        const res = await cartAPI.deleteItemOne(
-            data.cartid,
-            data.cartitemid,
-            data.token
-        );
+        await cartAPI.deleteItemOne(data.cartid, data.cartitemid, data.token);
         return {
             cartid: data.cartid,
             cartitemid: data.cartitemid,
