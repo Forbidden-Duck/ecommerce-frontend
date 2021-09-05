@@ -5,6 +5,7 @@ export const findMany = async (filter, token) => {
         return (
             await API.get("api/order", {
                 headers: { authorization: `Bearer ${token}` },
+                data: { adminBody: filter },
             })
         ).data;
     } catch (err) {
