@@ -86,6 +86,7 @@ export const checkoutCart = createAsyncThunk(
         return {
             order: res.order,
             charge: res.charge,
+            cartid: data.cartid,
         };
     }
 );
