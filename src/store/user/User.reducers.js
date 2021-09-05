@@ -69,6 +69,7 @@ const userSlice = createSlice({
                 const { users } = action.payload;
                 state.isPending = false;
                 state.error = null;
+                state.userCache = {};
                 for (const user of users) {
                     state.userCache[user._id] = user;
                     if (state.authedUser._id === user._id) {

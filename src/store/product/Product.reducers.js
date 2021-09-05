@@ -40,6 +40,7 @@ const productSlice = createSlice({
                 const { products } = action.payload;
                 state.isPending = false;
                 state.error = null;
+                state.productCache = {}; // Removes non-existent documents
                 for (const product of products) {
                     state.productCache[product._id] = product;
                 }
