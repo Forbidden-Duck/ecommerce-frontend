@@ -73,8 +73,8 @@ export const deleteCartItem = createAsyncThunk(
             data.token
         );
         return {
-            cart: data.cart,
-            cartitem: data.cartitem,
+            cart: res.cart,
+            cartitem: res.cartitem,
         };
     }
 );
