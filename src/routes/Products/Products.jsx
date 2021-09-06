@@ -161,7 +161,7 @@ function Products() {
 
     return (
         <div className={classes.app}>
-            {isAuthenticated ? (
+            {isAuthenticated && (
                 <>
                     {products.length > 0 ? (
                         <>
@@ -267,39 +267,6 @@ function Products() {
                         </Typography>
                     )}
                 </>
-            ) : (
-                <div style={{ marginTop: "50px" }}>
-                    <Typography className={classes.headerText} variant="h3">
-                        You must be logged in to view products
-                    </Typography>
-                    <div className={classes.headerButtons}>
-                        <Button
-                            style={{ marginRight: "5px" }}
-                            variant="contained"
-                            color="primary"
-                            startIcon={<LoginIcon />}
-                            size={isSmall ? "small" : "medium"}
-                            component={Link}
-                            to={`/login?redirect=${encodeURIComponent(
-                                "/products"
-                            )}`}
-                        >
-                            Login
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            startIcon={<RegisterIcon />}
-                            size={isSmall ? "small" : "medium"}
-                            component={Link}
-                            to={`/register?redirect=${encodeURIComponent(
-                                "/products"
-                            )}`}
-                        >
-                            Register
-                        </Button>
-                    </div>
-                </div>
             )}
         </div>
     );
