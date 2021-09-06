@@ -90,3 +90,4 @@ export const checkoutCart = createAsyncThunk(
 export const clearCartError = createAction("api/clearCartError");
 export const getCartFromCache = createAction("api/getCartFromCache");
 export const deleteCartFromCache = createAction("api/deleteCartFromCache");
+export const setCheckout = createAction("api/setCheckout");

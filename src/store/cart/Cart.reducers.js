@@ -12,6 +12,7 @@ const cartSlice = createSlice({
     initialState: {
         isPending: false,
         error: null,
+        checkout: false, // Determines if the user has clicked the checkout button
         authedUserID: null,
         authedCart: null,
         fetchedCart: null,
@@ -54,6 +55,12 @@ const cartSlice = createSlice({
             .addCase(cartActions.deleteCartFromCache, (state, action) => {
                 if (typeof action.payload === "string") {
                     delete state.fetchedCart[action.payload];
+                }
+            })
+            // Set checkout
+            .addCase(cartActions.setCheckout, (state, action) => {
+                if (typeof action.payload === "boolean") {
+                    state.checkout = action.payload;
                 }
             })
 
