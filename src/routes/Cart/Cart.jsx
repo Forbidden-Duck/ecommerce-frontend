@@ -21,18 +21,12 @@ import {
     Slide,
 } from "@material-ui/core";
 import {
-    ShoppingCart as CheckoutIcon,
     Add as AddIcon,
     Remove as RemoveIcon,
     Delete as DeleteIcon,
 } from "@material-ui/icons";
 import { getProducts } from "../../store/product/Product.actions";
-import {
-    updateCartItem,
-    deleteCartItem,
-    checkoutCart,
-} from "../../store/cart/Cart.actions";
-import TextField from "../../components/TextField/TextField";
+import { updateCartItem, deleteCartItem } from "../../store/cart/Cart.actions";
 import Button from "../../components/Button/Button";
 
 const DialogTransition = React.forwardRef((props, ref) => (

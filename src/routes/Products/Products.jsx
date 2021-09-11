@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     makeStyles,
     withStyles,
     Typography,
-    useMediaQuery,
     Grid,
     Card,
     Chip,
 } from "@material-ui/core";
 import {
     AttachMoney as DollarIcon,
-    Person as LoginIcon,
-    PersonAdd as RegisterIcon,
     ShoppingCart as CartIcon,
 } from "@material-ui/icons";
 import { getProducts } from "../../store/product/Product.actions";
@@ -27,8 +23,6 @@ function Products() {
     const { isAuthenticated, jwt } = useSelector((state) => state.auth);
     const { authedCart } = useSelector((state) => state.cart);
     const { productCache } = useSelector((state) => state.product);
-
-    const isSmall = useMediaQuery("(max-width:550px)");
 
     const useStyles = makeStyles((theme) => ({
         // Global
