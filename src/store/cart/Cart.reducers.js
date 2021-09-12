@@ -12,7 +12,6 @@ const cartSlice = createSlice({
     initialState: {
         isPending: false,
         error: null,
-        checkout: false, // Determines if the user has clicked the checkout button
         authedUserID: null,
         authedCart: null,
         fetchedCart: null,

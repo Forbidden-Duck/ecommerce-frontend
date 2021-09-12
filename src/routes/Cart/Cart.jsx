@@ -1,11 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-    BrowserRouter as Router,
-    Redirect,
-    Route,
-    Switch,
-    useHistory,
-} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     makeStyles,
@@ -19,6 +12,7 @@ import {
     DialogTitle,
     DialogActions,
     Slide,
+    Modal,
 } from "@material-ui/core";
 import {
     Add as AddIcon,
@@ -29,28 +23,25 @@ import { getProducts } from "../../store/product/Product.actions";
 import { updateCartItem, deleteCartItem } from "../../store/cart/Cart.actions";
 import Button from "../../components/Button/Button";
 
+import Checkout from "./Checkout";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+const stripe = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_ID);
+
 const DialogTransition = React.forwardRef((props, ref) => (
     <Slide direction="up" ref={ref} {...props} />
 ));
 
 function Cart() {
-    return (
-        <Router>
-            <Switch>
-                <Route exact path="/cart" component={CartHome} />
-                <Redirect from="*" to="/cart" />
-            </Switch>
-        </Router>
-    );
-}
-
-function CartHome() {
     const dispatch = useDispatch();
-    const history = useHistory();
 
     const { darkMode } = useSelector((state) => state.site);
     const { isAuthenticated, jwt } = useSelector((state) => state.auth);
-    const { authedCart, isPending } = useSelector((state) => state.cart);
+    const {
+        authedCart,
+        isPending,
+        error: cartError,
+    } = useSelector((state) => state.cart);
     const { productCache } = useSelector((state) => state.product);
 
     const isSmall = useMediaQuery("(max-width:470px)");
@@ -58,8 +49,9 @@ function CartHome() {
 
     const useStyles = makeStyles((theme) => ({
         // Global
-        app: {
-            width: "100%",
+        error: {
+            color: "red",
+            marginLeft: "15px",
         },
         // Paper
         paper: {
@@ -201,18 +193,21 @@ function CartHome() {
 
     // Checkout
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [checkoutOpen, setCheckoutOpen] = useState(false);
     const handleCheckout = () => {
         if (products && products.length > 0 && dialogOpen === false) {
-            history.push("/cart/checkout");
+            setCheckoutOpen(true);
         } else {
             setDialogOpen(true);
         }
     };
 
-    const handleClose = () => setDialogOpen(false);
+    const handleDialogClose = () => setDialogOpen(false);
+    const handleCheckoutClose = () => setCheckoutOpen(false);
 
+    const [complete, setComplete] = useState(false);
     return (
-        <div className={classes.app}>
+        <>
             {authedCart && authedCart._id && (
                 <Paper className={classes.paper} elevation={darkMode ? 10 : 24}>
                     <div className={classes.paperContent}>
@@ -316,11 +311,20 @@ function CartHome() {
                                 style={{ textAlign: "center" }}
                                 variant="h5"
                             >
-                                No items in the cart
+                                {complete && !cartError
+                                    ? "Cart successful checked out"
+                                    : "No items in the cart"}
                             </Typography>
                         )}
                     </div>
                     <div className={classes.paperFooter}>
+                        <div className={classes.error}>
+                            {cartError && (
+                                <Typography variant="body1">
+                                    {cartError}
+                                </Typography>
+                            )}
+                        </div>
                         <div className={classes.paperFooterTotal}>
                             <Typography
                                 style={{ marginRight: "5px" }}
@@ -355,20 +359,50 @@ function CartHome() {
                         <Dialog
                             open={dialogOpen}
                             TransitionComponent={DialogTransition}
-                            onClose={handleClose}
+                            onClose={handleDialogClose}
                             keepMounted
                         >
                             <DialogTitle>{"No items in the cart"}</DialogTitle>
                             <DialogActions>
-                                <Button onClick={handleClose} color="primary">
+                                <Button
+                                    onClick={handleDialogClose}
+                                    color="primary"
+                                >
                                     OK
                                 </Button>
                             </DialogActions>
                         </Dialog>
+                        <Modal
+                            open={checkoutOpen}
+                            onClose={handleCheckoutClose}
+                            aria-labelledby="checkbox"
+                            aria-describedby="checkbox-form"
+                            keepMounted
+                        >
+                            <Elements
+                                stripe={stripe}
+                                options={{
+                                    fonts: [
+                                        {
+                                            cssSrc: "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap",
+                                        },
+                                    ],
+                                }}
+                            >
+                                <Checkout
+                                    closeModal={handleCheckoutClose}
+                                    jwt={jwt}
+                                    authedCart={authedCart}
+                                    isPending={isPending}
+                                    cartError={cartError}
+                                    setComplete={setComplete}
+                                />
+                            </Elements>
+                        </Modal>
                     </div>
                 </Paper>
             )}
-        </div>
+        </>
     );
 }
 
