@@ -29,7 +29,11 @@ import {
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { logoutUser } from "../../store/auth/Auth.actions";
 import { deleteUserFromCache } from "../../store/user/User.actions";
-import { createCart, findCarts } from "../../store/cart/Cart.actions";
+import {
+    createCart,
+    findCarts,
+    clearCartError,
+} from "../../store/cart/Cart.actions";
 import { setDarkMode } from "../../store/site/Site.actions";
 
 function Navbar({ isMobile }) {
@@ -107,7 +111,10 @@ function Navbar({ isMobile }) {
     // Create if one was not found
     useEffect(() => {
         if (isAuthenticated && !authedCart?._id && !isPending && !error) {
-            dispatch(createCart({ token: jwt.token }));
+            (async () => {
+                await dispatch(createCart({ token: jwt.token }));
+                dispatch(clearCartError()); // Remove the error caused by a failed create
+            })();
         }
     }, [dispatch, jwt, isAuthenticated, authedCart, isPending, error]);
 
