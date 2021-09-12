@@ -88,7 +88,7 @@ export const deleteItemOne = async (cartid, cartitemid, token) => {
 export const checkout = async (cartid, token) => {
     try {
         return (
-            await API.post(`api/cart/${cartid}`, undefined, {
+            await API.post(`api/cart/${cartid}/checkout`, undefined, {
                 headers: { authorization: `Bearer ${token}` },
             })
         ).data;
