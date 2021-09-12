@@ -39,6 +39,7 @@ const cartSlice = createSlice({
             // Logout success
             .addCase(logoutUser.fulfilled, (state, action) => {
                 state.authedUserID = null;
+                state.authedCart = null;
             })
 
             // Clear cart error
