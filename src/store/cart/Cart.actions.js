@@ -82,7 +82,11 @@ export const deleteCartItem = createAsyncThunk(
 export const checkoutCart = createAsyncThunk(
     "api/checkoutCart",
     async (data, thunkAPI) => {
-        const res = await cartAPI.checkout(data.cartid, data.token);
+        const res = await cartAPI.checkout(
+            data.cartid,
+            data.paymentInfo,
+            data.token
+        );
         return {
             order: res.order,
             charge: res.charge,
