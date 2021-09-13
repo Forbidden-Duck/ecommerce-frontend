@@ -15,6 +15,7 @@ import Login from "./routes/Login/Login";
 import Register from "./routes/Register/Register";
 import Products from "./routes/Products/Products";
 import Cart from "./routes/Cart/Cart";
+import Orders from "./routes/Orders/Orders";
 import Profile from "./routes/Profile/Profile";
 import Unauthorized from "./routes/Errors/Unauthorized";
 import Admin from "./routes/Admin/Admin";
@@ -78,6 +79,7 @@ function App() {
                     <LoggedInRoute path="/profile" Component={Profile} />
                     <LoggedInRoute path="/products" Component={Products} />
                     <LoggedInRoute path="/cart" Component={Cart} />
+                    <LoggedInRoute path="/orders" Component={Orders} />
 
                     {/* Admin Only Routes */}
                     <Route
