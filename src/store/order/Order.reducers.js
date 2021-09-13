@@ -1,17 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as orderActions from "./Order.actions";
+import { checkoutCart } from "../cart/Cart.actions";
 
 const orderSlice = createSlice({
     name: "order",
     initialState: {
         isPending: false,
         error: null,
+        recentOrder: null,
         fetchedOrder: null,
         orderCache: {},
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // Checkout success
+            .addCase(checkoutCart.fulfilled, (state, action) => {
+                const { order } = action.payload;
+                state.orderCache[order._id] = order;
+                state.recentOrder = order;
+            })
+
             // Clear order error
             .addCase(orderActions.clearOrderError, (state) => {
                 state.error = null;

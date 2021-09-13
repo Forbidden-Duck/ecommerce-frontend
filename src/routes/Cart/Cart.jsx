@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     makeStyles,
@@ -43,6 +44,7 @@ function Cart() {
         error: cartError,
     } = useSelector((state) => state.cart);
     const { productCache } = useSelector((state) => state.product);
+    const { recentOrder } = useSelector((state) => state.order);
 
     const isSmall = useMediaQuery("(max-width:470px)");
     const isTiny = useMediaQuery("(max-width:390px)");
@@ -306,14 +308,22 @@ function Cart() {
                                     </div>
                                 </Card>
                             ))
+                        ) : complete && !cartError ? (
+                            <Typography
+                                style={{ textAlign: "center" }}
+                                variant="h5"
+                            >
+                                Cart checked out with status{" "}
+                                <span style={{ color: "green" }}>
+                                    {recentOrder?.status || "Failed"}
+                                </span>
+                            </Typography>
                         ) : (
                             <Typography
                                 style={{ textAlign: "center" }}
                                 variant="h5"
                             >
-                                {complete && !cartError
-                                    ? "Cart successful checked out"
-                                    : "No items in the cart"}
+                                No items in the cart
                             </Typography>
                         )}
                     </div>
@@ -324,6 +334,14 @@ function Cart() {
                                     {cartError}
                                 </Typography>
                             )}
+                            {complete &&
+                                !cartError &&
+                                recentOrder &&
+                                typeof recentOrder.payment === "string" && (
+                                    <Typography variant="body1">
+                                        {recentOrder.payment}
+                                    </Typography>
+                                )}
                         </div>
                         <div className={classes.paperFooterTotal}>
                             <Typography
@@ -347,15 +365,30 @@ function Cart() {
                                     })}
                             </Typography>
                         </div>
-                        <Button
-                            style={{ width: "130px" }}
-                            variant="contained"
-                            color="primary"
-                            to="/cart/checkout"
-                            onClick={handleCheckout}
-                        >
-                            Checkout
-                        </Button>
+                        {complete && !cartError && recentOrder ? (
+                            <Button
+                                style={{ width: "130px" }}
+                                variant="contained"
+                                color="secondary"
+                                component={Link}
+                                to={
+                                    recentOrder?._id
+                                        ? `/order/${recentOrder._id}`
+                                        : "/cart"
+                                }
+                            >
+                                View Order
+                            </Button>
+                        ) : (
+                            <Button
+                                style={{ width: "130px" }}
+                                variant="contained"
+                                color="primary"
+                                onClick={handleCheckout}
+                            >
+                                Checkout
+                            </Button>
+                        )}
                         <Dialog
                             open={dialogOpen}
                             TransitionComponent={DialogTransition}
