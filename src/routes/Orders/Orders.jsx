@@ -28,7 +28,7 @@ function Orders() {
     const useStyles = makeStyles((theme) => ({
         // Paper
         paper: {
-            margin: `50px ${isSmall ? "10px" : "50px"}`,
+            margin: `50px ${isSmall ? "0px" : "40px"}`,
         },
         paperContent: {
             padding: "10px",
@@ -41,6 +41,9 @@ function Orders() {
         cardContent: {
             display: "flex",
             marginLeft: "10px",
+            "& h6": {
+                fontSize: "1.25em",
+            },
         },
         cardImage: {
             backgroundImage: "url(/images/productImage.jpg)",
@@ -64,7 +67,6 @@ function Orders() {
         },
         cardButtons: {
             display: "flex",
-            marginTop: "30px",
         },
     }));
     const classes = useStyles();
@@ -193,6 +195,32 @@ function Orders() {
                                                         currency: "USD",
                                                     }
                                                 )}
+                                            </Typography>
+                                        </div>
+                                        <div className={classes.cardItems}>
+                                            <Typography
+                                                style={{ fontWeight: "500" }}
+                                                variant="h6"
+                                            >
+                                                Status:&nbsp;
+                                            </Typography>
+                                            <Typography
+                                                style={{
+                                                    fontWeight: "500",
+                                                    whiteSpace: "nowrap",
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    width: `${
+                                                        isTiny
+                                                            ? winDim.width - 130
+                                                            : isSmall
+                                                            ? winDim.width - 310
+                                                            : winDim.width - 390
+                                                    }px`,
+                                                }}
+                                                variant="body1"
+                                            >
+                                                {item.status}
                                             </Typography>
                                         </div>
                                         <div className={classes.cardButtons}>
