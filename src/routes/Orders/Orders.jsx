@@ -51,7 +51,7 @@ function Orders() {
             backgroundSize: "cover",
             borderRadius: "5%",
             margin: "10px 0px",
-            width: "180px",
+            width: "178px",
             height: "130px",
         },
         cardInfo: {
