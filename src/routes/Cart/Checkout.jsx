@@ -114,6 +114,22 @@ function Checkout({
                             {authedUser ? authedUser.email : "Loading"}
                         </Typography>
                     </div>
+                    <div className={classes.cardField}>
+                        <Typography style={{ fontSize: "1rem" }} variant="h6">
+                            Successful Card:
+                        </Typography>
+                        <Typography variant="body1">
+                            4242 4242 4242 4242
+                        </Typography>
+                    </div>
+                    <div className={classes.cardField}>
+                        <Typography style={{ fontSize: "1rem" }} variant="h6">
+                            Rejected Card:
+                        </Typography>
+                        <Typography variant="body1">
+                            4000 0000 0000 0002
+                        </Typography>
+                    </div>
                     <div className={classes.cardElementWrapper}>
                         <CardElement
                             className={classes.cardElement}
