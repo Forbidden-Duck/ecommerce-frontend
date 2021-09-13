@@ -18,6 +18,7 @@ import {
     Menu as MenuIcon,
     ShoppingCart as ShoppingCartIcon,
     LocalMall as ProductIcon,
+    CreditCard as OrderIcon,
     AccountCircle as AccountCircleIcon,
     KeyboardArrowDown as KeyboardArrowDownIcon,
     Gavel as GavelIcon,
@@ -307,6 +308,20 @@ function Navbar({ isMobile }) {
                                         <MenuItem
                                             onClick={handleDrawer}
                                             component={Link}
+                                            to={"/orders"}
+                                        >
+                                            <OrderIcon
+                                                style={{ color: "#4d4d4d" }}
+                                            />
+                                            <Typography
+                                                style={{ paddingLeft: 10 }}
+                                            >
+                                                Orders
+                                            </Typography>
+                                        </MenuItem>
+                                        <MenuItem
+                                            onClick={handleDrawer}
+                                            component={Link}
                                             to={"/cart"}
                                         >
                                             <Badge
@@ -527,6 +542,20 @@ function Navbar({ isMobile }) {
                                                     style={{ paddingLeft: 10 }}
                                                 >
                                                     Profile
+                                                </Typography>
+                                            </MenuItem>
+                                            <MenuItem
+                                                onClick={handleProfileClose}
+                                                component={Link}
+                                                to={"/orders"}
+                                            >
+                                                <OrderIcon
+                                                    style={{ color: "#4d4d4d" }}
+                                                />
+                                                <Typography
+                                                    style={{ paddingLeft: 10 }}
+                                                >
+                                                    Orders
                                                 </Typography>
                                             </MenuItem>
                                             <MenuItem
