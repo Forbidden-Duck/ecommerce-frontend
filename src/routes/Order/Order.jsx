@@ -6,6 +6,7 @@ import {
     ArrowBack as GoBackIcon,
     Launch as LinkIcon,
 } from "@material-ui/icons";
+import { getProducts } from "../../store/product/Product.actions";
 import { getOrder, getOrderFromCache } from "../../store/order/Order.actions";
 import Button from "../../components/Button/Button";
 
@@ -142,6 +143,10 @@ function Order() {
         createdAt: "Loading...",
         payment: null,
     });
+
+    useEffect(() => {
+        dispatch(getProducts({ token: jwt.token }));
+    }, [dispatch, jwt]);
 
     useEffect(() => {
         (async () => {
