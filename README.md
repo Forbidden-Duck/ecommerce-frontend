@@ -1,39 +1,49 @@
-# Ecommerce Frontend
-Under development
+# Ecommerce Website - Frontend
 
-## Available Scripts
+This project acts as https://ecommerce.harrisonhoward.xyz frontend code.\
+The website was created as a portfolio project and nothing that takes place on the site is verified (i.e. email verification).
 
-In the project directory, you can run:
+## Host It Myself
 
-### `npm start`
+### Database
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> This project requires [MongoDB](https://www.mongodb.com/) for it's database. All collections and schemas are auto-generated.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Environment Variables
 
-### `npm test`
+Depending on your environment you may need these setup.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> _REACT_APP_BASEURL_=http://example.com:6001/ **(development only)**\
+> _REACT_APP_GOOGLE_CLIENT_ID_=... **(both environments)**\
+> _REACT_APP_STRIPE_CLIENT_ID_=pk_test\_... **(both environments)**
 
-### `npm run build`
+### Development Environment
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Script `npm run start` will start the app in `http://localhost:3000`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Production Environment
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Script `npm run build` will build an optimised version of this project. Serve the **index.html** in a production server
 
-### `npm run eject`
+## Scripts
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+All scripts are `create-react-app` defaults
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### start
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`npm run start`\
+Created a development version of the project.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### build
+
+`npm run build`\
+Created an optimised production version of the project.
+
+### test
+
+No tests available
+
+### eject
+
+`npm run eject`\
+Eject the default configuration options (i.e. webpack) so that the can be easily modified **(not recommended)**.
