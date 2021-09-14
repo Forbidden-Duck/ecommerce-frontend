@@ -32,12 +32,12 @@ All scripts are `create-react-app` defaults
 ### start
 
 `npm run start`\
-Created a development version of the project.
+Start a development version of the project.
 
 ### build
 
 `npm run build`\
-Created an optimised production version of the project.
+Create an optimised production version of the project.
 
 ### test
 
