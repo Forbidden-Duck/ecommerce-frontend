@@ -4,7 +4,7 @@ import * as orderAPI from "../../api/order";
 export const findOrders = createAsyncThunk(
     "api/findOrders",
     async (data, thunkAPI) => {
-        const res = await orderAPI.findMany(data.filter, data.token);
+        const res = await orderAPI.findMany(data.userid, data.token);
         return {
             orders: res,
         };

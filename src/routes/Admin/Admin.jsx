@@ -11,6 +11,7 @@ import { Typography, makeStyles, useMediaQuery } from "@material-ui/core";
 import {
     Person as PersonIcon,
     LocalMall as ProductIcon,
+    CreditCard as OrderIcon,
 } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
 
@@ -26,6 +27,9 @@ import AdminCreateProduct from "./Products/AdminCreateProduct";
 import AdminViewProduct from "./Products/AdminViewProduct";
 import AdminEditProduct from "./Products/AdminEditProduct";
 import AdminDeleteProduct from "./Products/AdminDeleteProduct";
+
+// Orders Components
+import AdminOrders from "./Orders/AdminOrders";
 
 function Admin() {
     return (
@@ -74,12 +78,18 @@ function Admin() {
                     component={AdminDeleteProduct}
                 />
 
+                {/* Orders Routes */}
+                <Route exact path="/admin/orders" component={AdminOrders} />
+
                 {/* Users Redirects */}
                 <Redirect from="/admin/user" to="/admin/users" />
                 <Redirect from="/admin/users/*" to="/admin/users" />
                 {/* Products Redirects */}
                 <Redirect from="/admin/product" to="/admin/products" />
                 <Redirect from="/admin/products/*" to="/admin/products" />
+                {/* Orders Redirects */}
+                <Redirect from="/admin/order" to="/admin/orders" />
+                <Redirect from="/admin/orders/*" to="/admin/orders" />
                 <Redirect from="*" to="/admin" />
             </Switch>
         </Router>
@@ -148,6 +158,17 @@ function AdminHome() {
                         to="/admin/products"
                     >
                         Products
+                    </Button>
+                    <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<OrderIcon />}
+                        size={isSmall ? "small" : "medium"}
+                        component={Link}
+                        to="/admin/orders"
+                    >
+                        Orders
                     </Button>
                 </div>
             )}
