@@ -19,6 +19,7 @@ import Orders from "./routes/Orders/Orders";
 import Order from "./routes/Order/Order";
 import Profile from "./routes/Profile/Profile";
 import Unauthorized from "./routes/Errors/Unauthorized";
+import Fourzerofour from "./routes/Errors/404";
 import Admin from "./routes/Admin/Admin";
 
 import Navbar from "./components/Navbar/Navbar";
@@ -75,6 +76,12 @@ function App() {
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
+                    <Route
+                        exact
+                        path="/unauthorized"
+                        component={Unauthorized}
+                    />
+                    <Route exact path="/404" component={Fourzerofour} />
 
                     {/* Logged-in Only Routes */}
                     <LoggedInRoute path="/profile" Component={Profile} />
@@ -84,14 +91,9 @@ function App() {
                     <LoggedInRoute path="/order/:orderid" Component={Order} />
 
                     {/* Admin Only Routes */}
-                    <Route
-                        exact
-                        path="/unauthorized"
-                        component={Unauthorized}
-                    />
                     <AdminRoute path="/admin" Component={Admin} />
 
-                    <Redirect from="*" to="/" />
+                    <Redirect from="*" to="/404" />
                 </Switch>
             </Router>
         </div>
