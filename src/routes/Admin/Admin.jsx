@@ -30,6 +30,7 @@ import AdminDeleteProduct from "./Products/AdminDeleteProduct";
 
 // Orders Components
 import AdminOrders from "./Orders/AdminOrders";
+import AdminViewOrder from "./Orders/AdminViewOrder";
 
 function Admin() {
     return (
@@ -80,6 +81,11 @@ function Admin() {
 
                 {/* Orders Routes */}
                 <Route exact path="/admin/orders" component={AdminOrders} />
+                <Route
+                    exact
+                    path="/admin/order/:orderid"
+                    component={AdminViewOrder}
+                />
 
                 {/* Users Redirects */}
                 <Redirect from="/admin/user" to="/admin/users" />
