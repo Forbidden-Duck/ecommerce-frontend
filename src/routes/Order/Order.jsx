@@ -140,6 +140,7 @@ function Order() {
         cardBrand: "Loading...",
         cardLast4: "0000",
         createdAt: "Loading...",
+        payment: null,
     });
 
     useEffect(() => {
@@ -164,6 +165,7 @@ function Order() {
                       createdAt: fetchedOrder.createdAt
                           ? new Date(fetchedOrder.createdAt).toLocaleString()
                           : "N/A",
+                      payment: fetchedOrder.payment,
                   }
                 : {
                       status: "Loading...",
@@ -210,6 +212,11 @@ function Order() {
                             {error}
                         </Typography>
                     )}
+                    {typeof order.payment === "string" && (
+                        <Typography className={classes.error}>
+                            {order.payment}
+                        </Typography>
+                    )}
                     <div className={classes.cardCenterWrapper}>
                         <div className={classes.cardPfp} />
                     </div>
@@ -241,10 +248,16 @@ function Order() {
                         </Typography>
                     </div>
                     <div className={classes.cardField}>
-                        <Typography variant="h6">Card:&nbsp;</Typography>
-                        <Typography variant="body1">
-                            {order.cardBrand} - {order.cardLast4}
-                        </Typography>
+                        {typeof order.payment !== "string" && (
+                            <>
+                                <Typography variant="h6">
+                                    Card:&nbsp;
+                                </Typography>
+                                <Typography variant="body1">
+                                    {order.cardBrand} - {order.cardLast4}
+                                </Typography>
+                            </>
+                        )}
                     </div>
                     {order.items.length > 0 ? (
                         order.items.map((item) => (
