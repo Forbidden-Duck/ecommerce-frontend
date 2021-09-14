@@ -23,7 +23,7 @@ function Fourzerofour() {
     return (
         <div className={classes.app}>
             <Typography className={classes.text} variant="h3">
-                Could not find the page you were looking for.
+                Could not find the page you were looking for
             </Typography>
         </div>
     );
