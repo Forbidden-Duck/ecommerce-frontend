@@ -18,7 +18,7 @@ function Orders() {
     const dispatch = useDispatch();
 
     const { darkMode } = useSelector((state) => state.site);
-    const { userid, isAuthenticated, jwt } = useSelector((state) => state.auth);
+    const { isAuthenticated, jwt } = useSelector((state) => state.auth);
     const { productCache } = useSelector((state) => state.product);
     const { orderCache } = useSelector((state) => state.order);
 
