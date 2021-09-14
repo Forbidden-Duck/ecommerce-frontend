@@ -1,11 +1,12 @@
 import API from "./";
 
-export const findMany = async (filter, token) => {
+export const findMany = async (userid, token) => {
     try {
+        const params = userid ? { userid } : {};
         return (
             await API.get("api/cart", {
                 headers: { authorization: `Bearer ${token}` },
-                data: { adminBody: filter },
+                params,
             })
         ).data;
     } catch (err) {
