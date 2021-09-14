@@ -23,7 +23,7 @@ Script `npm run start` will start the app in `http://localhost:3000`
 
 ### Production Environment
 
-Script `npm run build` will build an optimised version of this project. Serve the **index.html** in a production server
+Script `npm run build` will build an optimised version of this project. Follow the guide in [Ecommerce Backend](https://github.com/Forbidden-Duck/ecommerce-backend) to get it running along side the backend
 
 ## Scripts
 
